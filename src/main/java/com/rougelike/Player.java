@@ -4,7 +4,7 @@ public class Player {
     private static final int MAX_LEVEL = 60;
 
     private String name;
-    private Race race;
+    // private Race race;
 
     private double health;
 
@@ -12,9 +12,8 @@ public class Player {
     private double xp;
     private double xpToNextLevel;
 
-    public Player(String name, Race race) {
+    public Player(String name) {
         this.name = name;
-        this.race = race;
         xpToNextLevel = 200.0;
     }
 
