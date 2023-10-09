@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class MagicTest {
-    
+
     @Test
     void testMagicInstanceCreation() {
         Magic magic = new Magic("Fireball", 10);
@@ -17,7 +17,7 @@ public class MagicTest {
         assertThrows(IllegalArgumentException.class, () -> {
             Magic magic = new Magic("Fireball", -10);
         });
-    }   
+    }
 
     @Test
     void testMagicInstanceCreationWithNullName() {

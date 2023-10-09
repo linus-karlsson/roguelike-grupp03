@@ -1,18 +1,24 @@
 package com.rougelike;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.*;
 
 public class MapTest {
 
     @Test
     public void testGenerateRoomWithinBounds() {
-        Map map = new Map();
+        double cellSize = 10.0;
+        Map map = new Map(cellSize);
 
-        double minWidth = 10.0f;
-        double maxWidth = 30.0f;
-        double minHeight = 10.0f;
-        double maxHeight = 30.0f;
+        double minWidth = 10.0;
+        double maxWidth = 30.0;
+        double minHeight = 10.0;
+        double maxHeight = 30.0;
         Map.Room room = map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
 
         double roomWidth = room.getWidth();
@@ -23,6 +29,18 @@ public class MapTest {
         assertTrue(expected);
     }
 
+    @ParameterizedTest
+    @CsvSource(value = { "0.0, 100.0, 10.0, 100.0", "10.0, 100.0, 0.0, 100.0", "20.0, 401.0, 20.0, 140.0",
+            "20.0, 140.0, 20.0, 401.0" })
+    public void testGenerateRoomWithinBoundsThrows(double minWidth, double maxWidth, double minHeight,
+            double maxHeight) {
+        double cellSize = 10.0;
+        Map map = new Map(cellSize);
+        assertThrows(IllegalArgumentException.class, () -> {
+            map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
+        });
+    }
+
     private boolean closedInterval(double min, double value, double max) {
         return value >= min && value <= max;
     }
@@ -30,13 +48,12 @@ public class MapTest {
     @Test
     public void testGenerateRoomDependencyInjection() {
         double randomMultiplier = 0.3;
-        RandomInternal randomInternal = new RandomInternal(randomMultiplier);
-        Map map = new Map(randomInternal);
+        Map map = createMapDependencyInjection(10.0, randomMultiplier);
 
-        double minWidth = 10.0f;
-        double maxWidth = 30.0f;
-        double minHeight = 10.0f;
-        double maxHeight = 30.0f;
+        double minWidth = 10.0;
+        double maxWidth = 30.0;
+        double minHeight = 10.0;
+        double maxHeight = 30.0;
         Map.Room room = map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
 
         boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier, minWidth, maxWidth) &&
@@ -47,6 +64,26 @@ public class MapTest {
 
     private double randomDoubleInBounds(double multiplier, double low, double high) {
         return (multiplier * (high - low)) + low;
+    }
+
+    @Test
+    public void testGenerateMultipleRooms() {
+        double randomMultiplier = 0.3;
+        Map map = createMapDependencyInjection(10.0, randomMultiplier);
+
+        double minWidth = 10.0;
+        double maxWidth = 30.0;
+        double minHeight = 10.0;
+        double maxHeight = 30.0;
+        int roomCount = 10;
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth, minHeight, maxHeight);
+
+        assertEquals(roomCount, rooms.size());
+    }
+
+    private Map createMapDependencyInjection(double cellSize, double randomMultiplier) {
+        RandomInternal randomInternal = new RandomInternal(randomMultiplier);
+        return new Map(cellSize, randomInternal);
     }
 
 }
