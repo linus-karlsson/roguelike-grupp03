@@ -2,5 +2,6 @@
 .settings
 .classpath
 .vscode
+.idea
 target
 tags
