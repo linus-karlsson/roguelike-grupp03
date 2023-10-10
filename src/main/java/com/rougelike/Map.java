@@ -53,14 +53,21 @@ public class Map {
         }
         int griddSize = rows * columns;
         gridd = new ArrayList<>(griddSize);
+
         for (int i = 0; i < griddSize; i++) {
             gridd.add(0);
         }
         ArrayList<Room> roomsPlaced = new ArrayList<>();
 
-        while (true) {
-            Room currentRoom = rooms.get(rooms.size() - 1);
+        // double width = columns * cellSize;
+        // double height = rows * cellSize;
 
+        while (true) {
+            Room currentRoom = rooms.get(random.nextInt(rooms.size() - 1));
+            currentRoom.setPosition(10.0, 10.0);
+            gridd.set(getCanonicalPostion(currentRoom.position, columns, cellSize), 1);
+            roomsPlaced.add(currentRoom);
+            break;
         }
         return roomsPlaced;
     }

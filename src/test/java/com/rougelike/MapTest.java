@@ -10,22 +10,27 @@ import java.util.*;
 
 public class MapTest {
 
+    private Map map = new Map();
+    private double minWidth = 10.0;
+    private double maxWidth = 30.0;
+    private double minHeight = 10.0;
+    private double maxHeight = 30.0;
+
     @Test
     public void testGenerateRoomWithinBounds() {
-        Map map = new Map();
-
-        double minWidth = 10.0;
-        double maxWidth = 30.0;
-        double minHeight = 10.0;
-        double maxHeight = 30.0;
         Map.Room room = map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
 
-        double roomWidth = room.getWidth();
-        double roomHeight = room.getHeight();
-        boolean expected = closedInterval(minWidth, roomWidth, maxWidth)
-                && closedInterval(minHeight, roomHeight, maxHeight);
+        boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), minWidth,
+                maxWidth, minHeight, maxHeight);
 
         assertTrue(expected);
+    }
+
+    private boolean isWithinBounds(double actualRoomWidth, double actualRoomHeight, double minWidth, double maxWidth,
+            double minHeight,
+            double maxHeight) {
+        return closedInterval(minWidth, actualRoomWidth, maxWidth)
+                && closedInterval(minHeight, actualRoomHeight, maxHeight);
     }
 
     @ParameterizedTest
@@ -33,7 +38,6 @@ public class MapTest {
             "20.0, 140.0, 20.0, 401.0" })
     public void testGenerateRoomWithinBoundsThrows(double minWidth, double maxWidth, double minHeight,
             double maxHeight) {
-        Map map = new Map();
         assertThrows(IllegalArgumentException.class, () -> {
             map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
         });
@@ -46,12 +50,7 @@ public class MapTest {
     @Test
     public void testGenerateRoomDependencyInjection() {
         double randomMultiplier = 0.3;
-        Map map = createMapDependencyInjection(randomMultiplier);
-
-        double minWidth = 10.0;
-        double maxWidth = 30.0;
-        double minHeight = 10.0;
-        double maxHeight = 30.0;
+        map = createMapDependencyInjection(randomMultiplier);
         Map.Room room = map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
 
         boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier, minWidth, maxWidth) &&
@@ -65,16 +64,47 @@ public class MapTest {
     }
 
     @Test
-    public void testGenerateMultipleRooms() {
-        double randomMultiplier = 0.3;
-        Map map = createMapDependencyInjection(randomMultiplier);
-
-        double minWidth = 10.0;
-        double maxWidth = 30.0;
-        double minHeight = 10.0;
-        double maxHeight = 30.0;
+    public void testGenerateMultipleRoomsVariablitiy() {
         int roomCount = 10;
-        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth, minHeight, maxHeight);
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
+
+        boolean variablitiyInWidth = false;
+        boolean variabilityInHeight = false;
+
+        double savedWidth = rooms.get(0).getWidth();
+        double savedHeight = rooms.get(0).getHeight();
+
+        for (Map.Room room : rooms) {
+            if (savedWidth != room.getWidth()) {
+                variablitiyInWidth = true;
+            }
+            if (savedHeight != room.getHeight()) {
+                variabilityInHeight = true;
+            }
+        }
+        assertTrue(variablitiyInWidth && variabilityInHeight);
+    }
+
+    @Test
+    public void testGenerateMultipleRoomsWithinBounds() {
+        int roomCount = 10;
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
+
+        for (Map.Room room : rooms) {
+            boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), minWidth,
+                    maxWidth, minHeight, maxHeight);
+
+            assertTrue(expected);
+        }
+    }
+
+    @Test
+    public void testGenerateMultipleRoomsSize() {
+        int roomCount = 10;
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
 
         assertEquals(roomCount, rooms.size());
     }
@@ -86,10 +116,9 @@ public class MapTest {
 
     @Test
     public void testPlaceRoomsInAreaThrows() {
-        Map map = new Map();
-
-        ArrayList<Map.Room> rooms = map.generateListOfRooms(10, 10.0, 30.0, 10.0,
-                30.0);
+        int roomCount = 10;
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
 
         int rows = 0;
         int columns = 80;
@@ -101,25 +130,46 @@ public class MapTest {
 
     @Test
     public void testPlaceRoomsInArea() {
-        Map map = new Map();
+        int roomCount = 10;
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
 
-        ArrayList<Map.Room> rooms = map.generateListOfRooms(10, 10.0, 30.0, 10.0,
-                30.0);
-        int rows = 80;
-        int columns = 80;
-        double cellSize = 10.0;
+        // 800 * 800 pixels
+        int rows = 160;
+        int columns = 160;
+        double cellSize = 5.0;
         ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, rows, columns, cellSize);
 
         ArrayList<Integer> gridd = map.getCopyOfGridd();
 
         for (Map.Room room : placedRooms) {
-            assertTrue(gridd.get(map.getCanonicalPostion(room.getPosition(), columns, cellSize)) == 1);
+            double xStart = room.getPosition().getX();
+            double xSpand = xStart + room.getWidth();
+            double yStart = room.getPosition().getY();
+            double ySpand = yStart + room.getHeight();
+
+            int startIndex = map.getCanonicalPostion(room.getPosition(), columns, cellSize);
+            Point xEndPosition = new Point(xSpand, yStart);
+            int endIndexInX = map.getCanonicalPostion(xEndPosition, columns, cellSize);
+            Point lastPoistion = new Point(xSpand, ySpand);
+            int endIndex = map.getCanonicalPostion(lastPoistion, columns, cellSize);
+
+            int index = startIndex;
+            int rowCount = 1;
+            while (index <= endIndex) {
+                if (index == endIndexInX) {
+                    index = startIndex + (columns * rowCount);
+                    endIndexInX += (columns * rowCount);
+                    rowCount++;
+                }
+                assertEquals(1, gridd.get(index));
+                index++;
+            }
         }
     }
 
     @Test
     public void testGetCanonicalPosition() {
-        Map map = new Map();
         int columns = 80;
         double cellSize = 10.0;
         Point point = new Point();
@@ -133,10 +183,9 @@ public class MapTest {
 
     @Test
     public void testGetCopyGridd() {
-        Map map = new Map();
-
-        ArrayList<Map.Room> rooms = map.generateListOfRooms(10, 10.0, 30.0, 10.0,
-                30.0);
+        int roomCount = 10;
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
 
         int rows = 80;
         int columns = 80;
