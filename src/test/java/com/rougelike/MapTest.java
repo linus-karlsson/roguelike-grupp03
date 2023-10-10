@@ -159,7 +159,7 @@ public class MapTest {
             while (index <= endIndex) {
                 if (index == endIndexInX) {
                     index = startIndex + (columns * rowCount);
-                    endIndexInX += (columns * rowCount);
+                    endIndexInX += columns;
                     rowCount++;
                 }
                 assertEquals(1, gridd.get(index));

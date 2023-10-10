@@ -65,7 +65,29 @@ public class Map {
         while (true) {
             Room currentRoom = rooms.get(random.nextInt(rooms.size() - 1));
             currentRoom.setPosition(10.0, 10.0);
-            gridd.set(getCanonicalPostion(currentRoom.position, columns, cellSize), 1);
+
+            double xStart = currentRoom.getPosition().getX();
+            double xSpand = xStart + currentRoom.getWidth();
+            double yStart = currentRoom.getPosition().getY();
+            double ySpand = yStart + currentRoom.getHeight();
+
+            int startIndex = getCanonicalPostion(currentRoom.getPosition(), columns, cellSize);
+            Point xEndPosition = new Point(xSpand, yStart);
+            int endIndexInX = getCanonicalPostion(xEndPosition, columns, cellSize);
+            Point lastPoistion = new Point(xSpand, ySpand);
+            int endIndex = getCanonicalPostion(lastPoistion, columns, cellSize);
+
+            int index = startIndex;
+            int rowCount = 1;
+            while (index <= endIndex) {
+                if (index == endIndexInX) {
+                    index = startIndex + (columns * rowCount);
+                    endIndexInX += columns;
+                    rowCount++;
+                }
+                gridd.set(index, gridd.get(index) + 1);
+                index++;
+            }
             roomsPlaced.add(currentRoom);
             break;
         }
