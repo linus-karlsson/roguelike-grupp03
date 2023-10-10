@@ -7,12 +7,15 @@ public abstract class Race {
     private double dexterity;
     private double intelligence;
 
+
+
     public Race(double health, double mana, double strength, double dexterity, double intelligence) {
         this.health = health;
         this.mana = mana;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
+
     }
 
     public double getHealth() {
