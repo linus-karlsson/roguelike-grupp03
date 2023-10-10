@@ -6,17 +6,27 @@ public class Map {
     private static final double MIN_ROOM_WIDTH_OR_HEIGHT = 1.0;
     private static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
 
-    Random random;
+    private Random random;
 
-    double cellSize;
+    private ArrayList<Integer> gridd;
 
     public class Room {
+        private Point position = new Point();
         private double width;
         private double height;
 
         public Room(double width, double height) {
             this.width = width;
             this.height = height;
+        }
+
+        public void setPosition(double x, double y) {
+            position.setX(x);
+            position.setY(y);
+        }
+
+        public Point getPosition() {
+            return position;
         }
 
         public double getWidth() {
@@ -28,14 +38,44 @@ public class Map {
         }
     }
 
-    public Map(double cellSize) {
+    public Map() {
         random = new Random();
-        this.cellSize = cellSize;
     }
 
-    public Map(double cellSize, Random random) {
+    public Map(Random random) {
         this.random = random;
-        this.cellSize = cellSize;
+    }
+
+    // Returnerar rummen som blir
+    public ArrayList<Room> placeRoomsInArea(ArrayList<Room> rooms, int rows, int columns, double cellSize) {
+        if (rows <= 0 || columns <= 0) {
+            throw new IllegalArgumentException();
+        }
+        int griddSize = rows * columns;
+        gridd = new ArrayList<>(griddSize);
+        for (int i = 0; i < griddSize; i++) {
+            gridd.add(0);
+        }
+        ArrayList<Room> roomsPlaced = new ArrayList<>();
+
+        while (true) {
+            Room currentRoom = rooms.get(rooms.size() - 1);
+
+        }
+        return roomsPlaced;
+    }
+
+    public int getCanonicalPostion(Point position, int columns, double cellSize) {
+        int cellIndex = (getCellCountInY(position, cellSize) * columns) + getCellCountInX(position, cellSize);
+        return cellIndex;
+    }
+
+    private int getCellCountInY(Point position, double cellSize) {
+        return (int) (position.getY() / cellSize);
+    }
+
+    private int getCellCountInX(Point position, double cellSize) {
+        return (int) (position.getX() / cellSize);
     }
 
     public ArrayList<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
@@ -64,4 +104,13 @@ public class Map {
     private double randomDoubleInBounds(double low, double high) {
         return (random.nextDouble() * (high - low)) + low;
     }
+
+    public ArrayList<Integer> getCopyOfGridd() {
+        ArrayList<Integer> copy = new ArrayList<>();
+        for (int i = 0; i < gridd.size(); i++) {
+            copy.add(gridd.get(i));
+        }
+        return copy;
+    }
+
 }

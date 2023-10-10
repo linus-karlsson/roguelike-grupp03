@@ -12,8 +12,7 @@ public class MapTest {
 
     @Test
     public void testGenerateRoomWithinBounds() {
-        double cellSize = 10.0;
-        Map map = new Map(cellSize);
+        Map map = new Map();
 
         double minWidth = 10.0;
         double maxWidth = 30.0;
@@ -34,8 +33,7 @@ public class MapTest {
             "20.0, 140.0, 20.0, 401.0" })
     public void testGenerateRoomWithinBoundsThrows(double minWidth, double maxWidth, double minHeight,
             double maxHeight) {
-        double cellSize = 10.0;
-        Map map = new Map(cellSize);
+        Map map = new Map();
         assertThrows(IllegalArgumentException.class, () -> {
             map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
         });
@@ -48,7 +46,7 @@ public class MapTest {
     @Test
     public void testGenerateRoomDependencyInjection() {
         double randomMultiplier = 0.3;
-        Map map = createMapDependencyInjection(10.0, randomMultiplier);
+        Map map = createMapDependencyInjection(randomMultiplier);
 
         double minWidth = 10.0;
         double maxWidth = 30.0;
@@ -69,7 +67,7 @@ public class MapTest {
     @Test
     public void testGenerateMultipleRooms() {
         double randomMultiplier = 0.3;
-        Map map = createMapDependencyInjection(10.0, randomMultiplier);
+        Map map = createMapDependencyInjection(randomMultiplier);
 
         double minWidth = 10.0;
         double maxWidth = 30.0;
@@ -81,9 +79,73 @@ public class MapTest {
         assertEquals(roomCount, rooms.size());
     }
 
-    private Map createMapDependencyInjection(double cellSize, double randomMultiplier) {
+    private Map createMapDependencyInjection(double randomMultiplier) {
         RandomInternal randomInternal = new RandomInternal(randomMultiplier);
-        return new Map(cellSize, randomInternal);
+        return new Map(randomInternal);
+    }
+
+    @Test
+    public void testPlaceRoomsInAreaThrows() {
+        Map map = new Map();
+
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(10, 10.0, 30.0, 10.0,
+                30.0);
+
+        int rows = 0;
+        int columns = 80;
+        double cellSize = 10.0;
+        assertThrows(IllegalArgumentException.class, () -> {
+            map.placeRoomsInArea(rooms, rows, columns, cellSize);
+        });
+    }
+
+    @Test
+    public void testPlaceRoomsInArea() {
+        Map map = new Map();
+
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(10, 10.0, 30.0, 10.0,
+                30.0);
+        int rows = 80;
+        int columns = 80;
+        double cellSize = 10.0;
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, rows, columns, cellSize);
+
+        ArrayList<Integer> gridd = map.getCopyOfGridd();
+
+        for (Map.Room room : placedRooms) {
+            assertTrue(gridd.get(map.getCanonicalPostion(room.getPosition(), columns, cellSize)) == 1);
+        }
+    }
+
+    @Test
+    public void testGetCanonicalPosition() {
+        Map map = new Map();
+        int columns = 80;
+        double cellSize = 10.0;
+        Point point = new Point();
+        int cellsInX = 3;
+        int cellsInY = 2;
+        point.setX(cellSize * cellsInX);
+        point.setY(cellSize * cellsInY);
+        int expected = (columns * cellsInY) + cellsInX;
+        assertEquals(expected, map.getCanonicalPostion(point, columns, cellSize));
+    }
+
+    @Test
+    public void testGetCopyGridd() {
+        Map map = new Map();
+
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(10, 10.0, 30.0, 10.0,
+                30.0);
+
+        int rows = 80;
+        int columns = 80;
+        double cellSize = 10.0;
+        map.placeRoomsInArea(rooms, rows, columns, cellSize);
+
+        ArrayList<Integer> gridd = map.getCopyOfGridd();
+
+        assertTrue(gridd.size() == rows * columns);
     }
 
 }
