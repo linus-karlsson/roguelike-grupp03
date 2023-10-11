@@ -187,4 +187,13 @@ public class Map {
         return copy;
     }
 
+    public void printMap(int columns) {
+        for (int i = 0; i < gridd.size(); i++) {
+            System.out.print(gridd.get(i));
+            if ((i + 1) % columns == 0) {
+                System.out.println();
+            }
+        }
+    }
+
 }
