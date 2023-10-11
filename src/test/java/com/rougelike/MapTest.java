@@ -49,18 +49,40 @@ public class MapTest {
 
     @Test
     public void testGenerateRoomDependencyInjection() {
-        double randomMultiplier = 0.3;
-        map = createMapDependencyInjection(randomMultiplier);
+        double[] randomMultiplier = { 0.3, 0.6 };
+        RandomInternal randomInternal = new RandomInternal(randomMultiplier);
+        map = new Map(randomInternal);
         Map.Room room = map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
 
-        boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier, minWidth, maxWidth) &&
-                room.getHeight() == randomDoubleInBounds(randomMultiplier, minHeight, maxHeight);
+        boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier[0], minWidth, maxWidth) &&
+                room.getHeight() == randomDoubleInBounds(randomMultiplier[1], minHeight, maxHeight);
 
         assertTrue(expected);
     }
 
+    // Tagen från java docs
     private double randomDoubleInBounds(double multiplier, double low, double high) {
         return (multiplier * (high - low)) + low;
+    }
+
+    @Test
+    public void testGenerateMultipleRoomsDependencyInjection() {
+        double[] randomMultiplier = { 0.3, 0.4, 0.2, 0.1, 0.99,
+                0.6, 0.33, 0.22, 0.25, 0.78 };
+        RandomInternal randomInternal = new RandomInternal(randomMultiplier);
+        map = new Map(randomInternal);
+
+        int roomCount = 5;
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
+
+        int index = 0;
+        for (Map.Room room : rooms) {
+            boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier[index++], minWidth, maxWidth) &&
+                    room.getHeight() == randomDoubleInBounds(randomMultiplier[index++], minHeight, maxHeight);
+            assertTrue(expected);
+        }
+
     }
 
     @Test
@@ -109,11 +131,6 @@ public class MapTest {
         assertEquals(roomCount, rooms.size());
     }
 
-    private Map createMapDependencyInjection(double randomMultiplier) {
-        RandomInternal randomInternal = new RandomInternal(randomMultiplier);
-        return new Map(randomInternal);
-    }
-
     @Test
     public void testPlaceRoomsInAreaThrows() {
         int roomCount = 10;
@@ -148,11 +165,11 @@ public class MapTest {
             double yStart = room.getPosition().getY();
             double ySpand = yStart + room.getHeight();
 
-            int startIndex = map.getCanonicalPostion(room.getPosition(), columns, cellSize);
+            int startIndex = map.getGriddIndexBasedOnPosition(room.getPosition(), columns, cellSize);
             Point xEndPosition = new Point(xSpand, yStart);
-            int endIndexInX = map.getCanonicalPostion(xEndPosition, columns, cellSize);
+            int endIndexInX = map.getGriddIndexBasedOnPosition(xEndPosition, columns, cellSize);
             Point lastPoistion = new Point(xSpand, ySpand);
-            int endIndex = map.getCanonicalPostion(lastPoistion, columns, cellSize);
+            int endIndex = map.getGriddIndexBasedOnPosition(lastPoistion, columns, cellSize);
 
             int index = startIndex;
             int rowCount = 1;
@@ -169,7 +186,7 @@ public class MapTest {
     }
 
     @Test
-    public void testGetCanonicalPosition() {
+    public void testGetGriddIndexBasedOnPosition() {
         int columns = 80;
         double cellSize = 10.0;
         Point point = new Point();
@@ -178,7 +195,7 @@ public class MapTest {
         point.setX(cellSize * cellsInX);
         point.setY(cellSize * cellsInY);
         int expected = (columns * cellsInY) + cellsInX;
-        assertEquals(expected, map.getCanonicalPostion(point, columns, cellSize));
+        assertEquals(expected, map.getGriddIndexBasedOnPosition(point, columns, cellSize));
     }
 
     @Test

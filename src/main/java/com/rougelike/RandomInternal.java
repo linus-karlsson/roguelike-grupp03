@@ -4,15 +4,22 @@ import java.util.Random;
 
 public class RandomInternal extends Random {
 
-    private final double randomMultiplier;
+    private double[] randomMultipliers;
+    private int currentIndex;
 
-    public RandomInternal(double randomMultiplier) {
-        this.randomMultiplier = randomMultiplier;
+    public RandomInternal(double... randomMultipliers) {
+        if (randomMultipliers == null) {
+            throw new IllegalArgumentException("");
+        }
+        this.randomMultipliers = randomMultipliers;
+        currentIndex = 0;
     }
 
     @Override
     public double nextDouble() {
-        return randomMultiplier;
+        double result = randomMultipliers[currentIndex++];
+        currentIndex %= randomMultipliers.length;
+        return result;
     }
 
 }

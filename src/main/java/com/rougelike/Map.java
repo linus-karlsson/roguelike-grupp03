@@ -1,6 +1,8 @@
 package com.rougelike;
 
 import java.util.*;
+import java.util.PrimitiveIterator.OfDouble;
+import java.util.stream.DoubleStream;
 
 public class Map {
     private static final double MIN_ROOM_WIDTH_OR_HEIGHT = 1.0;
@@ -46,8 +48,8 @@ public class Map {
         this.random = random;
     }
 
-    // Returnerar rummen som blir
     public ArrayList<Room> placeRoomsInArea(ArrayList<Room> rooms, int rows, int columns, double cellSize) {
+
         if (rows <= 0 || columns <= 0) {
             throw new IllegalArgumentException();
         }
@@ -71,11 +73,11 @@ public class Map {
             double yStart = currentRoom.getPosition().getY();
             double ySpand = yStart + currentRoom.getHeight();
 
-            int startIndex = getCanonicalPostion(currentRoom.getPosition(), columns, cellSize);
+            int startIndex = getGriddIndexBasedOnPosition(currentRoom.getPosition(), columns, cellSize);
             Point xEndPosition = new Point(xSpand, yStart);
-            int endIndexInX = getCanonicalPostion(xEndPosition, columns, cellSize);
+            int endIndexInX = getGriddIndexBasedOnPosition(xEndPosition, columns, cellSize);
             Point lastPoistion = new Point(xSpand, ySpand);
-            int endIndex = getCanonicalPostion(lastPoistion, columns, cellSize);
+            int endIndex = getGriddIndexBasedOnPosition(lastPoistion, columns, cellSize);
 
             int index = startIndex;
             int rowCount = 1;
@@ -94,7 +96,7 @@ public class Map {
         return roomsPlaced;
     }
 
-    public int getCanonicalPostion(Point position, int columns, double cellSize) {
+    public int getGriddIndexBasedOnPosition(Point position, int columns, double cellSize) {
         int cellIndex = (getCellCountInY(position, cellSize) * columns) + getCellCountInX(position, cellSize);
         return cellIndex;
     }
