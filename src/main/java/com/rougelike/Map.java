@@ -40,6 +40,53 @@ public class Map {
         }
     }
 
+    public class GriddParser {
+        private int columns;
+        private double cellSize;
+
+        private int index;
+        private int startIndex;
+        private int endIndexInX;
+        private int endIndex;
+
+        public GriddParser(int columns, double cellSize) {
+            this.columns = columns;
+            this.cellSize = cellSize;
+            index = 0;
+            startIndex = 0;
+            endIndexInX = 0;
+            endIndex = 0;
+        }
+
+        public void setRoom(Room room) {
+            double xSpand = room.getPosition().getX() + room.getWidth();
+            double ySpand = room.getPosition().getY() + room.getHeight();
+            Point xEndPosition = new Point(xSpand, room.getPosition().getY());
+            Point lastPoistion = new Point(xSpand, ySpand);
+
+            startIndex = getGriddIndexBasedOnPosition(room.getPosition(), columns, cellSize);
+            endIndexInX = getGriddIndexBasedOnPosition(xEndPosition, columns, cellSize);
+            endIndex = getGriddIndexBasedOnPosition(lastPoistion, columns, cellSize);
+            index = startIndex;
+        }
+
+        public boolean hasNextIndex() {
+            return index <= endIndex;
+        }
+
+        public int nextIndex() {
+            int result = index;
+            if (index == endIndexInX) {
+                startIndex += columns;
+                endIndexInX += columns;
+                index = startIndex;
+            } else {
+                index++;
+            }
+            return result;
+        }
+    }
+
     public Map() {
         random = new Random();
     }
@@ -61,37 +108,33 @@ public class Map {
         }
         ArrayList<Room> roomsPlaced = new ArrayList<>();
 
-        // double width = columns * cellSize;
-        // double height = rows * cellSize;
+        double width = columns * cellSize;
+        double height = rows * cellSize;
 
-        while (true) {
+        GriddParser griddParser = new GriddParser(columns, cellSize);
+
+        for (int i = 0; i < 10; i++) {
             Room currentRoom = rooms.get(random.nextInt(rooms.size() - 1));
-            currentRoom.setPosition(10.0, 10.0);
+            currentRoom.setPosition(randomDoubleInBounds(0.0, width - (currentRoom.getWidth() + 1.0)),
+                    randomDoubleInBounds(0.0, height - (currentRoom.getHeight() + 1.0)));
 
-            double xStart = currentRoom.getPosition().getX();
-            double xSpand = xStart + currentRoom.getWidth();
-            double yStart = currentRoom.getPosition().getY();
-            double ySpand = yStart + currentRoom.getHeight();
-
-            int startIndex = getGriddIndexBasedOnPosition(currentRoom.getPosition(), columns, cellSize);
-            Point xEndPosition = new Point(xSpand, yStart);
-            int endIndexInX = getGriddIndexBasedOnPosition(xEndPosition, columns, cellSize);
-            Point lastPoistion = new Point(xSpand, ySpand);
-            int endIndex = getGriddIndexBasedOnPosition(lastPoistion, columns, cellSize);
-
-            int index = startIndex;
-            int rowCount = 1;
-            while (index <= endIndex) {
-                if (index == endIndexInX) {
-                    index = startIndex + (columns * rowCount);
-                    endIndexInX += columns;
-                    rowCount++;
+            boolean allCellsEmpty = true;
+            griddParser.setRoom(currentRoom);
+            while (griddParser.hasNextIndex()) {
+                int index = griddParser.nextIndex();
+                if (gridd.get(index) == 1) {
+                    allCellsEmpty = false;
+                    break;
                 }
-                gridd.set(index, gridd.get(index) + 1);
-                index++;
             }
-            roomsPlaced.add(currentRoom);
-            break;
+            if (allCellsEmpty) {
+                griddParser.setRoom(currentRoom);
+                while (griddParser.hasNextIndex()) {
+                    int index = griddParser.nextIndex();
+                    gridd.set(index, gridd.get(index) + 1);
+                }
+                roomsPlaced.add(currentRoom);
+            }
         }
         return roomsPlaced;
     }
