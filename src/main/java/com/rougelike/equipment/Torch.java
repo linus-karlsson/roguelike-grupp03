@@ -7,8 +7,9 @@ public class Torch extends Weapon {
     private static final int TORCH_ELEMENTAL_DAMAGE = 3;
     private static final int TORCH_PRICE = 50;
     private static final EquipmentType TYPE = EquipmentType.CLUB;
+    private static final WeaponElementType ELEMENT = WeaponElementType.FIRE;
 
     public Torch() {
-        super(TORCH_NAME, TORCH_DAMAGE, TORCH_ELEMENTAL_DAMAGE, TORCH_PRICE, TYPE);
+        super(TORCH_NAME, TORCH_DAMAGE, TORCH_ELEMENTAL_DAMAGE, TORCH_PRICE, TYPE, ELEMENT);
     }
 }
