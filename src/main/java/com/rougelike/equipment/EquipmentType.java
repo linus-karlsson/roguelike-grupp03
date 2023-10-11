@@ -2,6 +2,7 @@ package com.rougelike.equipment;
 
 public enum EquipmentType {
     SWORD,
+    CLUB,
     WAND,
     DAGGER,
     SHIELD,
