@@ -5,12 +5,14 @@ public abstract class Weapon {
     int damage;
     int elementalDamage;
     int price;
+    EquipmentType type;
 
-    public Weapon(String name, int damage, int elementalDamage, int price) {
+    public Weapon(String name, int damage, int elementalDamage, int price, EquipmentType type) {
         this.name = name;
         this.damage = damage;
         this.elementalDamage = elementalDamage;
         this.price = price;
+        this.type = type;
     }
 
     public String getName() {
@@ -27,6 +29,10 @@ public abstract class Weapon {
 
     public int getPrice() {
         return price;
+    }
+
+    public EquipmentType getType() {
+        return type;
     }
 
 }

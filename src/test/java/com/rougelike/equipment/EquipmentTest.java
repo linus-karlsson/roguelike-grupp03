@@ -18,4 +18,32 @@ public class EquipmentTest {
         int expectedDamage = 5;
         assertEquals(expectedDamage, torch.getDamage() + torch.getElementalDamage());
     }
+
+    // Test på FireSword
+    Weapon dummyWeapon = new Sword();
+
+    @Test
+    public void isSubclassOfWeapon() {
+        Class<?> subClass = FireSword.class;
+        Class<?> superClass = Weapon.class;
+
+        boolean isSubclass = superClass.isAssignableFrom(subClass);
+
+        assertTrue(isSubclass);
+    }
+
+    @Test
+    public void hasCorrectName() {
+        FireSword fireSword = new FireSword();
+        String expected = "Fire Sword";
+        assertEquals(expected, fireSword.getName());
+    }
+
+    @Test
+    public void hasCorrectEquipmentType() {
+        FireSword fireSword = new FireSword();
+        EquipmentType expected = EquipmentType.SWORD;
+
+        assertEquals(expected, fireSword.getType());
+    }
 }
