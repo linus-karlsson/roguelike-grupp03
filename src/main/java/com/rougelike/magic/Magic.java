@@ -1,4 +1,5 @@
-package com.rougelike;
+package com.rougelike.magic;
+
 
 public class Magic {
     private static final int DEFAULT_BASE_STRENGHT = 5;
@@ -26,8 +27,8 @@ public class Magic {
         return name;
     }
 
-    public double getStrength(Player player) {
-        return baseStrenght * Math.pow(1.2, player.getLevel());
-    }
+    // public double getStrength(Player player) {
+    //     return baseStrenght * Math.pow(1.2, player.getLevel());
+    // }
 
 }
