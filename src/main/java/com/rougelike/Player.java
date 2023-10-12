@@ -1,5 +1,8 @@
 package com.rougelike;
 
+import java.util.ArrayList;
+import com.rougelike.equipment.Weapon;
+
 public class Player {
     private static final int MAX_LEVEL = 60;
     private static final double LEVEL_MULTIPLIER = 3.5;
@@ -11,6 +14,8 @@ public class Player {
     private int level;
     private double xp;
     private double xpToNextLevel;
+
+    private ArrayList<Weapon> weaponInventory = new ArrayList<>();
 
     public Player(String name) {
         this.name = name;
@@ -61,6 +66,21 @@ public class Player {
 
     public double getXpToNextLevel() {
         return xpToNextLevel;
+    }
+
+    public ArrayList<Weapon> getWeaponInventory() {
+        return weaponInventory;
+    }
+
+    public void addWeaponToInventory(Weapon weapon) {
+        if (weaponInventory.size() >= 5) {
+            weaponInventory.remove(0);
+        }
+        weaponInventory.add(weapon);
+    }
+
+    public void removeWeaponFromInventory(Weapon weapon) {
+        weaponInventory.remove(weapon);
     }
 
 }
