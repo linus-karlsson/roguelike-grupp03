@@ -1,10 +1,37 @@
 package com.rougelike.magic;
 
-
 public class Magic {
-    private static final int BASE_STRENGHT;
+    private final String NAME;
+    private final int BASE_STRENGHT;
+    private final String TYPE;
+    private final MagicElementType ELEMENT;
 
+    public Magic(Spell spell) {
+        this.NAME = spell.getName();
+        this.BASE_STRENGHT = spell.getBaseStrength();
+        this.TYPE = spell.getType();
+        this.ELEMENT = spell.getElement();
+    }
 
+    public String getName() {
+        return NAME;
+    }
 
+    public int getBaseStrength() {
+        return BASE_STRENGHT;
+    }
+
+    public String getType() {
+        return TYPE;
+    }
+
+    public MagicElementType getElement() {
+        return ELEMENT;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + NAME + "\nBase Strength: " + BASE_STRENGHT + "\nType: " + TYPE + "\nElement: " + ELEMENT;
+    }
 
 }

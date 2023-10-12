@@ -19,11 +19,23 @@ public class SpellTest {
         String expectedName = "Freeze";
         int expectedBaseStrength = 10;
         String expectedType = "Attack";
-        String expectedElement = "Water";
+        String expectedElementName = "Water";
         assertEquals(expectedName, spell.getName());
         assertEquals(expectedBaseStrength, spell.getBaseStrength());
         assertEquals(expectedType, spell.getType());
-        assertEquals(expectedElement, spell.getElement());
+        assertEquals(expectedElementName, spell.getElement().getName());
+    }
+
+    @Test
+    void testSpelInstanceElementShouldBeInstanceOfMagicElementType() {
+        Spell spell = Spell.TORNADO;
+        assertInstanceOf(MagicElementType.class, spell.getElement(), "Spell element should be an instance of MagicElementType");
+    }
+
+    @Test
+    void testSpelInstanceElementShouldBeInstanceOfWaterType() {
+        Spell spell = Spell.FREEZE;
+        assertInstanceOf(ElementWater.class, spell.getElement(), "Spell element should be an instance of ElementWater");
     }
     
 }
