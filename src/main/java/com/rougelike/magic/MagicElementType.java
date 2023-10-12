@@ -14,4 +14,8 @@ public class MagicElementType {
     public String getName() {
         return NAME;
     }
+
+    double getMultiplier() {
+        return 1.0;
+    }
 }

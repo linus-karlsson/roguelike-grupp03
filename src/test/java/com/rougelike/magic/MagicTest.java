@@ -11,8 +11,7 @@ public class MagicTest {
 
     @Test
     void testMagicInstanceCreation() {
-        Spell spell = Spell.FIREBALL;
-        Magic magic = new Magic(spell);
+        Magic magic = new Magic(Spell.FIREBALL);
         assertNotNull(magic);
     }
 
