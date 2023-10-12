@@ -7,6 +7,10 @@ public class MagicElementType {
         this.NAME = name;
     }
 
+    public MagicElementType() {
+        this.NAME = "Neutral";
+    }
+
     public String getName() {
         return NAME;
     }
