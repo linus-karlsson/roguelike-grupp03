@@ -2,11 +2,8 @@ package com.rougelike.magic;
 
 
 public class Magic {
-    private static final int DEFAULT_BASE_STRENGHT = 5;
+    private static final int BASE_STRENGHT;
 
-    private int baseStrenght;
-
-    private String name;
 
 
 
