@@ -5,8 +5,8 @@ public enum Spell {
     TORNADO("Tornado", 10, "Attack", new ElementAir()),
     POISON("Poison", 10, "Attack", new ElementEarth()),    
     FREEZE("Freeze", 10, "Attack", new ElementWater()),
-    SHIELD("Shield", 10, "Defense", new ElementNeutral()),
-    HEAL("Heal", 10, "Heal", new ElementNeutral());
+    FIRESHIELD("Shield", 10, "Defense", new ElementFire()),
+    HEAL("Heal", 10, "Heal", new MagicElementType());
     
 
     private String name;
