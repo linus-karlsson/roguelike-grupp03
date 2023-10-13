@@ -3,7 +3,7 @@ package com.rougelike.magic;
 public class Magic {
     private final String NAME;
     private final int BASE_STRENGHT;
-    private final String TYPE;
+    private final MagicInvoker TYPE;
     private final MagicElementType ELEMENT;
 
     public Magic(Spell spell) {
@@ -21,7 +21,7 @@ public class Magic {
         return BASE_STRENGHT;
     }
 
-    public String getType() {
+    public MagicInvoker getType() {
         return TYPE;
     }
 

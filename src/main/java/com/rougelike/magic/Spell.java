@@ -1,12 +1,12 @@
 package com.rougelike.magic;
 
 public enum Spell {
-    FIREBALL("Fireball", 10, new MagicInvoker(), new ElementFire()),
-    TORNADO("Tornado", 10, new MagicInvoker(), new ElementAir()),
+    FIREBALL("Fireball", 10, new MagicAttack(), new ElementFire()),
+    TORNADO("Tornado", 10, new MagicAttack(), new ElementAir()),
     POISON("Poison", 10, new MagicAttack(), new ElementEarth()),    
-    FREEZE("Freeze", 10, new MagicInvoker(), new ElementWater()),
-    FIRESHIELD("Shield", 10, new MagicInvoker(), new ElementFire()),
-    HEAL("Heal", 10, new MagicInvoker(), new MagicElementType());
+    FREEZE("Freeze", 10, new MagicAttack(), new ElementWater()),
+    FIRESHIELD("Shield", 10, new MagicInvoker(""), new ElementFire()),
+    HEAL("Heal", 10, new MagicInvoker(""), new MagicElementType());
     
 
     private String name;
