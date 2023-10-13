@@ -74,4 +74,26 @@ public class PlayerEquipmentInteractionTest {
         assertFalse(player.getWeaponInventory().contains(stick));
     }
 
+    @Test
+    public void removingWeaponDueToCapacityReturnsWeaponsCost() {
+
+        Stick stick = new Stick();
+        Dagger dagger = new Dagger();
+        FireSword fireSword = new FireSword();
+        Torch torch = new Torch();
+        Wand wand = new Wand();
+        Sword sword = new Sword();
+        Player player = new Player("Sven");
+
+        int actual = player.getWallet() + stick.getPrice();
+
+        player.addWeaponToInventory(stick);
+        player.addWeaponToInventory(dagger);
+        player.addWeaponToInventory(fireSword);
+        player.addWeaponToInventory(torch);
+        player.addWeaponToInventory(wand);
+        player.addWeaponToInventory(sword);
+
+        assertEquals(actual, player.getWallet());
+    }
 }
