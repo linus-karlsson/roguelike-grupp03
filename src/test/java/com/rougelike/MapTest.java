@@ -51,7 +51,7 @@ public class MapTest {
     public void testGenerateRoomDependencyInjection() {
         double[] randomMultiplier = { 0.3, 0.6 };
         RandomInternal randomInternal = new RandomInternal(randomMultiplier);
-        map = new Map(randomInternal);
+        map.setRandom(randomInternal);
         Map.Room room = map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
 
         boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier[0], minWidth, maxWidth) &&
@@ -70,7 +70,7 @@ public class MapTest {
         double[] randomMultiplier = { 0.3, 0.4, 0.2, 0.1, 0.99,
                 0.6, 0.33, 0.22, 0.25, 0.78 };
         RandomInternal randomInternal = new RandomInternal(randomMultiplier);
-        map = new Map(randomInternal);
+        map.setRandom(randomInternal);
 
         int roomCount = 5;
         ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
@@ -174,8 +174,9 @@ public class MapTest {
         ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
 
-        double[] randomMultipliers = { 0.3, 0.3 };
-        map = new Map(new RandomInternal(randomMultipliers));
+        double randomMultiplier = 0.3;
+        map.setRandom(new RandomInternal(randomMultiplier));
+
         int rows = 160;
         int columns = 160;
         double cellSize = 5.0;
@@ -190,6 +191,43 @@ public class MapTest {
                 assertEquals(1, gridd.get(index));
             }
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "30, 30", "60, 60" })
+    public void testPlaceRoomsInAreaIfAreaIsFilled(int rows, int columns) {
+        // Rooms kommer vara 10 X 10
+        // De tar alltså upp 3 X 3 cells
+        // Det får då plats 10 X 10 rum i utrymmet som har 30 X 30 cells med storlek 5.0
+
+        double cellSize = 5.0;
+        minWidth = 10.0;
+        minHeight = minWidth;
+
+        int roomsInX = rows / ((int) (minWidth / cellSize) + 1);
+        int roomsInY = columns / ((int) (minHeight / cellSize) + 1);
+
+        double randomMultiplier = 0.0;
+        map.setRandom(new RandomInternal(randomMultiplier));
+        int roomCount = roomsInX * roomsInY;
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
+
+        // Två värden per rum, (x and y)
+        double[] randomMultipliers = new double[roomCount * 2];
+        int index = 0;
+        for (int y = 0; y < roomsInY; y++) {
+            for (int x = 0; x < roomsInX; x++) {
+                // - 1.0 så det går från 0.0 - 1.0 inclusive
+                randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
+                randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
+            }
+        }
+        map.setRandom(new RandomInternal(randomMultipliers));
+
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, rows, columns, cellSize);
+        int expectedSize = roomCount;
+        assertEquals(expectedSize, placedRooms.size());
     }
 
     @Test

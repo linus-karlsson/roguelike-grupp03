@@ -1,8 +1,6 @@
 package com.rougelike;
 
 import java.util.*;
-import java.util.PrimitiveIterator.OfDouble;
-import java.util.stream.DoubleStream;
 
 public class Map {
     private static final double MIN_ROOM_WIDTH_OR_HEIGHT = 1.0;
@@ -95,8 +93,11 @@ public class Map {
         this.random = random;
     }
 
-    public ArrayList<Room> placeRoomsInArea(ArrayList<Room> rooms, int rows, int columns, double cellSize) {
+    public void setRandom(Random random) {
+        this.random = random;
+    }
 
+    public ArrayList<Room> placeRoomsInArea(ArrayList<Room> rooms, int rows, int columns, double cellSize) {
         if (rows <= 0 || columns <= 0) {
             throw new IllegalArgumentException();
         }
@@ -113,8 +114,7 @@ public class Map {
 
         GriddParser griddParser = new GriddParser(columns, cellSize);
 
-        for (int i = 0; i < 10; i++) {
-            Room currentRoom = rooms.get(random.nextInt(rooms.size() - 1));
+        for (Room currentRoom : rooms) {
             currentRoom.setPosition(randomDoubleInBounds(0.0, width - (currentRoom.getWidth() + 1.0)),
                     randomDoubleInBounds(0.0, height - (currentRoom.getHeight() + 1.0)));
 
@@ -164,6 +164,7 @@ public class Map {
     }
 
     public Room generateRoom(double minWidth, double maxWidth, double minHeight, double maxHeight) {
+
         if (minWidth < MIN_ROOM_WIDTH_OR_HEIGHT || minHeight < MIN_ROOM_WIDTH_OR_HEIGHT) {
             throw new IllegalArgumentException(
                     String.format("Min width or height of rooms: %f", MIN_ROOM_WIDTH_OR_HEIGHT));
@@ -187,7 +188,7 @@ public class Map {
         return copy;
     }
 
-    public void printMap(int columns) {
+    public void printGridd(int columns) {
         for (int i = 0; i < gridd.size(); i++) {
             System.out.print(gridd.get(i));
             if ((i + 1) % columns == 0) {
