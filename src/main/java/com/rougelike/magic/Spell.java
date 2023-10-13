@@ -1,20 +1,20 @@
 package com.rougelike.magic;
 
 public enum Spell {
-    FIREBALL("Fireball", 10, "Attack", new ElementFire()),
-    TORNADO("Tornado", 10, "Attack", new ElementAir()),
-    POISON("Poison", 10, "Attack", new ElementEarth()),    
-    FREEZE("Freeze", 10, "Attack", new ElementWater()),
-    FIRESHIELD("Shield", 10, "Defense", new ElementFire()),
-    HEAL("Heal", 10, "Heal", new MagicElementType());
+    FIREBALL("Fireball", 10, new MagicInvoker(), new ElementFire()),
+    TORNADO("Tornado", 10, new MagicInvoker(), new ElementAir()),
+    POISON("Poison", 10, new MagicAttack(), new ElementEarth()),    
+    FREEZE("Freeze", 10, new MagicInvoker(), new ElementWater()),
+    FIRESHIELD("Shield", 10, new MagicInvoker(), new ElementFire()),
+    HEAL("Heal", 10, new MagicInvoker(), new MagicElementType());
     
 
     private String name;
     private int baseStrength;
-    private String type;
+    private MagicInvoker type;
     private MagicElementType element;
 
-    private Spell(String name, int baseStrength, String type, MagicElementType element) {
+    private Spell(String name, int baseStrength, MagicInvoker type, MagicElementType element) {
         this.name = name;
         this.baseStrength = baseStrength;
         this.type = type;
@@ -29,7 +29,7 @@ public enum Spell {
         return baseStrength;
     }
 
-    public String getType() {
+    public MagicInvoker getType() {
         return type;
     }
 

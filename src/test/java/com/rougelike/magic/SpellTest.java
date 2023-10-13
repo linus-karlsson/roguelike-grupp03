@@ -22,7 +22,7 @@ public class SpellTest {
         String expectedElementName = "Water";
         assertEquals(expectedName, spell.getName());
         assertEquals(expectedBaseStrength, spell.getBaseStrength());
-        assertEquals(expectedType, spell.getType());
+        assertEquals(expectedType, spell.getType().getName());
         assertEquals(expectedElementName, spell.getElement().getName());
     }
 
@@ -38,6 +38,16 @@ public class SpellTest {
         assertInstanceOf(ElementWater.class, spell.getElement(), "Spell element should be an instance of ElementWater");
     }
 
-    
+    @Test
+    void testSpellInstanceTypeShouldBeInstanceOfMagicInvoker() {
+        Spell spell = Spell.TORNADO;
+        assertInstanceOf(MagicInvoker.class, spell.getType(), "Spell should be an instance of MagicInvoker");
+    }
+
+    @Test
+    void testSpellInstancePoisonTypeShouldBeInstanceOfAttack() {
+        Spell spell = Spell.POISON;
+        assertInstanceOf(MagicAttack.class, spell.getType(), "Spell should be an instance of Attack");
+    }
     
 }
