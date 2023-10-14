@@ -194,11 +194,12 @@ public class MapTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = { "40, 40", "80, 80" })
+    @CsvSource(value = { "42, 42", "82, 82" })
     public void testPlaceRoomsInAreaIfAreaIsFilled(int rows, int columns) {
         // Rooms kommer vara 10 X 10
         // De tar alltså upp 4 X 4 cells
-        // Det får då plats 10 X 10 rum i utrymmet som har 40 X 40 cells med storlek 5.0
+        // 2 extra rows och colummer för border
+        // Det får då plats 10 X 10 rum i utrymmet som har 42 X 42 cells med storlek 5.0
 
         double cellSize = 5.0;
         minWidth = 10.0;
@@ -348,36 +349,53 @@ public class MapTest {
     }
 
     private void checkCellsAboveRoom(ArrayList<Integer> gridd, int startIndex, int columns, int cellCountInX) {
-        if (startIndex > columns) {
-            int offsetIndex = startIndex - columns;
-            for (int i = 0; i < cellCountInX; i++) {
-                assertEquals(-1, gridd.get(offsetIndex + i));
-            }
+        int offsetIndex = startIndex - columns;
+        for (int i = -1; i < cellCountInX; i++) {
+            assertEquals(-1, gridd.get(offsetIndex + i));
         }
     }
 
     private void checkCellsBelowRoom(ArrayList<Integer> gridd, int endIndex, int columns, int rows, int cellCountInX) {
-        if (endIndex <= columns * (rows - 1)) {
-            int offsetIndex = endIndex + columns;
-            for (int i = 0; i < cellCountInX; i++) {
-                assertEquals(-1, gridd.get(offsetIndex - i));
-            }
+        int offsetIndex = endIndex + columns;
+        for (int i = -1; i < cellCountInX; i++) {
+            assertEquals(-1, gridd.get(offsetIndex - i));
         }
     }
 
     private void checkCellsToLeftOfRoom(ArrayList<Integer> gridd, int startIndex, int columns, int cellCountInY) {
-        if (startIndex % columns != 0) {
-            for (int i = 0; i < cellCountInY; i++) {
-                assertEquals(-1, gridd.get((startIndex - 1) + (columns * i)));
-            }
+        for (int i = 0; i < cellCountInY + 1; i++) {
+            assertEquals(-1, gridd.get((startIndex - 1) + (columns * i)));
         }
     }
 
     private void checkCellsToRightOfRoom(ArrayList<Integer> gridd, int endIndex, int columns, int cellCountInY) {
-        if ((endIndex + 1) % columns != 0) {
-            for (int i = 0; i < cellCountInY; i++) {
-                assertEquals(-1, gridd.get((endIndex + 1) - (columns * i)));
-            }
+        for (int i = 0; i < cellCountInY + 1; i++) {
+            assertEquals(-1, gridd.get((endIndex + 1) - (columns * i)));
+        }
+    }
+
+    @Test
+    public void testGriddHasBorder() {
+        int roomCount = 1;
+        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
+
+        int rows = 80;
+        int columns = 80;
+        double cellSize = 5.0;
+        int numberOfTriesBeforeDiscard = 10;
+        map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns, cellSize);
+        ArrayList<Integer> gridd = map.getCopyOfGridd();
+        for (int column = 0; column < columns; column++) {
+            assertEquals(-1, gridd.get(column));
+        }
+        int lastCell = columns * rows;
+        for (int column = lastCell - columns; column < lastCell; column++) {
+            assertEquals(-1, gridd.get(column));
+        }
+        for (int row = 0; row < rows; row++) {
+            assertEquals(-1, gridd.get(row * columns));
+            assertEquals(-1, gridd.get((row * columns) + columns - 1));
         }
     }
 
