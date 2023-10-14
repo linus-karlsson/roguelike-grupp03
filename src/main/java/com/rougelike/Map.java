@@ -40,20 +40,24 @@ public class Map {
 
     public class GriddParser {
         private int columns;
+        private int rows;
         private double cellSize;
 
         private int index;
         private int startIndex;
         private int endIndexInX;
         private int endIndex;
+        private int rowCount;
 
-        public GriddParser(int columns, double cellSize) {
+        public GriddParser(int columns, int rows, double cellSize) {
             this.columns = columns;
+            this.rows = rows;
             this.cellSize = cellSize;
             index = 0;
             startIndex = 0;
             endIndexInX = 0;
             endIndex = 0;
+            rowCount = 0;
         }
 
         public void setRoom(Room room) {
@@ -66,6 +70,23 @@ public class Map {
             endIndexInX = getGriddIndexBasedOnPosition(xEndPosition, columns, cellSize);
             endIndex = getGriddIndexBasedOnPosition(lastPoistion, columns, cellSize);
             index = startIndex;
+            rowCount = 0;
+        }
+
+        public int getStartIndex() {
+            return startIndex;
+        }
+
+        public int getEndIndex() {
+            return endIndex;
+        }
+
+        public int getCurrentRoomCellCountInX() {
+            return (endIndexInX - startIndex) + 1;
+        }
+
+        public int getCurrentRoomCellCountInY() {
+            return ((endIndex - endIndexInX) / columns) + 1;
         }
 
         public boolean hasNextIndex() {
@@ -74,15 +95,61 @@ public class Map {
 
         public int nextIndex() {
             int result = index;
-            if (index == endIndexInX) {
-                startIndex += columns;
-                endIndexInX += columns;
-                index = startIndex;
+            if (index == endIndexInX + (columns * rowCount)) {
+                index = startIndex + (columns * ++rowCount);
             } else {
                 index++;
             }
             return result;
         }
+
+        public void setCellsAboveRoom(ArrayList<Integer> gridd) {
+            if (startIndex > columns) {
+                int cellCountInX = getCurrentRoomCellCountInX();
+                for (int i = 0; i < cellCountInX; i++) {
+                    int currentIndex = startIndex - columns + i;
+                    gridd.set(currentIndex, -1);
+                }
+            }
+        }
+
+        public void setCellsBelowRoom(ArrayList<Integer> gridd) {
+            if (endIndex <= columns * (rows - 1)) {
+                int cellCountInX = getCurrentRoomCellCountInX();
+                for (int i = 0; i < cellCountInX; i++) {
+                    int currentIndex = endIndex + columns - i;
+                    gridd.set(currentIndex, -1);
+                }
+            }
+        }
+
+        public void setCellsToLeftOfRoom(ArrayList<Integer> gridd) {
+            if (startIndex % columns != 0) {
+                int cellCountInY = getCurrentRoomCellCountInY();
+                for (int i = 0; i < cellCountInY; i++) {
+                    int currentIndex = (startIndex - 1) + (columns * i);
+                    gridd.set(currentIndex, -1);
+                }
+            }
+        }
+
+        public void setCellsToRightOfRoom(ArrayList<Integer> gridd) {
+            if ((endIndex + 1) % columns != 0) {
+                int cellCountInY = getCurrentRoomCellCountInY();
+                for (int i = 0; i < cellCountInY; i++) {
+                    int currentIndex = (endIndex + 1) - (columns * i);
+                    gridd.set(currentIndex, -1);
+                }
+            }
+        }
+
+        public void setAllCellsAroundRoom(ArrayList<Integer> gridd) {
+            setCellsAboveRoom(gridd);
+            setCellsBelowRoom(gridd);
+            setCellsToLeftOfRoom(gridd);
+            setCellsToRightOfRoom(gridd);
+        }
+
     }
 
     public Map() {
@@ -97,7 +164,8 @@ public class Map {
         this.random = random;
     }
 
-    public ArrayList<Room> placeRoomsInArea(ArrayList<Room> rooms, int rows, int columns, double cellSize) {
+    public ArrayList<Room> placeRoomsInArea(ArrayList<Room> rooms, int numberOfTriesBeforeDiscard, int rows,
+            int columns, double cellSize) {
         if (rows <= 0 || columns <= 0) {
             throw new IllegalArgumentException();
         }
@@ -112,28 +180,33 @@ public class Map {
         double width = columns * cellSize;
         double height = rows * cellSize;
 
-        GriddParser griddParser = new GriddParser(columns, cellSize);
+        GriddParser griddParser = new GriddParser(columns, rows, cellSize);
 
         for (Room currentRoom : rooms) {
-            currentRoom.setPosition(randomDoubleInBounds(0.0, width - (currentRoom.getWidth() + 1.0)),
-                    randomDoubleInBounds(0.0, height - (currentRoom.getHeight() + 1.0)));
+            for (int i = 0; i < numberOfTriesBeforeDiscard; i++) {
+                currentRoom.setPosition(randomDoubleInBounds(0.0, width - (currentRoom.getWidth() + 1.0)),
+                        randomDoubleInBounds(0.0, height - (currentRoom.getHeight() + 1.0)));
 
-            boolean allCellsEmpty = true;
-            griddParser.setRoom(currentRoom);
-            while (griddParser.hasNextIndex()) {
-                int index = griddParser.nextIndex();
-                if (gridd.get(index) == 1) {
-                    allCellsEmpty = false;
-                    break;
-                }
-            }
-            if (allCellsEmpty) {
+                boolean allCellsEmpty = true;
                 griddParser.setRoom(currentRoom);
                 while (griddParser.hasNextIndex()) {
                     int index = griddParser.nextIndex();
-                    gridd.set(index, gridd.get(index) + 1);
+                    int currentCellValue = gridd.get(index);
+                    if (currentCellValue == 1 || currentCellValue == -1) {
+                        allCellsEmpty = false;
+                        break;
+                    }
                 }
-                roomsPlaced.add(currentRoom);
+                if (allCellsEmpty) {
+                    griddParser.setRoom(currentRoom);
+                    griddParser.setAllCellsAroundRoom(gridd);
+                    while (griddParser.hasNextIndex()) {
+                        int index = griddParser.nextIndex();
+                        gridd.set(index, gridd.get(index) + 1);
+                    }
+                    roomsPlaced.add(currentRoom);
+                    break;
+                }
             }
         }
         return roomsPlaced;
@@ -190,7 +263,8 @@ public class Map {
 
     public void printGridd(int columns) {
         for (int i = 0; i < gridd.size(); i++) {
-            System.out.print(gridd.get(i));
+            int cellValue = gridd.get(i) == -1 ? 0 : gridd.get(i);
+            System.out.print(String.format("%d%d", cellValue, cellValue));
             if ((i + 1) % columns == 0) {
                 System.out.println();
             }
