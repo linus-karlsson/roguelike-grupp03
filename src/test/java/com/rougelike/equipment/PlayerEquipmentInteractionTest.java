@@ -3,6 +3,8 @@ package com.rougelike.equipment;
 import org.junit.jupiter.api.*;
 
 import com.rougelike.Player;
+import com.rougelike.races.Dwarf;
+import com.rougelike.roles.Knight;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -143,4 +145,65 @@ public class PlayerEquipmentInteractionTest {
 
         assertEquals(actual, player.getWeaponInventory().size());
     }
+
+    // Fungerar inte längre då metoden kräver en klass.
+    // @Test
+    // public void canEquipInOffhand() {
+    // Dagger dagger = new Dagger();
+    // Player player = new Player("Sven");
+
+    // player.addWeaponToInventory(dagger);
+    // player.equipOffhand(dagger);
+    // assertTrue(player.getEquippedOffhand() == dagger);
+    // }
+
+    @Test
+    public void doesNotEquipOffhandIfNotInWeaponInventory() {
+        Dagger dagger = new Dagger();
+        Player player = new Player("Sven");
+
+        player.equipOffhand(dagger);
+        assertFalse(player.getEquippedOffhand() == dagger);
+    }
+
+    @Test
+    public void doesNotEquipOffhandIfNotInArmorInventory() {
+        Shield shield = new Shield();
+        Dwarf dwarf = new Dwarf();
+        Knight knight = new Knight();
+        Player player = new Player("Sven", dwarf, knight);
+
+        Equipment actual = null;
+        player.equipOffhand(shield);
+        assertEquals(actual, player.getEquippedOffhand());
+    }
+
+    @Test
+    public void doesNotEquipOffhandIfWrongRole() {
+        Dagger dagger = new Dagger();
+        Dwarf dwarf = new Dwarf();
+        Knight knight = new Knight();
+        Player player = new Player("Sven", dwarf, knight);
+
+        player.addWeaponToInventory(dagger);
+        player.equipOffhand(dagger);
+        assertFalse(player.getEquippedOffhand() == dagger);
+    }
+
+    @Test
+    public void equipsOffhandIfCorrectRoleAndInInventory() {
+        Shield shield = new Shield();
+        Dwarf dwarf = new Dwarf();
+        Knight knight = new Knight();
+        Player player = new Player("Sven", dwarf, knight);
+
+        Equipment actual = shield;
+        player.addArmorToInventory(shield);
+        player.equipOffhand(shield);
+
+        assertEquals(actual, player.getEquippedOffhand());
+    }
+
+    // Skapa fler tester för att kolla resten av kombinationerna.
+    // Skapa tester för att sätta på sig vapen.
 }
