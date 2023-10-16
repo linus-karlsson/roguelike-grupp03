@@ -283,10 +283,7 @@ public class Map {
             for (int i = 0; i < numberOfTriesBeforeDiscard; i++) {
                 currentRoom.setPosition(randomDoubleInBounds(min.getX(), max.getX()),
                         randomDoubleInBounds(min.getY(), max.getY()));
-                if (!checkIfRoomCanBePlaced(griddParser, currentRoom)) {
-                    int j = 0;
-                    j++;
-                }
+
                 if (checkIfRoomCanBePlaced(griddParser, currentRoom)) {
                     placeRoomInGridd(griddParser, currentRoom);
                     roomsPlaced.add(currentRoom);
@@ -338,28 +335,16 @@ public class Map {
         return (random.nextDouble() * (high - low)) + low;
     }
 
-    public ArrayList<Integer> getCopyOfGridd() {
-        ArrayList<Integer> copy = new ArrayList<>();
+    public Gridd getCopyOfGridd() {
+        Gridd copy = new Gridd(gridd.getRowCount(), gridd.getColumnCount(),
+                gridd.getCellSize());
         for (int row = 0; row < gridd.getRowCount(); row++) {
             for (int column = 0; column < gridd.getColumnCount(); column++) {
-                copy.add(gridd.getCell(row, column));
+                copy.setCell(row, column, gridd.getCell(row, column));
             }
         }
         return copy;
     }
-
-    /*
-     * public Gridd getCopyOfGridd() {
-     * Gridd copy = new Gridd(gridd.getRowCount(), gridd.getColumnCount(),
-     * gridd.getCellSize());
-     * for (int row = 0; row <= gridd.getRowCount(); row++) {
-     * for (int column = 0; column <= gridd.getColumnCount(); column++) {
-     * copy.setCell(row, column, gridd.getCell(row, column));
-     * }
-     * }
-     * return copy;
-     * }
-     */
 
     public void printGridd(int columns) {
         for (int row = 0; row < gridd.getRowCount(); row++) {
