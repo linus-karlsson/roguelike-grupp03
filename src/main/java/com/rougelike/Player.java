@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 import com.rougelike.equipment.EquipmentType;
 import com.rougelike.equipment.Weapon;
+import com.rougelike.equipment.Armor;
 import com.rougelike.equipment.Equipment;
 import com.rougelike.races.Race;
+import com.rougelike.roles.Knight;
 import com.rougelike.roles.Role;
+import com.rougelike.roles.Thief;
 
 public class Player {
 
@@ -32,6 +35,7 @@ public class Player {
     private Weapon equippedWeapon;
     private Equipment equippedOffhand;
     private ArrayList<Weapon> weaponInventory = new ArrayList<>();
+    private ArrayList<Armor> armorInventory = new ArrayList<>();
 
     public Player(String name) {
         this.name = name;
@@ -122,7 +126,11 @@ public class Player {
         return level;
     }
 
-    //Vill kunna sätta level för testning
+    public Equipment getEquippedOffhand() {
+        return equippedOffhand;
+    }
+
+    // Vill kunna sätta level för testning
     public int setLevel(int level) {
         return this.level = level;
     }
@@ -155,6 +163,10 @@ public class Player {
         return MAX_INVENTORY_CAPACITY;
     }
 
+    public ArrayList<Armor> getArmorInventory() {
+        return armorInventory;
+    }
+
     public void addWeaponToInventory(Weapon weapon) {
         if (weaponInventory.size() == MAX_INVENTORY_CAPACITY) {
             wallet += weaponInventory.get(0).getPrice();
@@ -170,6 +182,58 @@ public class Player {
     public void removeWeaponFromInventory(Weapon weapon) {
         wallet += weapon.getPrice();
         weaponInventory.remove(weapon);
+    }
+
+    public void equipWeapon(Weapon weapon) {
+        if (!getWeaponInventory().contains(weapon)) {
+            return;
+        }
+        if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
+                weapon.getType() == EquipmentType.CLUB)) {
+            equippedWeapon = weapon;
+            // } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND))
+            // {
+            // equippedWeapon = weapon;
+        } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
+            equippedWeapon = weapon;
+        } else {
+            return;
+        }
+
+    }
+
+    public void addArmorToInventory(Armor armor) {
+        if (armorInventory.size() == MAX_INVENTORY_CAPACITY) {
+            wallet += armorInventory.get(0).getPrice();
+            armorInventory.remove(0);
+        }
+        if (armorInventory.contains(armor)) {
+            System.err.println("Kan inte ha dubletter av armor");
+            return;
+        }
+        armorInventory.add(armor);
+    }
+
+    public void removeArmorFromInventory(Armor armor) {
+        wallet += armor.getPrice();
+        armorInventory.remove(armor);
+    }
+
+    public void equipOffhand(Equipment offhand) {
+        if (!getWeaponInventory().contains(offhand) && !getArmorInventory().contains(offhand)) {
+            System.err.println("Måste finnas i weapon inventory eller armor inventory för att kunna equippa");
+            return;
+        }
+        if ((role instanceof Knight) && (offhand.getType() == EquipmentType.SHIELD)) {
+            equippedOffhand = offhand;
+            // } else if ((role instanceof Mage) && (offhand.getType() ==
+            // EquipmentType.BOOK)) {
+            // equippedOffhand = offhand;
+        } else if ((role instanceof Thief) && (offhand.getType() == EquipmentType.DAGGER)) {
+            equippedOffhand = offhand;
+        } else {
+            return;
+        }
     }
 
     public void equipNextWeapon() {
