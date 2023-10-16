@@ -102,6 +102,11 @@ public class Player {
         return name;
     }
 
+    //kunna sätta health för testning
+    public  double setHealth(double health) {
+        return this.health = health;
+    }
+
     public double getHealth() {
         return health;
     }
