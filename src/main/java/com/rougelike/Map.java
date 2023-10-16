@@ -38,175 +38,6 @@ public class Map {
         }
     }
 
-    public class GriddIndex {
-        int row;
-        int column;
-
-        public GriddIndex() {
-            row = 0;
-            column = 0;
-        }
-
-        public GriddIndex(int row, int column) {
-            this.row = row;
-            this.column = column;
-        }
-
-        public GriddIndex(GriddIndex otherIndex) {
-            row = otherIndex.row;
-            column = otherIndex.column;
-        }
-    }
-
-    public class Gridd {
-        private int[][] cells;
-        private double cellSize;
-
-        public Gridd(int rowCount, int columnCount, double cellSize) {
-            cells = new int[rowCount][columnCount];
-            this.cellSize = cellSize;
-        }
-
-        public int getRowCount() {
-            return cells.length;
-        }
-
-        public int getColumnCount() {
-            return cells[0].length;
-        }
-
-        public int getCell(int row, int column) {
-            return cells[row][column];
-        }
-
-        public int getCell(GriddIndex index) {
-            return getCell(index.row, index.column);
-        }
-
-        public void setCell(int row, int column, int value) {
-            cells[row][column] = value;
-        }
-
-        public void setCell(GriddIndex index, int value) {
-            setCell(index.row, index.column, value);
-        }
-
-        public double getCellSize() {
-            return cellSize;
-        }
-
-        public double getWidth() {
-            return getColumnCount() * getCellSize();
-        }
-
-        public double getHeight() {
-            return getRowCount() * getCellSize();
-        }
-    }
-
-    public class GriddParser {
-
-        private GriddIndex index;
-        private GriddIndex startIndex;
-        private GriddIndex endIndex;
-
-        public GriddParser(int columns, double cellSize) {
-            index = new GriddIndex();
-            startIndex = new GriddIndex();
-            endIndex = new GriddIndex();
-        }
-
-        public void setRoom(Room room, double cellSize) {
-            double xSpand = room.getPosition().getX() + room.getWidth();
-            double ySpand = room.getPosition().getY() + room.getHeight();
-            Point lastPoistion = new Point(xSpand, ySpand);
-
-            startIndex = getGriddIndexBasedOnPosition(room.getPosition(), cellSize);
-            endIndex = getGriddIndexBasedOnPosition(lastPoistion, cellSize);
-            index = new GriddIndex(startIndex);
-        }
-
-        public GriddIndex getStartIndex() {
-            return startIndex;
-        }
-
-        public GriddIndex getEndIndex() {
-            return endIndex;
-        }
-
-        public int getCurrentRoomCellCountInX() {
-            return (endIndex.column - startIndex.column) + 1;
-        }
-
-        public int getCurrentRoomCellCountInY() {
-            return (endIndex.row - startIndex.row) + 1;
-        }
-
-        public boolean hasNextIndex() {
-            boolean result = index.row <= endIndex.row;
-            if (result) {
-                if (index.row == endIndex.row) {
-                    result = index.column <= endIndex.column;
-                }
-            }
-            return result;
-        }
-
-        public GriddIndex nextIndex() {
-            GriddIndex result = new GriddIndex(index);
-            if (index.column == endIndex.column) {
-                index.column = startIndex.column;
-                index.row += 1;
-            } else {
-                index.column++;
-            }
-            return result;
-        }
-
-        private void placeRoomInGridd(Gridd gridd) {
-            while (hasNextIndex()) {
-                GriddIndex i = nextIndex();
-                gridd.setCell(i, gridd.getCell(i) + 1);
-            }
-        }
-
-        public void setCellsAboveRoom(Gridd gridd) {
-            GriddIndex i = new GriddIndex(startIndex);
-            for (i.row -= 1, i.column -= 1; i.column <= endIndex.column; i.column++) {
-                gridd.setCell(i, -1);
-            }
-        }
-
-        public void setCellsBelowRoom(Gridd gridd) {
-            GriddIndex i = new GriddIndex(endIndex);
-            for (i.row += 1, i.column += 1; i.column >= startIndex.column; i.column--) {
-                gridd.setCell(i, -1);
-            }
-        }
-
-        public void setCellsToLeftOfRoom(Gridd gridd) {
-            GriddIndex i = new GriddIndex(startIndex);
-            for (i.column -= 1; i.row <= endIndex.row + 1; i.row++) {
-                gridd.setCell(i, -1);
-            }
-        }
-
-        public void setCellsToRightOfRoom(Gridd gridd) {
-            GriddIndex i = new GriddIndex(endIndex);
-            for (i.column += 1; i.row >= startIndex.row - 1; i.row--) {
-                gridd.setCell(i, -1);
-            }
-        }
-
-        public void setAllCellsAroundRoom(Gridd gridd) {
-            setCellsAboveRoom(gridd);
-            setCellsBelowRoom(gridd);
-            setCellsToLeftOfRoom(gridd);
-            setCellsToRightOfRoom(gridd);
-        }
-
-    }
-
     public Map() {
         random = new Random();
     }
@@ -247,10 +78,10 @@ public class Map {
         return gridd;
     }
 
-    private boolean checkIfRoomCanBePlaced(GriddParser griddParser, Room room) {
-        griddParser.setRoom(room, gridd.getCellSize());
-        while (griddParser.hasNextIndex()) {
-            GriddIndex index = griddParser.nextIndex();
+    private boolean checkIfRoomCanBePlaced(Gridd gridd, Room room) {
+        gridd.getRoomParser().setRoom(room);
+        while (gridd.getRoomParser().hasNextIndex()) {
+            Gridd.Index index = gridd.getRoomParser().nextIndex();
             int currentCellValue = gridd.getCell(index);
             if (currentCellValue == 1 || currentCellValue == -1) {
                 return false;
@@ -259,10 +90,10 @@ public class Map {
         return true;
     }
 
-    private void placeRoomInGridd(GriddParser griddParser, Room room) {
-        griddParser.setRoom(room, gridd.getCellSize());
-        griddParser.setAllCellsAroundRoom(gridd);
-        griddParser.placeRoomInGridd(gridd);
+    private void placeRoomInGridd(Gridd.RoomParser griddParser, Room room) {
+        griddParser.setRoom(room);
+        griddParser.setRoomBorder();
+        griddParser.placeRoomInGridd();
     }
 
     public ArrayList<Room> placeRoomsInArea(ArrayList<Room> rooms, int numberOfTriesBeforeDiscard, int rows,
@@ -272,7 +103,6 @@ public class Map {
         }
         gridd = setUpGridd(rows, columns, cellSize);
         ArrayList<Room> roomsPlaced = new ArrayList<>();
-        GriddParser griddParser = new GriddParser(columns, cellSize);
         for (Room currentRoom : rooms) {
             // cellSize är med här för att inte ha med griddens border i platseringen,
             // alltså kan man int platsera ett rum på the border
@@ -284,27 +114,14 @@ public class Map {
                 currentRoom.setPosition(randomDoubleInBounds(min.getX(), max.getX()),
                         randomDoubleInBounds(min.getY(), max.getY()));
 
-                if (checkIfRoomCanBePlaced(griddParser, currentRoom)) {
-                    placeRoomInGridd(griddParser, currentRoom);
+                if (checkIfRoomCanBePlaced(gridd, currentRoom)) {
+                    placeRoomInGridd(gridd.getRoomParser(), currentRoom);
                     roomsPlaced.add(currentRoom);
                     break;
                 }
             }
         }
         return roomsPlaced;
-    }
-
-    public GriddIndex getGriddIndexBasedOnPosition(Point position, double cellSize) {
-        return new GriddIndex(getCellCountInY(position, cellSize),
-                getCellCountInX(position, cellSize));
-    }
-
-    private int getCellCountInY(Point position, double cellSize) {
-        return (int) (position.getY() / cellSize);
-    }
-
-    private int getCellCountInX(Point position, double cellSize) {
-        return (int) (position.getX() / cellSize);
     }
 
     public ArrayList<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,

@@ -37,14 +37,18 @@ public class Player {
     private ArrayList<Weapon> weaponInventory = new ArrayList<>();
     private ArrayList<Armor> armorInventory = new ArrayList<>();
 
-    public Player(String name) {
+    private Point position;
+    private Vector velocity;
+
+    public Player(String name, Point position) {
         this.name = name;
         this.health = 100;
         xpToNextLevel = 200.0;
+        this.position = new Point(position);
     }
 
-    public Player(String name, Race race, Role role) {
-        this.name = name;
+    public Player(String name, Race race, Role role, Point position) {
+        this(name, position);
         this.race = race;
         this.role = role;
         this.health = race.getStartingHealth() * role.getHealthMultiplier();
@@ -55,10 +59,8 @@ public class Player {
                 role.getIntelligenceMultiplier();
         this.equippedWeapon = role.getStartingWeapon();
         weaponInventory.add(role.getStartingWeapon());
-        xpToNextLevel = 200.0;
     }
 
-    // ??????
     private void nextLevel() {
         xpToNextLevel *= LEVEL_MULTIPLIER;
     }
@@ -73,6 +75,18 @@ public class Player {
             nextLevel();
         }
         xp += gainedXp;
+    }
+
+    public void setVelocity(Vector newVelocity) {
+        velocity.clone(newVelocity);
+    }
+
+    public void updatePlayerMovement(Gridd gridd, double deltaTime) {
+        Point newPostion = position.plus(velocity.scalarMulti(deltaTime));
+        Gridd.Index index = gridd.getGriddIndexBasedOnPosition(newPostion);
+        if (gridd.getCell(index) == 1) {
+            position = newPostion;
+        }
     }
 
     public double attackWithWeapon() {
@@ -102,8 +116,8 @@ public class Player {
         return name;
     }
 
-    //kunna sätta health för testning
-    public  double setHealth(double health) {
+    // kunna sätta health för testning
+    public double setHealth(double health) {
         return this.health = health;
     }
 

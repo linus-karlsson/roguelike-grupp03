@@ -14,6 +14,10 @@ public class Point {
         this.y = y;
     }
 
+    public Point(Point otherPoint) {
+        this(otherPoint.getX(), otherPoint.getY());
+    }
+
     public double getX() {
         return x;
     }
@@ -29,4 +33,18 @@ public class Point {
     public void setY(double newY) {
         y = newY;
     }
+
+    public void clone(Point otherPoint) {
+        x = otherPoint.getX();
+        y = otherPoint.getY();
+    }
+
+    public Vector minus(Point otherPoint) {
+        return new Vector(x - otherPoint.getX(), y - otherPoint.getY());
+    }
+
+    public Point plus(Vector vector) {
+        return new Point(x + vector.getX(), y + vector.getY());
+    }
+
 }

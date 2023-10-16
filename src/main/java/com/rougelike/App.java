@@ -1,6 +1,6 @@
 package com.rougelike;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class App {
     public static void main(String[] args) {
@@ -17,7 +17,15 @@ public class App {
         int rows = 40;
         int columns = 40;
         double cellSize = 5.0;
-        map.placeRoomsInArea(rooms, 30, rows, columns, cellSize);
-        map.printGridd(columns);
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns, cellSize);
+        Gridd gridd = map.getCopyOfGridd();
+
+        Random random = new Random();
+        Map.Room randomRoom = placedRooms.get(random.nextInt(placedRooms.size() - 1));
+
+        Player player = new Player("TOTO", randomRoom.getPosition());
+
+        player.setVelocity(new Vector(10.0, 0.0));
+        player.updatePlayerMovement(gridd, 0.0016);
     }
 }
