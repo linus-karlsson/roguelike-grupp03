@@ -10,6 +10,6 @@ public class RaceTest {
     @Test
     public void TestDwarfInstanceCreation(){
         Dwarf dwarf = new Dwarf();
-        assertEquals(DWARF_STARTING_HEALTH, dwarf.getHealth());
+        assertEquals(DWARF_STARTING_HEALTH, dwarf.getStartingHealth());
     }
 }

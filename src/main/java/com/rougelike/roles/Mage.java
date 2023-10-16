@@ -13,4 +13,9 @@ public class Mage extends Role {
         super(MAGE_HEALTH_MULTIPLIER, MAGE_MANA_MULTIPLIER, MAGE_STRENGTH_MULTIPLIER, MAGE_DEXTERITY_MULTIPLIER, MAGE_INTELLIGENCE_MULTIPLIER, EquipmentType.LIGHT_ARMOR, EquipmentType.WAND);
 
     }
+
+    @Override
+    public int roleSpecialAttack() {
+        return 30;
+    }
 }

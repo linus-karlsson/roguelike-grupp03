@@ -1,41 +1,41 @@
 package com.rougelike.races;
 
 public abstract class Race {
-    private double health;
-    private double mana;
-    private double strength;
-    private double dexterity;
-    private double intelligence;
+    private double startingHealth;
+    private double startingMana;
+    private double startingStrength;
+    private double startingDexterity;
+    private double startingIntelligence;
 
 
 
-    public Race(double health, double mana, double strength, double dexterity, double intelligence) {
-        this.health = health;
-        this.mana = mana;
-        this.strength = strength;
-        this.dexterity = dexterity;
-        this.intelligence = intelligence;
+    public Race(double health, double mana, double startingStrength, double dexterity, double intelligence) {
+        this.startingHealth = health;
+        this.startingMana = mana;
+        this.startingStrength = startingStrength;
+        this.startingDexterity = dexterity;
+        this.startingIntelligence = intelligence;
 
     }
 
-    public double getHealth() {
-        return health;
+    public double getStartingHealth() {
+        return startingHealth;
     }
 
-    public double getMana() {
-        return mana;
+    public double getStartingMana() {
+        return startingMana;
     }
 
-    public double getStrength() {
-        return strength;
+    public double getStartingStrength() {
+        return startingStrength;
     }
 
-    public double getIntelligence() {
-        return intelligence;
+    public double getStartingIntelligence() {
+        return startingIntelligence;
     }
 
-    public double getDexterity() {
-        return dexterity;
+    public double getStartingDexterity() {
+        return startingDexterity;
     }
 
 
