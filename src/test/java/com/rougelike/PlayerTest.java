@@ -9,14 +9,14 @@ public class PlayerTest {
 
     @Test
     public void testPlayerConstructor() {
-        Player player = new Player("Test");
+        Player player = new Player("Test", null);
         String expected = "Test";
         assertEquals(expected, player.getName());
     }
 
     @Test
     public void testIncreaseXp() {
-        Player player = new Player("Test");
+        Player player = new Player("Test", null);
         double xpToNextLevel = player.getXpToNextLevel();
         double xpToIncrease = xpToNextLevel;
         int level = player.getLevel();
@@ -29,7 +29,7 @@ public class PlayerTest {
     public void TestPlayerInstanceCreationDwarfKnight() {
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Gimli", dwarf , knight);
+        Player player = new Player("Gimli", dwarf, knight, null);
         double expectedHealth = dwarf.getStartingHealth() * knight.getHealthMultiplier();
         double expectedIntelligence = dwarf.getStartingIntelligence() * knight.getIntelligenceMultiplier();
         assertEquals(expectedHealth, player.getHealth());
