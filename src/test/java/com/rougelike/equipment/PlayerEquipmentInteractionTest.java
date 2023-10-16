@@ -44,13 +44,46 @@ public class PlayerEquipmentInteractionTest {
     @Test
     public void canRemoveWeaponFromWeaponInventory() {
         Stick stick = new Stick();
+        Dagger dagger = new Dagger();
         Player player = new Player("Sven");
 
         player.addWeaponToInventory(stick);
-        player.addWeaponToInventory(stick);
+        player.addWeaponToInventory(dagger);
         player.removeWeaponFromInventory(stick);
 
-        assertTrue(player.getWeaponInventory().size() == 1 && player.getWeaponInventory().contains(stick));
+        assertTrue(player.getWeaponInventory().size() == 1 && player.getWeaponInventory().contains(dagger));
+    }
+
+    @Test
+    public void correctValueStartingMoney() {
+        Player player = new Player("Sven");
+
+        int actual = 100;
+
+        assertEquals(actual, player.getWallet());
+    }
+
+    @Test
+    public void inventoryAtCapacityMinusOne_AddsWeapon() {
+        // Måste skrivas om ifall max inventory capacity ändras
+
+        Dagger dagger = new Dagger();
+        FireSword fireSword = new FireSword();
+        Torch torch = new Torch();
+        Wand wand = new Wand();
+        Player player = new Player("Sven");
+
+        player.addWeaponToInventory(dagger);
+        player.addWeaponToInventory(fireSword);
+        player.addWeaponToInventory(torch);
+        player.addWeaponToInventory(wand);
+
+        Sword sword = new Sword();
+        player.addWeaponToInventory(sword);
+
+        assertTrue(player.getWeaponInventory().contains(sword)
+                && player.getWeaponInventory().size() == player.getMaxInventoryCapacity());
+
     }
 
     @Test
@@ -95,5 +128,19 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(sword);
 
         assertEquals(actual, player.getWallet());
+    }
+
+    @Test
+    public void weaponInventoryContainsNoDuplicates() {
+
+        Stick stick = new Stick();
+        Player player = new Player("Sven");
+
+        int actual = 1;
+
+        player.addWeaponToInventory(stick);
+        player.addWeaponToInventory(stick);
+
+        assertEquals(actual, player.getWeaponInventory().size());
     }
 }

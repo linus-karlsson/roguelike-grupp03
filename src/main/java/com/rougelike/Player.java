@@ -79,10 +79,18 @@ public class Player {
         return weaponInventory;
     }
 
+    public int getMaxInventoryCapacity() {
+        return MAX_INVENTORY_CAPACITY;
+    }
+
     public void addWeaponToInventory(Weapon weapon) {
         if (weaponInventory.size() == MAX_INVENTORY_CAPACITY) {
             wallet += weaponInventory.get(0).getPrice();
             weaponInventory.remove(0);
+        }
+        if (weaponInventory.contains(weapon)) {
+            System.err.println("Kan inte ha dubletter av vapen");
+            return;
         }
         weaponInventory.add(weapon);
     }
