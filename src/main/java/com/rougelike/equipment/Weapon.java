@@ -1,25 +1,17 @@
 package com.rougelike.equipment;
 
-public abstract class Weapon {
-    String name;
+public abstract class Weapon extends Equipment {
+
     int damage;
     int elementalDamage;
-    int price;
-    EquipmentType type;
     WeaponElementType element;
 
-    public Weapon(String name, int damage, int elementalDamage, int price, EquipmentType type,
+    public Weapon(String name, int price, EquipmentType type, int damage, int elementalDamage,
             WeaponElementType element) {
-        this.name = name;
+        super(name, price, type);
         this.damage = damage;
         this.elementalDamage = elementalDamage;
-        this.price = price;
-        this.type = type;
         this.element = element;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public int getDamage() {
@@ -28,14 +20,6 @@ public abstract class Weapon {
 
     public int getElementalDamage() {
         return elementalDamage;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public EquipmentType getType() {
-        return type;
     }
 
     public WeaponElementType getWeaponElementType() {
