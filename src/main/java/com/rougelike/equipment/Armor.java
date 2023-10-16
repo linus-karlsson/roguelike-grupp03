@@ -1,19 +1,9 @@
 package com.rougelike.equipment;
 
-public class Armor {
-    String name;
-    EquipmentType type;
+public class Armor extends Equipment {
 
-    public Armor(String name, EquipmentType type) {
-        this.name = name;
-        this.type = type;
+    public Armor(String name, int price, EquipmentType type) {
+        super(name, price, type);
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public EquipmentType getType() {
-        return type;
-    }
+    // Attribut
 }

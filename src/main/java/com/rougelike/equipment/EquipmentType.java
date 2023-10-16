@@ -6,6 +6,7 @@ public enum EquipmentType {
     WAND,
     DAGGER,
     SHIELD,
+    BOOK,
     HEAVY_ARMOR,
     MEDIUM_ARMOR,
     LIGHT_ARMOR,
