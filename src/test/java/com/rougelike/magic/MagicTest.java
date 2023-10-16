@@ -21,7 +21,7 @@ public class MagicTest {
         Magic magic = new Magic(spell);
         String magicString = magic.toString();
         assertTrue(magicString.contains(spell.getName()));
-        assertTrue(magicString.contains(Integer.toString(spell.getBaseStrength())));
+        assertTrue(magicString.contains(Double.toString(spell.getBaseStrength())));
         assertTrue(magicString.contains(spell.getType().getName()));
         assertTrue(magicString.contains(spell.getElement().getName()));
     }   

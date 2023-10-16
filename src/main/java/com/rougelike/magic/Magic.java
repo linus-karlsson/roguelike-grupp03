@@ -2,7 +2,7 @@ package com.rougelike.magic;
 
 public class Magic {
     private final String NAME;
-    private final int BASE_STRENGHT;
+    private final double BASE_STRENGHT;
     private final MagicInvoker TYPE;
     private final MagicElementType ELEMENT;
 
@@ -17,7 +17,7 @@ public class Magic {
         return NAME;
     }
 
-    public int getBaseStrength() {
+    public double getBaseStrength() {
         return BASE_STRENGHT;
     }
 
