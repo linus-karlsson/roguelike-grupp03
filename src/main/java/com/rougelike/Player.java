@@ -110,6 +110,11 @@ public class Player {
         return level;
     }
 
+    //Vill kunna sätta level för testning
+    public int setLevel(int level) {
+        return this.level = level;
+    }
+
     public int getMaxLevel() {
         return MAX_LEVEL;
     }
