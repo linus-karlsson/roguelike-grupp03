@@ -2,7 +2,7 @@ package com.rougelike.magic;
 
 import com.rougelike.Player;
 
-public class MagicInvoker {
+abstract public class MagicInvoker {
 
     protected String name;
 
@@ -19,4 +19,7 @@ public class MagicInvoker {
         double roundedValue = Math.round(actualStrenght*100.0)/100.0;
         return roundedValue;
     }
+
+    abstract public void throwMagic(Magic magic, Player player);     
+    
 }

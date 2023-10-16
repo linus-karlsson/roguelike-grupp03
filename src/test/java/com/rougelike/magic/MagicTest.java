@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.rougelike.Player;
-import com.rougelike.magic.Magic;
-
 public class MagicTest {
 
     @Test
