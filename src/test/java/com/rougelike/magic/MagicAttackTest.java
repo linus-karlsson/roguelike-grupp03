@@ -23,7 +23,7 @@ public class MagicAttackTest {
     @Test
     void testMethodAttackShouldDecreasePlayersHealth() {
         Magic magic = new Magic(Spell.TORNADO);
-        Player player = new Player("Test"); 
+        Player player = new Player("Test",new Point()); 
         player.setHealth(50);
         double expectedValue = 40;
         magic.getType().throwMagic(magic, player);
@@ -33,7 +33,7 @@ public class MagicAttackTest {
     @Test
     void testMethodAttackShouldDecreasePlayersHealthToZeroInsteadOfNegativeHealth() {
         Magic magic = new Magic(Spell.FREEZE);
-        Player player = new Player("Test"); 
+        Player player = new Player("Test",new Point()); 
         player.setHealth(5);
         double expectedValue = 0;
         magic.getType().throwMagic(magic, player);

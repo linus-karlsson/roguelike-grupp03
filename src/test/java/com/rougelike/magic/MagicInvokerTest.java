@@ -11,7 +11,7 @@ public class MagicInvokerTest {
     void testSpellValueReturnsCorrectValueWhenPlayerStartLevel() {
         Magic magic = new Magic(Spell.TORNADO);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test");
+        Player player = new Player("Test", new Point());
         double expectedValue = 10.0;
         assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));}
 
@@ -19,7 +19,7 @@ public class MagicInvokerTest {
     void testSpellValueReturnsCorrectValueWhenPlayerLevelTwo() {
         Magic magic = new Magic(Spell.FREEZE);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test");
+        Player player = new Player("Test", new Point());
         player.setLevel(2);
         double expectedValue = 14.4;
         assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
