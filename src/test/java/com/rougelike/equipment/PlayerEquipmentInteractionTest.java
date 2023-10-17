@@ -2,7 +2,7 @@ package com.rougelike.equipment;
 
 import org.junit.jupiter.api.*;
 
-import com.rougelike.Player;
+import com.rougelike.*;
 import com.rougelike.races.Dwarf;
 import com.rougelike.roles.Knight;
 
@@ -13,7 +13,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     public void canAddWeaponToInventory() {
         Stick stick = new Stick();
-        Player player = new Player("Sven");
+        Player player = new Player("Sven", new Point());
 
         player.addWeaponToInventory(stick);
 
@@ -34,7 +34,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     public void canNotHaveMoreThanFiveWeaponsInWeaponInventory() {
         Stick stick = new Stick();
-        Player player = new Player("Sven");
+        Player player = new Player("Sven", new Point());
 
         for (int i = 0; i < 6; i++) {
             player.addWeaponToInventory(stick);
@@ -47,7 +47,7 @@ public class PlayerEquipmentInteractionTest {
     public void canRemoveWeaponFromWeaponInventory() {
         Stick stick = new Stick();
         Dagger dagger = new Dagger();
-        Player player = new Player("Sven");
+        Player player = new Player("Sven", new Point());
 
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
@@ -58,7 +58,7 @@ public class PlayerEquipmentInteractionTest {
 
     @Test
     public void correctValueStartingMoney() {
-        Player player = new Player("Sven");
+        Player player = new Player("Sven", new Point());
 
         int actual = 100;
 
@@ -73,7 +73,7 @@ public class PlayerEquipmentInteractionTest {
         FireSword fireSword = new FireSword();
         Torch torch = new Torch();
         Wand wand = new Wand();
-        Player player = new Player("Sven");
+        Player player = new Player("Sven", new Point());
 
         player.addWeaponToInventory(dagger);
         player.addWeaponToInventory(fireSword);
@@ -97,7 +97,7 @@ public class PlayerEquipmentInteractionTest {
         Torch torch = new Torch();
         Wand wand = new Wand();
         Sword sword = new Sword();
-        Player player = new Player("Sven");
+        Player player = new Player("Sven", new Point());
 
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
@@ -118,7 +118,7 @@ public class PlayerEquipmentInteractionTest {
         Torch torch = new Torch();
         Wand wand = new Wand();
         Sword sword = new Sword();
-        Player player = new Player("Sven");
+        Player player = new Player("Sven", new Point());
 
         int actual = player.getWallet() + stick.getPrice();
 
@@ -136,7 +136,7 @@ public class PlayerEquipmentInteractionTest {
     public void weaponInventoryContainsNoDuplicates() {
 
         Stick stick = new Stick();
-        Player player = new Player("Sven");
+        Player player = new Player("Sven", new Point());
 
         int actual = 1;
 
@@ -160,7 +160,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     public void doesNotEquipOffhandIfNotInWeaponInventory() {
         Dagger dagger = new Dagger();
-        Player player = new Player("Sven");
+        Player player = new Player("Sven", new Point());
 
         player.equipOffhand(dagger);
         assertFalse(player.getEquippedOffhand() == dagger);
@@ -171,7 +171,7 @@ public class PlayerEquipmentInteractionTest {
         Shield shield = new Shield();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Sven", dwarf, knight);
+        Player player = new Player("Sven", dwarf, knight, new Point());
 
         Equipment actual = null;
         player.equipOffhand(shield);
@@ -183,7 +183,7 @@ public class PlayerEquipmentInteractionTest {
         Dagger dagger = new Dagger();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Sven", dwarf, knight);
+        Player player = new Player("Sven", dwarf, knight, new Point());
 
         player.addWeaponToInventory(dagger);
         player.equipOffhand(dagger);
@@ -195,7 +195,7 @@ public class PlayerEquipmentInteractionTest {
         Shield shield = new Shield();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Sven", dwarf, knight);
+        Player player = new Player("Sven", dwarf, knight, new Point());
 
         Equipment actual = shield;
         player.addArmorToInventory(shield);

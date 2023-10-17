@@ -10,6 +10,7 @@ import com.rougelike.races.Race;
 import com.rougelike.roles.Knight;
 import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
+import com.rougelike.roles.Mage;
 
 public class Player {
 
@@ -215,15 +216,11 @@ public class Player {
         if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
                 weapon.getType() == EquipmentType.CLUB)) {
             equippedWeapon = weapon;
-            // } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND))
-            // {
-            // equippedWeapon = weapon;
+        } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
+            equippedWeapon = weapon;
         } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
             equippedWeapon = weapon;
-        } else {
-            return;
         }
-
     }
 
     public void addArmorToInventory(Armor armor) {
@@ -250,13 +247,10 @@ public class Player {
         }
         if ((role instanceof Knight) && (offhand.getType() == EquipmentType.SHIELD)) {
             equippedOffhand = offhand;
-            // } else if ((role instanceof Mage) && (offhand.getType() ==
-            // EquipmentType.BOOK)) {
-            // equippedOffhand = offhand;
+        } else if ((role instanceof Mage) && (offhand.getType() == EquipmentType.BOOK)) {
+            equippedOffhand = offhand;
         } else if ((role instanceof Thief) && (offhand.getType() == EquipmentType.DAGGER)) {
             equippedOffhand = offhand;
-        } else {
-            return;
         }
     }
 
