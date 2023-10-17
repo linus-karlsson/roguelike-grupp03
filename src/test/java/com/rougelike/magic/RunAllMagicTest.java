@@ -1,3 +1,8 @@
+
+/** 
+
+Sparar klass som lathund för att skapa testsviter i JUnit 5.
+
 package com.rougelike.magic;
 
 import org.junit.platform.suite.api.IncludeClassNamePatterns;
@@ -15,3 +20,5 @@ import org.junit.runner.RunWith;
 class RunAllMagicTest {
 
 }
+
+*/

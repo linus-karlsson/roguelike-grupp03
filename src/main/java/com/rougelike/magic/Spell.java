@@ -1,6 +1,7 @@
 package com.rougelike.magic;
 
 public enum Spell {
+
     FIREBALL("Fireball", 10.0, new MagicAttack(), new ElementFire()),
     TORNADO("Tornado", 10.0, new MagicAttack(), new ElementAir()),
     POISON("Poison", 10.0, new MagicAttack(), new ElementEarth()),    

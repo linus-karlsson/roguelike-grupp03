@@ -150,11 +150,6 @@ public class Player {
         return equippedOffhand;
     }
 
-    // Vill kunna sätta level för testning
-    public int setLevel(int level) {
-        return this.level = level;
-    }
-
     public int getMaxLevel() {
         return MAX_LEVEL;
     }
@@ -185,6 +180,15 @@ public class Player {
 
     public ArrayList<Armor> getArmorInventory() {
         return armorInventory;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    // Vill kunna sätta level för testning
+    public int setLevel(int level) {
+        return this.level = level;
     }
 
     public void addWeaponToInventory(Weapon weapon) {

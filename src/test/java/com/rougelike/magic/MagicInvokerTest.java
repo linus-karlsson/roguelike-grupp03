@@ -1,5 +1,7 @@
 package com.rougelike.magic;
 import com.rougelike.*;
+import com.rougelike.races.Human;
+import com.rougelike.roles.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,9 +21,27 @@ public class MagicInvokerTest {
     void testSpellValueReturnsCorrectValueWhenPlayerLevelTwo() {
         Magic magic = new Magic(Spell.FREEZE);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test", new Point());
+        Player player = new Player("Test",new Human(), new Thief(), new Point()); 
         player.setLevel(2);
         double expectedValue = 14.4;
+        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+    }
+
+    @Test
+    void testIfPlayerRoleMageMagicValueShouldReturnTenPercentHigher() {
+        Magic magic = new Magic(Spell.POISON);
+        MagicInvoker magicInvoker = magic.getType();
+        Player player = new Player("Test",new Human(), new Mage(), new Point()); 
+        double expectedValue = 11.0;
+        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+    }
+
+    @Test
+    void testIfPlayerRoleKnightMagicValueShouldReturnTenPercentLower() {
+        Magic magic = new Magic(Spell.FIREBALL);
+        MagicInvoker magicInvoker = magic.getType();
+        Player player = new Player("Test", new Human(), new Knight(), new Point());
+        double expectedValue = 9.0;
         assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
     }
 
