@@ -10,7 +10,6 @@ import com.rougelike.races.Race;
 import com.rougelike.roles.Knight;
 import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
-import com.rougelike.roles.Mage;
 
 public class Player {
 
@@ -28,6 +27,8 @@ public class Player {
     private double strength;
     private double dexterity;
     private double intelligence;
+
+    private double totalWeaponDamage;
     private int level;
     private double xp;
     private double xpToNextLevel;
@@ -91,27 +92,30 @@ public class Player {
         }
     }
 
-    public double attackWithWeapon() {
-        // Vapnens skada påverkas av spelarens strength, dexterity eller intelligence
-        // beroende på typ.
-        // Detta är fett ineffektivt så borde göras på annat sätt
+    public void setTotalWeaponDamage() {
         EquipmentType weaponType = equippedWeapon.getType();
         double damageMultiplier = equippedWeapon.getDamage();
-        double totalDamage = 0;
         switch (weaponType) {
             case SWORD:
             case CLUB:
-                totalDamage = damageMultiplier * strength;
+                totalWeaponDamage = damageMultiplier * strength;
                 break;
             case WAND:
-                totalDamage = damageMultiplier * intelligence;
+                totalWeaponDamage = damageMultiplier * intelligence;
                 break;
             case DAGGER:
-                totalDamage = damageMultiplier * dexterity;
+                totalWeaponDamage = damageMultiplier * dexterity;
                 break;
-
         }
-        return totalDamage;
+    }
+
+
+    public double attackWithWeapon() {
+        return totalWeaponDamage;
+    }
+
+    public void takeDamage(){
+
     }
 
     public String getName() {
@@ -216,11 +220,17 @@ public class Player {
         if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
                 weapon.getType() == EquipmentType.CLUB)) {
             equippedWeapon = weapon;
-        } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
-            equippedWeapon = weapon;
+            setTotalWeaponDamage();
+            // } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND))
+            // {
+            // equippedWeapon = weapon;
         } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
             equippedWeapon = weapon;
+            setTotalWeaponDamage();
+        } else {
+            return;
         }
+
     }
 
     public void addArmorToInventory(Armor armor) {
@@ -247,10 +257,13 @@ public class Player {
         }
         if ((role instanceof Knight) && (offhand.getType() == EquipmentType.SHIELD)) {
             equippedOffhand = offhand;
-        } else if ((role instanceof Mage) && (offhand.getType() == EquipmentType.BOOK)) {
-            equippedOffhand = offhand;
+            // } else if ((role instanceof Mage) && (offhand.getType() ==
+            // EquipmentType.BOOK)) {
+            // equippedOffhand = offhand;
         } else if ((role instanceof Thief) && (offhand.getType() == EquipmentType.DAGGER)) {
             equippedOffhand = offhand;
+        } else {
+            return;
         }
     }
 

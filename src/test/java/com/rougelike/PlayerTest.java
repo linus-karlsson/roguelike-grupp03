@@ -35,4 +35,15 @@ public class PlayerTest {
         assertEquals(expectedHealth, player.getHealth());
         assertEquals(expectedIntelligence, player.getIntelligence());
     }
+
+    @Test
+    public void TestTotalWeaponDamage(){
+        Dwarf dwarf = new Dwarf();
+        Knight knight = new Knight();
+        Player player = new Player("Gimli", dwarf, knight, null);
+        double expectedDamage = knight.getStartingWeapon().getDamage() * player.getStrength();
+        double totalWeaponDamage = player.attackWithWeapon();
+        assertEquals(expectedDamage, totalWeaponDamage);
+
+    }
 }
