@@ -128,6 +128,7 @@ public class Map {
                 indexForColumnTraversal.column++;
             }
             startRoom.setConnected(true);
+            endRoom.setConnected(true);
         }
     }
 

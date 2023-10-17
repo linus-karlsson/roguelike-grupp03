@@ -18,6 +18,8 @@ public class MapTest {
     private double maxWidth = 30.0;
     private double minHeight = 10.0;
     private double maxHeight = 30.0;
+    private int rows = 80;
+    private int columns = 80;
 
     @Test
     public void testGenerateRoomWithinBounds() {
@@ -153,9 +155,6 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
 
-        // 800 * 800 pixels
-        int rows = 160;
-        int columns = 160;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
 
@@ -178,8 +177,6 @@ public class MapTest {
         double randomMultiplier = 0.3;
         map.setRandom(new RandomInternal(randomMultiplier));
 
-        int rows = 160;
-        int columns = 160;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
 
@@ -253,8 +250,8 @@ public class MapTest {
 
     @Test
     public void testPlaceRoomsInAreaMultipleTriesIfRoomNotFit() {
-        int rows = 30;
-        int columns = 30;
+        rows = 30;
+        columns = 30;
         minWidth = 10.0;
         minHeight = minWidth;
 
@@ -279,9 +276,6 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
 
-        // 800 * 800 pixels
-        int rows = 160;
-        int columns = 160;
         int numberOfTriesBeforeDiscard = 10;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
@@ -332,8 +326,6 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
 
-        int rows = 80;
-        int columns = 80;
         int numberOfTriesBeforeDiscard = 10;
         map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
@@ -357,9 +349,6 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
 
-        // 800 * 800 pixels
-        int rows = 160;
-        int columns = 160;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
 
         double widthOfArea = columns * Map.TILE_SIZE;
@@ -379,11 +368,22 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
 
-        // 800 * 800 pixels
-        int rows = 160;
-        int columns = 160;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
         assertTrue(placedRooms.size() > 1);
+    }
+
+    @Test
+    public void testConnectRooms() {
+        int roomCount = 10;
+        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
+
+        int numberOfTriesBeforeDiscard = 10;
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
+        map.connectRooms(placedRooms);
+        for (Room room : placedRooms) {
+            assertTrue(room.isConnected());
+        }
     }
 
 }
