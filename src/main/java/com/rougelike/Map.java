@@ -1,6 +1,7 @@
 package com.rougelike;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Map {
     public static final double TILE_SIZE = 5.0;
@@ -96,6 +97,38 @@ public class Map {
             }
         }
         return roomsPlaced;
+    }
+
+    private int abs(int value) {
+        return value < 0 ? value * -1 : value;
+    }
+
+    public void connectRooms(ArrayList<Room> rooms) {
+        for (int i = 0; i < rooms.size() - 1; i++) {
+            Room startRoom = rooms.get(i);
+            Room endRoom = rooms.get(i + 1);
+            Gridd.Index startRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(startRoom.getPosition());
+            Gridd.Index endRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(endRoom.getPosition());
+
+            Gridd.Index indexForRowTraversal = startRoomGriddIndex.row <= endRoomGriddIndex.row
+                    ? startRoomGriddIndex
+                    : endRoomGriddIndex;
+            Gridd.Index indexForColumnTraversal = startRoomGriddIndex.column <= endRoomGriddIndex.column
+                    ? startRoomGriddIndex
+                    : endRoomGriddIndex;
+
+            int rowDifferens = abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
+            int columnDifferens = abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
+            for (int j = 0; j <= rowDifferens; j++) {
+                gridd.setTile(indexForRowTraversal, rooms.size());
+                indexForRowTraversal.row++;
+            }
+            for (int j = 0; j <= columnDifferens; j++) {
+                gridd.setTile(indexForColumnTraversal, rooms.size());
+                indexForColumnTraversal.column++;
+            }
+            startRoom.setConnected(true);
+        }
     }
 
     public ArrayList<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,

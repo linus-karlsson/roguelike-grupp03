@@ -1,13 +1,15 @@
 
 package com.rougelike;
 
-import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.*;
 
 public class MapTest {
 
@@ -190,6 +192,19 @@ public class MapTest {
         }
     }
 
+    private double[] randomMultipliersForAreaIsFilled(int roomCount, int roomsInX, int roomsInY) {
+        double[] randomMultipliers = new double[roomCount * 2];
+        int index = 0;
+        for (int y = 0; y < roomsInY; y++) {
+            for (int x = 0; x < roomsInX; x++) {
+                // - 1.0 så det går från 0.0 - 1.0 inclusive
+                randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
+                randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
+            }
+        }
+        return randomMultipliers;
+    }
+
     @ParameterizedTest
     @CsvSource(value = { "42, 42", "82, 82" })
     public void testPlaceRoomsInAreaIfAreaIsFilled(int rows, int columns) {
@@ -209,85 +224,14 @@ public class MapTest {
         int roomCount = roomsInX * roomsInY;
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
-
-        // Två värden per rum, (x and y)
-        double[] randomMultipliers = new double[roomCount * 2];
-        int index = 0;
-        for (int y = 0; y < roomsInY; y++) {
-            for (int x = 0; x < roomsInX; x++) {
-                // - 1.0 så det går från 0.0 - 1.0 inclusive
-                randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
-                randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
-            }
-        }
-        map.setRandom(new RandomInternal(randomMultipliers));
+        map.setRandom(new RandomInternal(randomMultipliersForAreaIsFilled(roomCount, roomsInX, roomsInY)));
 
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
         int expectedSize = roomCount;
         assertEquals(expectedSize, placedRooms.size());
     }
 
-    /*
-     * @Test
-     * public void testPlaceRoomsInAreaMultipleTriesIfRoomNotFit() {
-     * int rows = 30;
-     * int columns = 30;
-     * double cellSize = 5.0;
-     * minWidth = 10.0;
-     * minHeight = minWidth;
-     * 
-     * int roomsInX = rows / ((int) (minWidth / cellSize) + 1);
-     * int roomsInY = columns / ((int) (minHeight / cellSize) + 1);
-     * 
-     * double randomMultiplier = 0.0;
-     * map.setRandom(new RandomInternal(randomMultiplier));
-     * int roomCount = roomsInX * roomsInY;
-     * ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth,
-     * maxWidth,
-     * minHeight, maxHeight);
-     * 
-     * int numberOfTriesBeforeDiscard = 10;
-     * double[] randomMultipliers = new double[(roomCount * 2) *
-     * numberOfTriesBeforeDiscard];
-     * int index = 0;
-     * for (int y = 0; y < roomsInY; y++) {
-     * for (int x = 0; x < roomsInX; x++) {
-     * if (index > 0) {
-     * int lastIndex = index - 2;
-     * for (int i = 0; i < numberOfTriesBeforeDiscard - 1; i++) {
-     * randomMultipliers[index++] = randomMultipliers[lastIndex];
-     * randomMultipliers[index++] = randomMultipliers[lastIndex + 1];
-     * }
-     * }
-     * randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
-     * randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
-     * }
-     * }
-     * map.setRandom(new RandomInternal(randomMultipliers));
-     * 
-     * ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms,
-     * numberOfTriesBeforeDiscard, rows, columns,
-     * cellSize);
-     * int expectedSize = roomCount;
-     * assertEquals(expectedSize, placedRooms.size());
-     * 
-     * }
-     */
-
-    @Test
-    public void testPlaceRoomsInAreaMultipleTriesIfRoomNotFit() {
-        int rows = 30;
-        int columns = 30;
-        minWidth = 10.0;
-        minHeight = minWidth;
-
-        double randomMultiplier = 0.0;
-        map.setRandom(new RandomInternal(randomMultiplier));
-        int roomCount = 2;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
-
-        int numberOfTriesBeforeDiscard = 10;
+    private double[] randomMultipliersForMultipleTries(int roomCount, int numberOfTriesBeforeDiscard) {
         double[] randomMultipliers = new double[(roomCount * 2) * numberOfTriesBeforeDiscard];
         int index = 0;
         for (int x = 0; x < roomCount; x++) {
@@ -304,7 +248,24 @@ public class MapTest {
             randomMultipliers[index++] = (double) x / ((double) roomCount - 1.0);
             randomMultipliers[index++] = 0.0;
         }
-        map.setRandom(new RandomInternal(randomMultipliers));
+        return randomMultipliers;
+    }
+
+    @Test
+    public void testPlaceRoomsInAreaMultipleTriesIfRoomNotFit() {
+        int rows = 30;
+        int columns = 30;
+        minWidth = 10.0;
+        minHeight = minWidth;
+
+        double randomMultiplier = 0.0;
+        map.setRandom(new RandomInternal(randomMultiplier));
+        int roomCount = 2;
+        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+                minHeight, maxHeight);
+
+        int numberOfTriesBeforeDiscard = 10;
+        map.setRandom(new RandomInternal(randomMultipliersForMultipleTries(roomCount, numberOfTriesBeforeDiscard)));
 
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
         int expectedSize = roomCount;

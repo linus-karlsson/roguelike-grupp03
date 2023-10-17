@@ -5,12 +5,14 @@ public class Room {
     private Point position;
     private double width;
     private double height;
+    private boolean connected;
 
     public Room(double width, double height) {
         this.width = width;
         this.height = height;
         position = new Point();
         id = 0;
+        connected = false;
     }
 
     public Room(Room otherRoom) {
@@ -19,12 +21,20 @@ public class Room {
         position.clone(otherRoom.getPosition());
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 
     public void setPosition(double x, double y) {
