@@ -45,6 +45,7 @@ public class Player {
         this.health = 100;
         xpToNextLevel = 200.0;
         this.position = new Point(position);
+        this.velocity = new Vector();
     }
 
     public Player(String name, Race race, Role role, Point position) {

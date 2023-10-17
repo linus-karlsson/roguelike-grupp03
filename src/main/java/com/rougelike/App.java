@@ -19,6 +19,7 @@ public class App {
         double cellSize = 5.0;
         ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns, cellSize);
         Gridd gridd = map.getCopyOfGridd();
+        map.printGridd();
 
         Random random = new Random();
         Map.Room randomRoom = placedRooms.get(random.nextInt(placedRooms.size() - 1));

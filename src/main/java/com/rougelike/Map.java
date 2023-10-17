@@ -163,11 +163,13 @@ public class Map {
         return copy;
     }
 
-    public void printGridd(int columns) {
+    public void printGridd() {
         for (int row = 0; row < gridd.getRowCount(); row++) {
             for (int column = 0; column < gridd.getColumnCount(); column++) {
-                int cellValue = gridd.getCell(row, column) == -1 ? 0 : gridd.getCell(row, column);
-                System.out.print(String.format("%d%d", cellValue, cellValue));
+                int cellValue = gridd.getCell(row, column);
+                if (cellValue == -1)
+                    cellValue = 0;
+                System.out.print(String.format("%d", cellValue));
             }
             System.out.println();
         }
