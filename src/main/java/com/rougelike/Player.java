@@ -62,6 +62,7 @@ public class Player {
                 role.getIntelligenceMultiplier();
         this.equippedWeapon = role.getStartingWeapon();
         weaponInventory.add(role.getStartingWeapon());
+        setTotalWeaponDamage();
     }
 
     private void nextLevel() {
@@ -227,8 +228,6 @@ public class Player {
         } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
             equippedWeapon = weapon;
             setTotalWeaponDamage();
-        } else {
-            return;
         }
 
     }

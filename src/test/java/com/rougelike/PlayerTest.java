@@ -40,12 +40,13 @@ public class PlayerTest {
     public void TestTotalWeaponDamage(){
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Gimli", dwarf, knight, null);
+        Player player = new Player("Gimli", dwarf, knight, new Point());
         double knightWeaponDamage = knight.getStartingWeapon().getDamage();
         double dwarfStrength = dwarf.getStartingStrength();
-        double expectedDamage = knightWeaponDamage * dwarfStrength;
+        double knightStrengthMultiplier = knight.getStrengthMultiplier();
+        double totalStrength = knightStrengthMultiplier * dwarfStrength;
+        double expectedDamage = knightWeaponDamage * totalStrength;
         double playerTotalWeaponDamage = player.attackWithWeapon();
         assertEquals(expectedDamage, playerTotalWeaponDamage);
-
     }
 }
