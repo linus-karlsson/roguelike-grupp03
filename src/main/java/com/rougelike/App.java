@@ -16,8 +16,7 @@ public class App {
 
         int rows = 40;
         int columns = 40;
-        double cellSize = 5.0;
-        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns, cellSize);
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
         map.printGridd();
 

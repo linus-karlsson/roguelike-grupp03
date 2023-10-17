@@ -52,11 +52,11 @@ public class Gridd {
             return endIndex;
         }
 
-        public int getRoomCellCountInX() {
+        public int getRoomTileCountInX() {
             return (endIndex.column - startIndex.column) + 1;
         }
 
-        public int getRoomCellCountInY() {
+        public int getRoomTileCountInY() {
             return (endIndex.row - startIndex.row) + 1;
         }
 
@@ -84,54 +84,54 @@ public class Gridd {
         public void placeRoomInGridd() {
             while (hasNextIndex()) {
                 Index i = nextIndex();
-                setCell(i, getCell(i) + 1);
+                setTile(i, getTile(i) + 1);
             }
         }
 
-        public void setCellsAboveRoom() {
+        public void setTilesAboveRoom() {
             Index i = new Index(startIndex);
             for (i.row -= 1, i.column -= 1; i.column <= endIndex.column; i.column++) {
-                setCell(i, -1);
+                setTile(i, -1);
             }
         }
 
-        public void setCellsBelowRoom() {
+        public void setTilesBelowRoom() {
             Index i = new Index(endIndex);
             for (i.row += 1, i.column += 1; i.column >= startIndex.column; i.column--) {
-                setCell(i, -1);
+                setTile(i, -1);
             }
         }
 
-        public void setCellsToLeftOfRoom() {
+        public void setTilesToLeftOfRoom() {
             Index i = new Index(startIndex);
             for (i.column -= 1; i.row <= endIndex.row + 1; i.row++) {
-                setCell(i, -1);
+                setTile(i, -1);
             }
         }
 
-        public void setCellsToRightOfRoom() {
+        public void setTilesToRightOfRoom() {
             Index i = new Index(endIndex);
             for (i.column += 1; i.row >= startIndex.row - 1; i.row--) {
-                setCell(i, -1);
+                setTile(i, -1);
             }
         }
 
         public void setRoomBorder() {
-            setCellsAboveRoom();
-            setCellsBelowRoom();
-            setCellsToLeftOfRoom();
-            setCellsToRightOfRoom();
+            setTilesAboveRoom();
+            setTilesBelowRoom();
+            setTilesToLeftOfRoom();
+            setTilesToRightOfRoom();
         }
 
     }
 
-    private int[][] cells;
-    private double cellSize;
+    private int[][] tiles;
+    private double tileSize;
     private RoomParser roomParser;
 
-    public Gridd(int rowCount, int columnCount, double cellSize) {
-        cells = new int[rowCount][columnCount];
-        this.cellSize = cellSize;
+    public Gridd(int rowCount, int columnCount, double tileSize) {
+        tiles = new int[rowCount][columnCount];
+        this.tileSize = tileSize;
         roomParser = new RoomParser();
     }
 
@@ -140,50 +140,50 @@ public class Gridd {
     }
 
     public int getRowCount() {
-        return cells.length;
+        return tiles.length;
     }
 
     public int getColumnCount() {
-        return cells[0].length;
+        return tiles[0].length;
     }
 
-    public int getCell(int row, int column) {
-        return cells[row][column];
+    public int getTile(int row, int column) {
+        return tiles[row][column];
     }
 
-    public int getCell(Index index) {
-        return getCell(index.row, index.column);
+    public int getTile(Index index) {
+        return getTile(index.row, index.column);
     }
 
-    public void setCell(int row, int column, int value) {
-        cells[row][column] = value;
+    public void setTile(int row, int column, int value) {
+        tiles[row][column] = value;
     }
 
-    public void setCell(Index index, int value) {
-        setCell(index.row, index.column, value);
+    public void setTile(Index index, int value) {
+        setTile(index.row, index.column, value);
     }
 
-    public double getCellSize() {
-        return cellSize;
+    public double getTileSize() {
+        return tileSize;
     }
 
     public double getWidth() {
-        return getColumnCount() * getCellSize();
+        return getColumnCount() * getTileSize();
     }
 
     public double getHeight() {
-        return getRowCount() * getCellSize();
+        return getRowCount() * getTileSize();
     }
 
     public Index getGriddIndexBasedOnPosition(Point position) {
-        return new Index(getCellCountInY(position), getCellCountInX(position));
+        return new Index(getPositionTileCountInY(position), getPositionTileCountInX(position));
     }
 
-    private int getCellCountInY(Point position) {
-        return (int) (position.getY() / cellSize);
+    private int getPositionTileCountInY(Point position) {
+        return (int) (position.getY() / tileSize);
     }
 
-    private int getCellCountInX(Point position) {
-        return (int) (position.getX() / cellSize);
+    private int getPositionTileCountInX(Point position) {
+        return (int) (position.getX() / tileSize);
     }
 }
