@@ -8,13 +8,13 @@ import java.util.*;
 public class GriddTest {
     double tileSize = 5.0;
     Gridd gridd = new Gridd(10, 10, tileSize);
+    Room room = new Room(10.0, 10.0); // 3 x 3 room
 
     @Test
     public void testHasNextIndex() {
         int tilesInX = 3;
         int tilesInY = 4;
-        Room room = new Room(tileSize * (tilesInX - 1), tileSize * (tilesInY - 1));
-        room.setPosition(0.0, 0.0);
+        room = new Room(tileSize * (tilesInX - 1), tileSize * (tilesInY - 1));
         gridd.getRoomParser().setRoom(room);
         for (int row = 0; row < tilesInY; row++) {
             for (int column = 0; column < tilesInX; column++) {
@@ -29,8 +29,7 @@ public class GriddTest {
     public void testNextIndex() {
         int tilesInX = 3;
         int tilesInY = 4;
-        Room room = new Room(tileSize * (tilesInX - 1), tileSize * (tilesInY - 1));
-        room.setPosition(0.0, 0.0);
+        room = new Room(tileSize * (tilesInX - 1), tileSize * (tilesInY - 1));
         gridd.getRoomParser().setRoom(room);
         for (int row = 0; row < tilesInY; row++) {
             for (int column = 0; column < tilesInX; column++) {
@@ -43,7 +42,6 @@ public class GriddTest {
 
     @Test
     public void testRoomAreaToList() {
-        Room room = new Room(10.0, 10.0); // 3 x 3 room
         room.setId(3);
         gridd.getRoomParser().setRoom(room);
         gridd.getRoomParser().placeRoomInGridd();
