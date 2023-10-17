@@ -85,7 +85,7 @@ public class Player {
     public void updatePlayerMovement(Gridd gridd, double deltaTime) {
         Point newPostion = position.plus(velocity.scalarMulti(deltaTime));
         Gridd.Index index = gridd.getGriddIndexBasedOnPosition(newPostion);
-        if (gridd.getCell(index) == 1) {
+        if (gridd.getTile(index) == 1) {
             position = newPostion;
         }
     }

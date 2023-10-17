@@ -140,9 +140,8 @@ public class MapTest {
 
         int rows = 0;
         int columns = 80;
-        double cellSize = 10.0;
         assertThrows(IllegalArgumentException.class, () -> {
-            map.placeRoomsInArea(rooms, 1, rows, columns, cellSize);
+            map.placeRoomsInArea(rooms, 1, rows, columns);
         });
     }
 
@@ -155,15 +154,14 @@ public class MapTest {
         // 800 * 800 pixels
         int rows = 160;
         int columns = 160;
-        double cellSize = 5.0;
-        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns, cellSize);
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
 
         for (Map.Room room : placedRooms) {
             gridd.getRoomParser().setRoom(room);
             while (gridd.getRoomParser().hasNextIndex()) {
                 Gridd.Index index = gridd.getRoomParser().nextIndex();
-                assertEquals(1, gridd.getCell(index));
+                assertEquals(1, gridd.getTile(index));
             }
         }
     }
@@ -179,15 +177,14 @@ public class MapTest {
 
         int rows = 160;
         int columns = 160;
-        double cellSize = 5.0;
-        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns, cellSize);
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
 
         for (Map.Room room : placedRooms) {
             gridd.getRoomParser().setRoom(room);
             while (gridd.getRoomParser().hasNextIndex()) {
                 Gridd.Index index = gridd.getRoomParser().nextIndex();
-                assertEquals(1, gridd.getCell(index));
+                assertEquals(1, gridd.getTile(index));
             }
         }
     }
@@ -200,12 +197,11 @@ public class MapTest {
         // 2 extra rows och colummer för border
         // Det får då plats 10 X 10 rum i utrymmet som har 42 X 42 cells med storlek 5.0
 
-        double cellSize = 5.0;
         minWidth = 10.0;
         minHeight = minWidth;
 
-        int roomsInX = rows / ((int) (minWidth / cellSize) + 2);
-        int roomsInY = columns / ((int) (minHeight / cellSize) + 2);
+        int roomsInX = rows / ((int) (minWidth / Map.TILE_SIZE) + 2);
+        int roomsInY = columns / ((int) (minHeight / Map.TILE_SIZE) + 2);
 
         double randomMultiplier = 0.0;
         map.setRandom(new RandomInternal(randomMultiplier));
@@ -225,7 +221,7 @@ public class MapTest {
         }
         map.setRandom(new RandomInternal(randomMultipliers));
 
-        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns, cellSize);
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
         int expectedSize = roomCount;
         assertEquals(expectedSize, placedRooms.size());
     }
@@ -281,7 +277,6 @@ public class MapTest {
     public void testPlaceRoomsInAreaMultipleTriesIfRoomNotFit() {
         int rows = 30;
         int columns = 30;
-        double cellSize = 5.0;
         minWidth = 10.0;
         minHeight = minWidth;
 
@@ -310,8 +305,7 @@ public class MapTest {
         }
         map.setRandom(new RandomInternal(randomMultipliers));
 
-        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns,
-                cellSize);
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
         int expectedSize = roomCount;
         assertEquals(expectedSize, placedRooms.size());
 
@@ -326,10 +320,8 @@ public class MapTest {
         // 800 * 800 pixels
         int rows = 160;
         int columns = 160;
-        double cellSize = 5.0;
         int numberOfTriesBeforeDiscard = 10;
-        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns,
-                cellSize);
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
 
         for (Map.Room room : placedRooms) {
@@ -347,28 +339,28 @@ public class MapTest {
     private void checkCellsAboveRoom(Gridd gridd, Gridd.Index startIndex, int endColumn) {
         Gridd.Index i = gridd.new Index(startIndex);
         for (i.row -= 1, i.column -= 1; i.column <= endColumn; i.column++) {
-            assertEquals(-1, gridd.getCell(i));
+            assertEquals(-1, gridd.getTile(i));
         }
     }
 
     private void checkCellsBelowRoom(Gridd gridd, Gridd.Index endIndex, int startColumn) {
         Gridd.Index i = gridd.new Index(endIndex);
         for (i.row += 1, i.column += 1; i.column >= startColumn; i.column--) {
-            assertEquals(-1, gridd.getCell(i));
+            assertEquals(-1, gridd.getTile(i));
         }
     }
 
     private void checkCellsToLeftOfRoom(Gridd gridd, Gridd.Index startIndex, int endRow) {
         Gridd.Index i = gridd.new Index(startIndex);
         for (i.column -= 1; i.row <= endRow + 1; i.row++) {
-            assertEquals(-1, gridd.getCell(i));
+            assertEquals(-1, gridd.getTile(i));
         }
     }
 
     private void checkCellsToRightOfRoom(Gridd gridd, Gridd.Index endIndex, int startRow) {
         Gridd.Index i = gridd.new Index(endIndex);
         for (i.column += 1; i.row >= startRow + 1; i.row--) {
-            assertEquals(-1, gridd.getCell(i));
+            assertEquals(-1, gridd.getTile(i));
         }
     }
 
@@ -380,21 +372,20 @@ public class MapTest {
 
         int rows = 80;
         int columns = 80;
-        double cellSize = 5.0;
         int numberOfTriesBeforeDiscard = 10;
-        map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns, cellSize);
+        map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
 
         int expected = -1;
         int lastRow = rows - 1;
         for (int column = 0; column < columns; column++) {
-            assertEquals(expected, gridd.getCell(0, column));
-            assertEquals(expected, gridd.getCell(lastRow, column));
+            assertEquals(expected, gridd.getTile(0, column));
+            assertEquals(expected, gridd.getTile(lastRow, column));
         }
         int lastColumn = columns - 1;
         for (int row = 0; row < rows; row++) {
-            assertEquals(expected, gridd.getCell(row, 0));
-            assertEquals(expected, gridd.getCell(row, lastColumn));
+            assertEquals(expected, gridd.getTile(row, 0));
+            assertEquals(expected, gridd.getTile(row, lastColumn));
         }
     }
 
@@ -407,11 +398,10 @@ public class MapTest {
         // 800 * 800 pixels
         int rows = 160;
         int columns = 160;
-        double cellSize = 5.0;
-        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns, cellSize);
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
 
-        double widthOfArea = columns * cellSize;
-        double heightOfArea = rows * cellSize;
+        double widthOfArea = columns * Map.TILE_SIZE;
+        double heightOfArea = rows * Map.TILE_SIZE;
         for (Map.Room room : placedRooms) {
             boolean expected = (room.getPosition().getX() + room.getWidth()) < widthOfArea &&
                     (room.getPosition().getY() + room.getHeight()) < heightOfArea;
@@ -430,22 +420,21 @@ public class MapTest {
         // 800 * 800 pixels
         int rows = 160;
         int columns = 160;
-        double cellSize = 5.0;
-        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns, cellSize);
+        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
         assertTrue(placedRooms.size() > 1);
     }
 
     @Test
     public void testGetGriddIndexBasedOnPosition() {
-        double cellSize = 10.0;
+        double tileSize = 10.0;
         Point point = new Point();
         int cellsInX = 3;
         int cellsInY = 2;
-        point.setX(cellSize * cellsInX);
-        point.setY(cellSize * cellsInY);
+        point.setX(tileSize * cellsInX);
+        point.setY(tileSize * cellsInY);
         int expectedRow = cellsInY;
         int expectedColumn = cellsInX;
-        Gridd gridd = new Gridd(10, 10, cellSize);
+        Gridd gridd = new Gridd(10, 10, tileSize);
         Gridd.Index griddIndex = gridd.getGriddIndexBasedOnPosition(point);
         assertEquals(expectedRow, griddIndex.row);
         assertEquals(expectedColumn, griddIndex.column);
@@ -459,8 +448,7 @@ public class MapTest {
 
         int rows = 80;
         int columns = 80;
-        double cellSize = 10.0;
-        map.placeRoomsInArea(rooms, 1, rows, columns, cellSize);
+        map.placeRoomsInArea(rooms, 1, rows, columns);
 
         Gridd gridd = map.getCopyOfGridd();
     }
@@ -469,11 +457,11 @@ public class MapTest {
     public void testGriddParserGetRoomCellCountInX() {
         Map.Room room = map.new Room(10.0, 10.0);
 
-        double cellSize = 5.0;
+        double tileSize = 5.0;
         int columns = 80;
-        Gridd gridd = new Gridd(columns, columns, cellSize);
+        Gridd gridd = new Gridd(columns, columns, tileSize);
         gridd.getRoomParser().setRoom(room);
-        int cellCountInX = gridd.getRoomParser().getRoomCellCountInX();
+        int cellCountInX = gridd.getRoomParser().getRoomTileCountInX();
 
         assertEquals(3, cellCountInX);
     }
@@ -482,11 +470,11 @@ public class MapTest {
     public void testGriddParserGetRoomCellCountInY() {
         Map.Room room = map.new Room(10.0, 10.0);
 
-        double cellSize = 5.0;
+        double tileSize = 5.0;
         int columns = 80;
-        Gridd gridd = new Gridd(columns, columns, cellSize);
+        Gridd gridd = new Gridd(columns, columns, tileSize);
         gridd.getRoomParser().setRoom(room);
-        int cellCountInY = gridd.getRoomParser().getRoomCellCountInY();
+        int cellCountInY = gridd.getRoomParser().getRoomTileCountInY();
 
         assertEquals(3, cellCountInY);
 
