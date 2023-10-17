@@ -11,17 +11,16 @@ public class App {
 
         Map map = new Map();
         int roomCount = 100;
-        ArrayList<Map.Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
+        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
 
         int rows = 40;
         int columns = 40;
-        ArrayList<Map.Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
         Gridd gridd = map.getCopyOfGridd();
-        map.printGridd();
 
         Random random = new Random();
-        Map.Room randomRoom = placedRooms.get(random.nextInt(placedRooms.size() - 1));
+        Room randomRoom = placedRooms.get(random.nextInt(placedRooms.size() - 1));
 
         Player player = new Player("TOTO", randomRoom.getPosition());
 

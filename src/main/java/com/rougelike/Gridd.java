@@ -2,6 +2,9 @@ package com.rougelike;
 
 public class Gridd {
 
+    public static final int BORDER_VALUE = -3;
+    public static final int ROOM_BORDER_VALUE = -2;
+
     public class Index {
         int row;
         int column;
@@ -24,17 +27,19 @@ public class Gridd {
 
     public class RoomParser {
 
+        private int currentRoomId;
         private Index index;
         private Index startIndex;
         private Index endIndex;
 
         public RoomParser() {
+            currentRoomId = -1;
             index = new Index();
             startIndex = new Index();
             endIndex = new Index();
         }
 
-        public void setRoom(Map.Room room) {
+        public void setRoom(Room room) {
             double xSpand = room.getPosition().getX() + room.getWidth();
             double ySpand = room.getPosition().getY() + room.getHeight();
             Point lastPoistion = new Point(xSpand, ySpand);
@@ -42,6 +47,7 @@ public class Gridd {
             startIndex = getGriddIndexBasedOnPosition(room.getPosition());
             endIndex = getGriddIndexBasedOnPosition(lastPoistion);
             index = new Index(startIndex);
+            currentRoomId = room.getId();
         }
 
         public Index getRoomStartIndex() {
@@ -84,35 +90,39 @@ public class Gridd {
         public void placeRoomInGridd() {
             while (hasNextIndex()) {
                 Index i = nextIndex();
-                setTile(i, getTile(i) + 1);
+                setTile(i, currentRoomId);
             }
         }
 
         public void setTilesAboveRoom() {
-            Index i = new Index(startIndex);
-            for (i.row -= 1, i.column -= 1; i.column <= endIndex.column; i.column++) {
-                setTile(i, -1);
+            Index i = new Index(startIndex.row - 1, startIndex.column - 1);
+            int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
+            for (; i.column <= endIndex.column; i.column++) {
+                setTile(i, borderValue);
             }
         }
 
         public void setTilesBelowRoom() {
-            Index i = new Index(endIndex);
-            for (i.row += 1, i.column += 1; i.column >= startIndex.column; i.column--) {
-                setTile(i, -1);
+            Index i = new Index(endIndex.row + 1, endIndex.column + 1);
+            int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
+            for (; i.column >= startIndex.column; i.column--) {
+                setTile(i, borderValue);
             }
         }
 
         public void setTilesToLeftOfRoom() {
-            Index i = new Index(startIndex);
-            for (i.column -= 1; i.row <= endIndex.row + 1; i.row++) {
-                setTile(i, -1);
+            Index i = new Index(startIndex.row, startIndex.column - 1);
+            int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
+            for (; i.row <= endIndex.row + 1; i.row++) {
+                setTile(i, borderValue);
             }
         }
 
         public void setTilesToRightOfRoom() {
-            Index i = new Index(endIndex);
-            for (i.column += 1; i.row >= startIndex.row - 1; i.row--) {
-                setTile(i, -1);
+            Index i = new Index(endIndex.row, endIndex.column + 1);
+            int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
+            for (; i.row >= startIndex.row - 1; i.row--) {
+                setTile(i, borderValue);
             }
         }
 

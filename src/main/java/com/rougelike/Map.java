@@ -10,34 +10,6 @@ public class Map {
     private Random random;
     private Gridd gridd;
 
-    public class Room {
-        private Point position = new Point();
-        private double width;
-        private double height;
-
-        public Room(double width, double height) {
-            this.width = width;
-            this.height = height;
-        }
-
-        public void setPosition(double x, double y) {
-            position.setX(x);
-            position.setY(y);
-        }
-
-        public Point getPosition() {
-            return position;
-        }
-
-        public double getWidth() {
-            return width;
-        }
-
-        public double getHeight() {
-            return height;
-        }
-    }
-
     public Map() {
         random = new Random();
     }
@@ -53,27 +25,27 @@ public class Map {
     private void setUpGriddBorder(Gridd gridd) {
         int lastRow = gridd.getRowCount() - 1;
         for (int column = 0; column < gridd.getColumnCount(); column++) {
-            gridd.setTile(0, column, -1);
-            gridd.setTile(lastRow, column, -1);
+            gridd.setTile(0, column, Gridd.BORDER_VALUE);
+            gridd.setTile(lastRow, column, Gridd.BORDER_VALUE);
         }
         int lastColumn = gridd.getColumnCount() - 1;
         for (int row = 0; row < gridd.getRowCount(); row++) {
-            gridd.setTile(row, 0, -1);
-            gridd.setTile(row, lastColumn, -1);
+            gridd.setTile(row, 0, Gridd.BORDER_VALUE);
+            gridd.setTile(row, lastColumn, Gridd.BORDER_VALUE);
         }
     }
 
-    private void fillGriddWithZeros(Gridd gridd) {
+    private void fillGriddWithNegativeOne(Gridd gridd) {
         for (int row = 0; row < gridd.getRowCount(); row++) {
             for (int column = 0; column < gridd.getColumnCount(); column++) {
-                gridd.setTile(row, column, 0);
+                gridd.setTile(row, column, -1);
             }
         }
     }
 
     private Gridd setUpGridd(int rows, int columns) {
         Gridd gridd = new Gridd(rows, columns, TILE_SIZE);
-        fillGriddWithZeros(gridd);
+        fillGriddWithNegativeOne(gridd);
         setUpGriddBorder(gridd);
         return gridd;
     }
@@ -82,8 +54,10 @@ public class Map {
         gridd.getRoomParser().setRoom(room);
         while (gridd.getRoomParser().hasNextIndex()) {
             Gridd.Index index = gridd.getRoomParser().nextIndex();
-            int currentCellValue = gridd.getTile(index);
-            if (currentCellValue == 1 || currentCellValue == -1) {
+            int currentTileValue = gridd.getTile(index);
+            if (currentTileValue >= 0
+                    || currentTileValue == Gridd.BORDER_VALUE
+                    || currentTileValue == Gridd.ROOM_BORDER_VALUE) {
                 return false;
             }
         }
@@ -105,7 +79,7 @@ public class Map {
         ArrayList<Room> roomsPlaced = new ArrayList<>();
         for (Room currentRoom : rooms) {
             // TILE_SIZE är med här för att inte ha med griddens border i platseringen,
-            // alltså kan man int platsera ett rum på the border
+            // alltså kan man inte platsera ett rum på the bordern
             Point min = new Point(TILE_SIZE, TILE_SIZE);
             Point max = new Point(gridd.getWidth() - TILE_SIZE - (currentRoom.getWidth() + 1.0),
                     gridd.getHeight() - TILE_SIZE - (currentRoom.getHeight() + 1.0));
@@ -115,8 +89,9 @@ public class Map {
                         randomDoubleInBounds(min.getY(), max.getY()));
 
                 if (checkIfRoomCanBePlaced(gridd, currentRoom)) {
+                    currentRoom.setId(roomsPlaced.size());
                     placeRoomInGridd(gridd.getRoomParser(), currentRoom);
-                    roomsPlaced.add(currentRoom);
+                    roomsPlaced.add(new Room(currentRoom));
                     break;
                 }
             }
@@ -167,9 +142,12 @@ public class Map {
         for (int row = 0; row < gridd.getRowCount(); row++) {
             for (int column = 0; column < gridd.getColumnCount(); column++) {
                 int cellValue = gridd.getTile(row, column);
-                if (cellValue == -1)
+                if (cellValue == Gridd.BORDER_VALUE || cellValue == Gridd.ROOM_BORDER_VALUE || cellValue == -1)
                     cellValue = 0;
-                System.out.print(String.format("%d", cellValue));
+                else if (cellValue >= 0) {
+                    cellValue = 1;
+                }
+                System.out.print(String.format("%d%d", cellValue, cellValue));
             }
             System.out.println();
         }
