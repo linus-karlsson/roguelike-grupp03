@@ -50,8 +50,7 @@ public class Map {
         return gridd;
     }
 
-    private boolean checkIfRoomCanBePlaced(Gridd gridd, Room room) {
-        gridd.getRoomParser().setRoom(room);
+    private boolean checkIfRoomCanBePlaced(Gridd gridd) {
         while (gridd.getRoomParser().hasNextIndex()) {
             Gridd.Index index = gridd.getRoomParser().nextIndex();
             int currentTileValue = gridd.getTile(index);
@@ -64,8 +63,7 @@ public class Map {
         return true;
     }
 
-    private void placeRoomInGridd(Gridd.RoomParser griddParser, Room room) {
-        griddParser.setRoom(room);
+    private void placeRoomInGridd(Gridd.RoomParser griddParser) {
         griddParser.setRoomBorder();
         griddParser.placeRoomInGridd();
     }
@@ -88,9 +86,10 @@ public class Map {
                 currentRoom.setPosition(randomDoubleInBounds(min.getX(), max.getX()),
                         randomDoubleInBounds(min.getY(), max.getY()));
 
-                if (checkIfRoomCanBePlaced(gridd, currentRoom)) {
+                gridd.getRoomParser().setRoom(currentRoom);
+                if (checkIfRoomCanBePlaced(gridd)) {
                     currentRoom.setId(roomsPlaced.size());
-                    placeRoomInGridd(gridd.getRoomParser(), currentRoom);
+                    placeRoomInGridd(gridd.getRoomParser());
                     roomsPlaced.add(new Room(currentRoom));
                     break;
                 }

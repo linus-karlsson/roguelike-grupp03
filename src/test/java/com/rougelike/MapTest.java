@@ -160,9 +160,9 @@ public class MapTest {
         for (int i = 0; i < placedRooms.size(); i++) {
             Room room = placedRooms.get(i);
             gridd.getRoomParser().setRoom(room);
-            while (gridd.getRoomParser().hasNextIndex()) {
-                Gridd.Index index = gridd.getRoomParser().nextIndex();
-                assertEquals(i, gridd.getTile(index));
+            ArrayList<Integer> roomTileList = gridd.getRoomParser().roomAreaToList();
+            for (int tile : roomTileList) {
+                assertEquals(i, tile, roomTileList.toString());
             }
         }
     }
@@ -183,9 +183,9 @@ public class MapTest {
 
         for (Room room : placedRooms) {
             gridd.getRoomParser().setRoom(room);
-            while (gridd.getRoomParser().hasNextIndex()) {
-                Gridd.Index index = gridd.getRoomParser().nextIndex();
-                assertEquals(0, gridd.getTile(index));
+            ArrayList<Integer> roomTileList = gridd.getRoomParser().roomAreaToList();
+            for (int tile : roomTileList) {
+                assertEquals(0, tile, roomTileList.toString());
             }
         }
     }

@@ -1,54 +1,91 @@
 package com.rougelike;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
 
 public class GriddTest {
+    double tileSize = 5.0;
+    Gridd gridd = new Gridd(10, 10, tileSize);
+
+    @Test
+    public void testHasNextIndex() {
+        int tilesInX = 3;
+        int tilesInY = 4;
+        Room room = new Room(tileSize * (tilesInX - 1), tileSize * (tilesInY - 1));
+        room.setPosition(0.0, 0.0);
+        gridd.getRoomParser().setRoom(room);
+        for (int row = 0; row < tilesInY; row++) {
+            for (int column = 0; column < tilesInX; column++) {
+                assertTrue(gridd.getRoomParser().hasNextIndex());
+                gridd.getRoomParser().nextIndex();
+            }
+        }
+        assertFalse(gridd.getRoomParser().hasNextIndex());
+    }
+
+    @Test
+    public void testNextIndex() {
+        int tilesInX = 3;
+        int tilesInY = 4;
+        Room room = new Room(tileSize * (tilesInX - 1), tileSize * (tilesInY - 1));
+        room.setPosition(0.0, 0.0);
+        gridd.getRoomParser().setRoom(room);
+        for (int row = 0; row < tilesInY; row++) {
+            for (int column = 0; column < tilesInX; column++) {
+                Gridd.Index index = gridd.getRoomParser().nextIndex();
+                assertEquals(index.row, row);
+                assertEquals(index.column, column);
+            }
+        }
+    }
+
+    @Test
+    public void testRoomAreaToList() {
+        Room room = new Room(10.0, 10.0); // 3 x 3 room
+        room.setId(3);
+        gridd.getRoomParser().setRoom(room);
+        gridd.getRoomParser().placeRoomInGridd();
+        ArrayList<Integer> roomTileList = gridd.getRoomParser().roomAreaToList();
+        ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 3, 3, 3, 3, 3));
+        assertTrue(roomTileList.equals(expected), roomTileList.toString());
+    }
+
+    @Test
+    public void testRoomAreaToListSize() {
+        Room room = new Room(10.0, 10.0); // 3 x 3 room
+        room.setId(3);
+        gridd.getRoomParser().setRoom(room);
+        gridd.getRoomParser().placeRoomInGridd();
+        ArrayList<Integer> roomTileList = gridd.getRoomParser().roomAreaToList();
+        ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 3, 3, 3, 3, 3));
+        assertTrue(roomTileList.size() == expected.size());
+    }
 
     @Test
     public void testGetGriddIndexBasedOnPosition() {
-        double tileSize = 10.0;
-        Point point = new Point();
         int cellsInX = 3;
         int cellsInY = 2;
-        point.setX(tileSize * cellsInX);
-        point.setY(tileSize * cellsInY);
-        int expectedRow = cellsInY;
-        int expectedColumn = cellsInX;
-        Gridd gridd = new Gridd(10, 10, tileSize);
+        Point point = new Point(tileSize * cellsInX, tileSize * cellsInY);
+        Gridd.Index expected = gridd.new Index(cellsInY, cellsInX);
         Gridd.Index griddIndex = gridd.getGriddIndexBasedOnPosition(point);
-        assertEquals(expectedRow, griddIndex.row);
-        assertEquals(expectedColumn, griddIndex.column);
+        assertTrue(expected.equals(griddIndex));
     }
 
     @Test
     public void testGriddParserGetRoomCellCountInX() {
         Room room = new Room(10.0, 10.0);
-
-        double tileSize = 5.0;
-        int columns = 80;
-        Gridd gridd = new Gridd(columns, columns, tileSize);
         gridd.getRoomParser().setRoom(room);
         int cellCountInX = gridd.getRoomParser().getRoomTileCountInX();
-
         assertEquals(3, cellCountInX);
     }
 
     @Test
     public void testGriddParserGetRoomCellCountInY() {
         Room room = new Room(10.0, 10.0);
-
-        double tileSize = 5.0;
-        int columns = 80;
-        Gridd gridd = new Gridd(columns, columns, tileSize);
         gridd.getRoomParser().setRoom(room);
         int cellCountInY = gridd.getRoomParser().getRoomTileCountInY();
-
         assertEquals(3, cellCountInY);
 
     }

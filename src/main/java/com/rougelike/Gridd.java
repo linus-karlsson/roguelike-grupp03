@@ -1,11 +1,13 @@
 package com.rougelike;
 
+import java.util.ArrayList;
+
 public class Gridd {
 
     public static final int BORDER_VALUE = -3;
     public static final int ROOM_BORDER_VALUE = -2;
 
-    public class Index {
+    public class Index implements Comparable<Index> {
         int row;
         int column;
 
@@ -23,17 +25,34 @@ public class Gridd {
             row = otherIndex.row;
             column = otherIndex.column;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Index) {
+                Index other = (Index) obj;
+                return row == other.row && column == other.column;
+            }
+            return false;
+        }
+
+        @Override
+        public int compareTo(Index other) {
+            int result = row - other.row;
+            if (result == 0) {
+                result = column - other.column;
+            }
+            return result;
+        }
     }
 
     public class RoomParser {
 
-        private int currentRoomId;
+        private Room currentRoom;
         private Index index;
         private Index startIndex;
         private Index endIndex;
 
         public RoomParser() {
-            currentRoomId = -1;
             index = new Index();
             startIndex = new Index();
             endIndex = new Index();
@@ -47,7 +66,11 @@ public class Gridd {
             startIndex = getGriddIndexBasedOnPosition(room.getPosition());
             endIndex = getGriddIndexBasedOnPosition(lastPoistion);
             index = new Index(startIndex);
-            currentRoomId = room.getId();
+            currentRoom = room;
+        }
+
+        private void resetRoom() {
+            setRoom(currentRoom);
         }
 
         public Index getRoomStartIndex() {
@@ -67,13 +90,7 @@ public class Gridd {
         }
 
         public boolean hasNextIndex() {
-            boolean result = index.row <= endIndex.row;
-            if (result) {
-                if (index.row == endIndex.row) {
-                    result = index.column <= endIndex.column;
-                }
-            }
-            return result;
+            return index.compareTo(endIndex) <= 0;
         }
 
         public Index nextIndex() {
@@ -87,14 +104,25 @@ public class Gridd {
             return result;
         }
 
-        public void placeRoomInGridd() {
+        public ArrayList<Integer> roomAreaToList() {
+            int rows = getRoomTileCountInY();
+            int columns = getRoomTileCountInX();
+            ArrayList<Integer> result = new ArrayList<>(rows * columns);
             while (hasNextIndex()) {
-                Index i = nextIndex();
-                setTile(i, currentRoomId);
+                result.add(getTile(nextIndex()));
             }
+            resetRoom();
+            return result;
         }
 
-        public void setTilesAboveRoom() {
+        public void placeRoomInGridd() {
+            while (hasNextIndex()) {
+                setTile(nextIndex(), currentRoom.getId());
+            }
+            resetRoom();
+        }
+
+        private void setTilesAboveRoom() {
             Index i = new Index(startIndex.row - 1, startIndex.column - 1);
             int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
             for (; i.column <= endIndex.column; i.column++) {
@@ -102,7 +130,7 @@ public class Gridd {
             }
         }
 
-        public void setTilesBelowRoom() {
+        private void setTilesBelowRoom() {
             Index i = new Index(endIndex.row + 1, endIndex.column + 1);
             int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
             for (; i.column >= startIndex.column; i.column--) {
@@ -110,7 +138,7 @@ public class Gridd {
             }
         }
 
-        public void setTilesToLeftOfRoom() {
+        private void setTilesToLeftOfRoom() {
             Index i = new Index(startIndex.row, startIndex.column - 1);
             int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
             for (; i.row <= endIndex.row + 1; i.row++) {
@@ -118,7 +146,7 @@ public class Gridd {
             }
         }
 
-        public void setTilesToRightOfRoom() {
+        private void setTilesToRightOfRoom() {
             Index i = new Index(endIndex.row, endIndex.column + 1);
             int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
             for (; i.row >= startIndex.row - 1; i.row--) {
@@ -131,6 +159,7 @@ public class Gridd {
             setTilesBelowRoom();
             setTilesToLeftOfRoom();
             setTilesToRightOfRoom();
+            resetRoom();
         }
 
     }
