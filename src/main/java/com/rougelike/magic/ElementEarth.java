@@ -13,6 +13,6 @@ public class ElementEarth extends MagicElementType{
 
             @Override
             public double getMultiplier(Player player) {
-                return BASE_MULTIPLIER;
+                return 1.05;
             }
 }
