@@ -249,11 +249,11 @@ public class PlayerEquipmentInteractionTest {
 
     @Test
     public void canUnequipWeapon() {
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point(null));
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         Torch torch = new Torch();
         player.addWeaponToInventory(torch);
         player.equipWeapon(torch);
-        player.unequipWeapon(player.getEquippedWeapon());
+        player.unequipWeapon();
         assertTrue(player.getEquippedWeapon() != torch);
     }
 
