@@ -123,7 +123,10 @@ public class Player {
         return name;
     }
 
-    // kunna sätta health för testning
+    public Race getRace() {
+        return race;
+    }
+
     public double setHealth(double health) {
         return this.health = health;
     }
