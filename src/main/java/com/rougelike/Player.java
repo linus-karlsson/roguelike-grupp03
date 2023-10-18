@@ -235,6 +235,12 @@ public class Player {
         weaponInventory.remove(weapon);
     }
 
+    public void setStatsWhenEquipping(Equipment equipment) {
+        strength += equipment.getStrength() * role.getStrengthMultiplier();
+        dexterity += equipment.getStrength() * role.getDexterityMultiplier();
+        intelligence += equipment.getIntelligence() + role.getIntelligenceMultiplier();
+    }
+
     public void equipWeapon(Weapon weapon) {
         if (!getWeaponInventory().contains(weapon)) {
             return;
@@ -242,7 +248,7 @@ public class Player {
         if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
                 weapon.getType() == EquipmentType.CLUB)) {
             equippedWeapon = weapon;
-            strength += weapon.getStrength() * role.getStrengthMultiplier();
+            setStatsWhenEquipping(weapon);
             setTotalWeaponDamage();
         } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
             equippedWeapon = weapon;
