@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import com.rougelike.*;
 import com.rougelike.races.Dwarf;
 import com.rougelike.roles.Knight;
+import com.rougelike.roles.Mage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -202,6 +203,82 @@ public class PlayerEquipmentInteractionTest {
         player.equipOffhand(shield);
 
         assertEquals(actual, player.getEquippedOffhand());
+    }
+
+    @Test
+    public void equipsWeaponIfCorrectRoleAndInInventory() {
+        FireSword fireSword = new FireSword();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Weapon actual = fireSword;
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
+        assertEquals(actual, player.getEquippedWeapon());
+    }
+
+    @Test
+    public void doesNotEquipWeaponIfWrongRole() {
+        FireSword fireSword = new FireSword();
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+        Weapon actual = player.getEquippedWeapon();
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
+        assertEquals(actual, player.getEquippedWeapon());
+    }
+
+    @Test
+    public void equippingWeaponIncreasesPlayerStats() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        FireSword fireSword = new FireSword();
+        double nothingEquippedStats = player.getStrength();
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
+        double weaponEquippedStats = player.getStrength();
+        assertTrue(weaponEquippedStats > nothingEquippedStats);
+    }
+
+    @Test
+    public void equippingWeaponIncreasesStatByCorrectAmount() {
+        Knight knight = new Knight();
+        Player player = new Player("Sven", new Dwarf(), knight, new Point());
+        FireSword fireSword = new FireSword();
+        double actual = (player.getStrength() + (fireSword.getStrength() * knight.getStrengthMultiplier()));
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
+        assertEquals(actual, player.getStrength());
+    }
+
+    @Test
+    public void canUnequipWeapon() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Torch torch = new Torch();
+        player.addWeaponToInventory(torch);
+        player.equipWeapon(torch);
+        player.unequipWeapon();
+        assertTrue(player.getEquippedWeapon() != torch);
+    }
+
+    @Test
+    public void unequippingWeaponReducesStats() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Torch torch = new Torch();
+        player.addWeaponToInventory(torch);
+        player.equipWeapon(torch);
+        double statsBeforeUnequipping = player.getStrength();
+        player.unequipWeapon();
+        assertTrue(player.getStrength() < statsBeforeUnequipping);
+    }
+
+    @Test
+    public void unequippingWeaponReducesStatsByCorrectAmount() {
+        Knight knight = new Knight();
+        Dwarf dwarf = new Dwarf();
+        Player player = new Player("Sven", dwarf, knight, new Point());
+        Torch torch = new Torch();
+        double actual = dwarf.getStartingStrength() * knight.getStrengthMultiplier();
+        player.addWeaponToInventory(torch);
+        player.equipWeapon(torch);
+        player.unequipWeapon();
+        assertEquals(actual, player.getStrength());
     }
 
     // Skapa fler tester för att kolla resten av kombinationerna.
