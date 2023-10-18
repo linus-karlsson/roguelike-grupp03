@@ -35,4 +35,12 @@ public class MagicElementTypeTest {
         assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
     }
 
+    @Test
+    void testGetMultiplierReturnsCorrectValueIfPlayerIsDwarfAndElementtypeAir() {
+        Magic magic = new Magic(Spell.TORNADO);
+        Player player = new Player("Test", new Dwarf(), new Thief(), new Point());
+        double expectedMultiplier = 1.00;
+        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.rougelike.magic;
 
+//dvärg svagare
 //vatten påverkar vind(alv) starkare i kombination med jord
 //vatten påverkar eld(orch) svagare
 public class ElementWater extends MagicElementType {
