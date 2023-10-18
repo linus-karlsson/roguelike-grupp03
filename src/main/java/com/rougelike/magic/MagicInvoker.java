@@ -36,10 +36,7 @@ abstract public class MagicInvoker {
     }
 
     private double checkImpactFromRace(double value, Player player, MagicElementType elementType) {
-        if (elementType.getName().equals("Air") && player.getRace() instanceof Elf) {
-            return value * elementType.getMultiplier(player);
-        }
-        if (elementType.getName().equals("Air") && player.getRace() instanceof Orc) {
+        if (elementType.getName().equals("Air") && player.getRace() instanceof Elf || player.getRace() instanceof Orc) {
             return value * elementType.getMultiplier(player);
         }
         return value;
