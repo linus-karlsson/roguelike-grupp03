@@ -8,8 +8,8 @@ import com.rougelike.races.*;
 // Vind påverkar jord(dvärg) svagare
 public class ElementAir extends MagicElementType {
 
-    private static final double AIR_MULTIPLIE_ELF = 1.05;
-    private static final double AIR_MULTIPLIE_ORCH = 0.95;
+    private static final double AIR_MULTIPLIER_ELF = 1.05;
+    private static final double AIR_MULTIPLIER_ORC = 0.95;
     
         public ElementAir() {
             super("Air");
@@ -17,10 +17,10 @@ public class ElementAir extends MagicElementType {
         @Override
         public double getMultiplier(Player player) {
             if (player.getRace() instanceof Elf) {
-                return AIR_MULTIPLIE_ELF;
+                return AIR_MULTIPLIER_ELF;
             }
             if (player.getRace() instanceof Orc) {
-                return AIR_MULTIPLIE_ORCH;
+                return AIR_MULTIPLIER_ORC;
             }
             return BASE_MULTIPLIER;
         }
