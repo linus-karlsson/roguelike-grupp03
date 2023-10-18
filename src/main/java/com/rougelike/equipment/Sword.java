@@ -1,15 +1,18 @@
 package com.rougelike.equipment;
 
 public class Sword extends Weapon {
-    private static final String SWORD_NAME = "Sword";
-    private static final int SWORD_PRICE = 100;
+    private static final String NAME = "Sword";
+    private static final int PRICE = 100;
     private static final EquipmentType TYPE = EquipmentType.SWORD;
-    private static final int SWORD_DAMAGE = 8;
-    private static final int SWORD_ELEMENTAL_DAMAGE = 0;
-    private static final WeaponElementType ELEMENT = WeaponElementType.NONE;
+    private static final int STRENGTH = 11;
+    private static final int DEXTERITY = 0;
+    private static final int INTELLIGENCE = 0;
+    private static final int DAMAGE = 7;
+    private static final int ELEMENTAL_DAMAGE = 0;
+    private static final ElementType ELEMENT = ElementType.NONE;
 
     public Sword() {
-        super(SWORD_NAME, SWORD_PRICE, TYPE, SWORD_DAMAGE, SWORD_ELEMENTAL_DAMAGE, ELEMENT);
+        super(NAME, PRICE, TYPE, STRENGTH, DEXTERITY, INTELLIGENCE, DAMAGE, ELEMENTAL_DAMAGE, ELEMENT);
     }
 
 }

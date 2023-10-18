@@ -1,6 +1,6 @@
 package com.rougelike.equipment;
 
-public enum WeaponElementType {
+public enum ElementType {
     NONE,
     EARTH,
     WATER,

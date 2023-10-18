@@ -64,7 +64,7 @@ public class EquipmentTest {
     @Test
     public void fireSwordHasCorrectElement() {
         FireSword fireSword = new FireSword();
-        WeaponElementType expected = WeaponElementType.FIRE;
+        ElementType expected = ElementType.FIRE;
 
         assertEquals(expected, fireSword.getWeaponElementType());
     }

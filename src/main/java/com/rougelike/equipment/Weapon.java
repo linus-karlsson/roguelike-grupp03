@@ -4,11 +4,12 @@ public abstract class Weapon extends Equipment {
 
     int damage;
     int elementalDamage;
-    WeaponElementType element;
+    ElementType element;
 
-    public Weapon(String name, int price, EquipmentType type, int damage, int elementalDamage,
-            WeaponElementType element) {
-        super(name, price, type);
+    public Weapon(String name, int price, EquipmentType type, int strength, int dexterity, int intelligence, int damage,
+            int elementalDamage,
+            ElementType element) {
+        super(name, price, type, strength, dexterity, intelligence);
         this.damage = damage;
         this.elementalDamage = elementalDamage;
         this.element = element;
@@ -22,9 +23,8 @@ public abstract class Weapon extends Equipment {
         return elementalDamage;
     }
 
-    public WeaponElementType getWeaponElementType() {
+    public ElementType getWeaponElementType() {
         return element;
     }
 
 }
-// Ska elemental damage vara en grej? Göra bonusskada/reducerad skada mot vissa?

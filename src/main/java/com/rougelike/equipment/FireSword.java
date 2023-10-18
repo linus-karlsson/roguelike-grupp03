@@ -2,16 +2,18 @@ package com.rougelike.equipment;
 
 public class FireSword extends Weapon {
 
-    private static final String FIRESWORD_NAME = "Fire Sword";
-    private static final int FIRESWORD_PRICE = 300;
+    private static final String NAME = "Fire Sword";
+    private static final int PRICE = 300;
     private static final EquipmentType TYPE = EquipmentType.SWORD;
-    private static final int FIRESWORD_DAMAGE = 4;
-    private static final int FIRESWORD_ELEMENTAL_DAMAGE = 10;
-    private static final WeaponElementType ELEMENT = WeaponElementType.FIRE;
+    private static final int STRENGTH = 8;
+    private static final int DEXTERITY = 0;
+    private static final int INTELLIGENCE = 0;
+    private static final int DAMAGE = 4;
+    private static final int ELEMENTAL_DAMAGE = 10;
+    private static final ElementType ELEMENT = ElementType.FIRE;
 
     public FireSword() {
-        super(FIRESWORD_NAME, FIRESWORD_PRICE, TYPE, FIRESWORD_DAMAGE, FIRESWORD_ELEMENTAL_DAMAGE,
-                ELEMENT);
+        super(NAME, PRICE, TYPE, STRENGTH, DEXTERITY, INTELLIGENCE, DAMAGE, ELEMENTAL_DAMAGE, ELEMENT);
     }
 
 }
