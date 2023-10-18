@@ -3,7 +3,7 @@ package com.rougelike;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Map {
+public class DungeonGenerator {
     public static final double TILE_SIZE = 5.0;
     private static final double MIN_ROOM_WIDTH_OR_HEIGHT = 1.0;
     private static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
@@ -11,11 +11,11 @@ public class Map {
     private Random random;
     private Gridd gridd;
 
-    public Map() {
+    public DungeonGenerator() {
         random = new Random();
     }
 
-    public Map(Random random) {
+    public DungeonGenerator(Random random) {
         this.random = random;
     }
 
