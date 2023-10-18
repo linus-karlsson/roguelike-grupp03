@@ -9,14 +9,14 @@ public class PlayerTest {
 
     @Test
     public void testPlayerConstructor() {
-        Player player = new Player("Test", null);
+        Player player = new Player("Test", new Point());
         String expected = "Test";
         assertEquals(expected, player.getName());
     }
 
     @Test
     public void testIncreaseXp() {
-        Player player = new Player("Test", null);
+        Player player = new Player("Test", new Point());
         double xpToNextLevel = player.getXpToNextLevel();
         double xpToIncrease = xpToNextLevel;
         int level = player.getLevel();
@@ -29,10 +29,24 @@ public class PlayerTest {
     public void TestPlayerInstanceCreationDwarfKnight() {
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Gimli", dwarf, knight, null);
+        Player player = new Player("Gimli", dwarf, knight,new Point());
         double expectedHealth = dwarf.getStartingHealth() * knight.getHealthMultiplier();
         double expectedIntelligence = dwarf.getStartingIntelligence() * knight.getIntelligenceMultiplier();
         assertEquals(expectedHealth, player.getHealth());
         assertEquals(expectedIntelligence, player.getIntelligence());
+    }
+
+    @Test
+    public void TestTotalWeaponDamage(){
+        Dwarf dwarf = new Dwarf();
+        Knight knight = new Knight();
+        Player player = new Player("Gimli", dwarf, knight, new Point());
+        double knightWeaponDamage = knight.getStartingWeapon().getDamage();
+        double dwarfStrength = dwarf.getStartingStrength();
+        double knightStrengthMultiplier = knight.getStrengthMultiplier();
+        double totalStrength = knightStrengthMultiplier * dwarfStrength;
+        double expectedDamage = knightWeaponDamage * totalStrength;
+        double playerTotalWeaponDamage = player.attackWithWeapon();
+        assertEquals(expectedDamage, playerTotalWeaponDamage);
     }
 }
