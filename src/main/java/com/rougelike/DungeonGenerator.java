@@ -3,7 +3,7 @@ package com.rougelike;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Map {
+public class DungeonGenerator {
     public static final double TILE_SIZE = 5.0;
     private static final double MIN_ROOM_WIDTH_OR_HEIGHT = 1.0;
     private static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
@@ -11,61 +11,16 @@ public class Map {
     private Random random;
     private Gridd gridd;
 
-    public Map() {
+    public DungeonGenerator() {
         random = new Random();
     }
 
-    public Map(Random random) {
+    public DungeonGenerator(Random random) {
         this.random = random;
     }
 
     public void setRandom(Random random) {
         this.random = random;
-    }
-
-    private void setUpGriddBorder(Gridd gridd) {
-        int lastRow = gridd.getRowCount() - 1;
-        for (int column = 0; column < gridd.getColumnCount(); column++) {
-            gridd.setTile(0, column, Gridd.BORDER_VALUE);
-            gridd.setTile(lastRow, column, Gridd.BORDER_VALUE);
-        }
-        int lastColumn = gridd.getColumnCount() - 1;
-        for (int row = 0; row < gridd.getRowCount(); row++) {
-            gridd.setTile(row, 0, Gridd.BORDER_VALUE);
-            gridd.setTile(row, lastColumn, Gridd.BORDER_VALUE);
-        }
-    }
-
-    private void fillGriddWithNegativeOne(Gridd gridd) {
-        for (int row = 0; row < gridd.getRowCount(); row++) {
-            for (int column = 0; column < gridd.getColumnCount(); column++) {
-                gridd.setTile(row, column, -1);
-            }
-        }
-    }
-
-    private Gridd setUpGridd(int rows, int columns) {
-        Gridd gridd = new Gridd(rows, columns, TILE_SIZE);
-        fillGriddWithNegativeOne(gridd);
-        setUpGriddBorder(gridd);
-        return gridd;
-    }
-
-    private boolean checkIfRoomCanBePlaced(Gridd gridd) {
-        while (gridd.getRoomParser().hasNextIndex()) {
-            Gridd.Index index = gridd.getRoomParser().nextIndex();
-            int currentTileValue = gridd.getTile(index);
-            if (currentTileValue >= 0
-                    || currentTileValue == Gridd.BORDER_VALUE) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void placeRoomInGridd(Gridd.RoomParser griddParser) {
-        griddParser.setRoomBorder();
-        griddParser.placeRoomInGridd();
     }
 
     public ArrayList<Room> placeRoomsInArea(ArrayList<Room> rooms, int numberOfTriesBeforeDiscard, int rows,
@@ -98,25 +53,49 @@ public class Map {
         return roomsPlaced;
     }
 
-    private int abs(int value) {
-        return value < 0 ? value * -1 : value;
+    private Gridd setUpGridd(int rows, int columns) {
+        Gridd gridd = new Gridd(rows, columns, TILE_SIZE);
+        fillGriddWithNegativeOne(gridd);
+        setUpGriddBorder(gridd);
+        return gridd;
     }
 
-    private void iterateRowTilesToNextRoom(int rowDifferens, Gridd.Index indexForRowTraversal, int roomCount) {
-        for (int j = 0; j <= rowDifferens; j++) {
-            int currentTileValue = gridd.getTile(indexForRowTraversal);
-            gridd.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
-            indexForRowTraversal.row++;
+    private void fillGriddWithNegativeOne(Gridd gridd) {
+        for (int row = 0; row < gridd.getRowCount(); row++) {
+            for (int column = 0; column < gridd.getColumnCount(); column++) {
+                gridd.setTile(row, column, -1);
+            }
         }
-        indexForRowTraversal.row--;// Reset the last iteration
     }
 
-    private void iterateColumnTilesToNextRoom(int columnDifferens, Gridd.Index indexForColumnTraversal, int roomCount) {
-        for (int j = 0; j <= columnDifferens; j++) {
-            int currentTileValue = gridd.getTile(indexForColumnTraversal);
-            gridd.setTile(indexForColumnTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
-            indexForColumnTraversal.column++;
+    private void setUpGriddBorder(Gridd gridd) {
+        int lastRow = gridd.getRowCount() - 1;
+        for (int column = 0; column < gridd.getColumnCount(); column++) {
+            gridd.setTile(0, column, Gridd.BORDER_VALUE);
+            gridd.setTile(lastRow, column, Gridd.BORDER_VALUE);
         }
+        int lastColumn = gridd.getColumnCount() - 1;
+        for (int row = 0; row < gridd.getRowCount(); row++) {
+            gridd.setTile(row, 0, Gridd.BORDER_VALUE);
+            gridd.setTile(row, lastColumn, Gridd.BORDER_VALUE);
+        }
+    }
+
+    private boolean checkIfRoomCanBePlaced(Gridd gridd) {
+        while (gridd.getRoomParser().hasNextIndex()) {
+            Gridd.Index index = gridd.getRoomParser().nextIndex();
+            int currentTileValue = gridd.getTile(index);
+            if (currentTileValue >= 0
+                    || currentTileValue == Gridd.BORDER_VALUE) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void placeRoomInGridd(Gridd.RoomParser griddParser) {
+        griddParser.setRoomBorder();
+        griddParser.placeRoomInGridd();
     }
 
     public void connectRooms(ArrayList<Room> rooms) {
@@ -139,6 +118,25 @@ public class Map {
             iterateColumnTilesToNextRoom(columnDifferens, indexForColumnTraversal, columnDifferens);
             startRoom.setConnected(true);
             endRoom.setConnected(true);
+        }
+    }
+
+    private int abs(int value) {
+        return value < 0 ? value * -1 : value;
+    }
+
+    private void iterateRowTilesToNextRoom(int rowDifferens, Gridd.Index indexForRowTraversal, int roomCount) {
+        for (int j = 0; j <= rowDifferens; j++, indexForRowTraversal.row++) {
+            int currentTileValue = gridd.getTile(indexForRowTraversal);
+            gridd.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
+        }
+        indexForRowTraversal.row--; // Reset the last addition
+    }
+
+    private void iterateColumnTilesToNextRoom(int columnDifferens, Gridd.Index indexForColumnTraversal, int roomCount) {
+        for (int j = 0; j <= columnDifferens; j++, indexForColumnTraversal.column++) {
+            int currentTileValue = gridd.getTile(indexForColumnTraversal);
+            gridd.setTile(indexForColumnTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
         }
     }
 

@@ -35,4 +35,43 @@ public class MagicElementTypeTest {
         assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
     }
 
+    @Test
+    void testGetMultiplierReturnsCorrectValueIfPlayerIsDwarfAndElementtypeAir() {
+        Magic magic = new Magic(Spell.TORNADO);
+        Player player = new Player("Test", new Dwarf(), new Thief(), new Point());
+        double expectedMultiplier = 1.00;
+        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+    }
+
+    @Test
+    void testGetMultiplierReturnsCorrectValueIfPlayerIsOrcAndElementtypeAir() {
+        Magic magic = new Magic(Spell.TORNADO);
+        Player player = new Player("Test", new Orc(), new Thief(), new Point());
+        double expectedMultiplier = 0.95;
+        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+    }
+
+    @Test
+    void testGetMultiplierReturnsCorrectValueIfPlayerIsDwarfAndElementEarth() {
+        Magic magic = new Magic(Spell.POISON);
+        Player player = new Player("Test", new Dwarf(), new Thief(), new Point());
+        double expectedMultiplier = 1.05;
+        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+    }
+
+    @Test
+    void testGetMultiplierRetunsCorrectValueIfPlayerIsHumanAndElementEarth() {
+        Magic magic = new Magic(Spell.POISON);
+        Player player = new Player("Test", new Human(), new Thief(), new Point());
+        double expectedMultiplier = 1.00;
+        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+    }
+
+    @Test
+    void testGetMultiplierReturnsCorrectValueIfPlayerIsOrcAndElementEarth() {
+        Magic magic = new Magic(Spell.POISON);
+        Player player = new Player("Test", new Orc(), new Thief(), new Point());
+        double expectedMultiplier = 0.95;
+        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+    }
 }

@@ -1,6 +1,7 @@
 package com.rougelike;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.rougelike.enemies.Entity;
 import com.rougelike.equipment.EquipmentType;
@@ -12,6 +13,7 @@ import com.rougelike.roles.Knight;
 import com.rougelike.roles.Mage;
 import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
+import com.rougelike.magic.*;
 
 public class Player {
 
@@ -42,6 +44,7 @@ public class Player {
     private Armor equippedArmor;
     private ArrayList<Weapon> weaponInventory = new ArrayList<>();
     private ArrayList<Armor> armorInventory = new ArrayList<>();
+    private HashMap<String, Magic> magicInventory = new HashMap<>();
 
     private Point position;
     private Vector velocity;
@@ -380,6 +383,21 @@ public class Player {
         } else {
             return;
         }
+    }
+
+    public void addMagicToInventory(Magic magic) {
+        if (hasMagicKnowledge(magic)) {
+            return;
+        }
+        magicInventory.put(magic.getName(), magic);
+    }
+
+    public boolean hasMagicKnowledge(Magic magic) {
+        return magicInventory.containsKey(magic.getName());
+    }
+
+    public HashMap<String, Magic> getMagicInventory() {
+        return magicInventory;
     }
 
 }

@@ -9,7 +9,7 @@ public class App {
         double minHeight = 10.0;
         double maxHeight = 30.0;
 
-        Map map = new Map();
+        DungeonGenerator map = new DungeonGenerator();
         int roomCount = 50;
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
@@ -18,6 +18,8 @@ public class App {
         int columns = 40;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
         map.connectRooms(placedRooms);
+        Gridd gridd = map.getCopyOfGridd();
+        int[] connectedRooms = Graph.getConnectedRooms(placedRooms, gridd);
         map.printGridd();
     }
 }

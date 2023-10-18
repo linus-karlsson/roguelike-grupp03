@@ -7,8 +7,8 @@ public class Gridd {
     public static final int BORDER_VALUE = -2;
 
     public class Index implements Comparable<Index> {
-        int row;
-        int column;
+        public int row;
+        public int column;
 
         public Index() {
             row = 0;
@@ -51,7 +51,8 @@ public class Gridd {
         private Index startIndex;
         private Index endIndex;
 
-        public RoomParser() {
+        private RoomParser() {
+            currentRoom = new Room(0.0, 0.0);
             index = new Index();
             startIndex = new Index();
             endIndex = new Index();
@@ -73,11 +74,11 @@ public class Gridd {
         }
 
         public Index getRoomStartIndex() {
-            return startIndex;
+            return new Index(startIndex);
         }
 
         public Index getRoomEndIndex() {
-            return endIndex;
+            return new Index(endIndex);
         }
 
         public int getRoomTileCountInX() {
@@ -121,6 +122,14 @@ public class Gridd {
             resetRoom();
         }
 
+        public void setRoomBorder() {
+            setTilesAboveRoom();
+            setTilesBelowRoom();
+            setTilesToLeftOfRoom();
+            setTilesToRightOfRoom();
+            resetRoom();
+        }
+
         private void setTilesAboveRoom() {
             Index i = new Index(startIndex.row - 1, startIndex.column - 1);
             for (; i.column <= endIndex.column; i.column++) {
@@ -147,14 +156,6 @@ public class Gridd {
             for (; i.row >= startIndex.row - 1; i.row--) {
                 setTile(i, BORDER_VALUE);
             }
-        }
-
-        public void setRoomBorder() {
-            setTilesAboveRoom();
-            setTilesBelowRoom();
-            setTilesToLeftOfRoom();
-            setTilesToRightOfRoom();
-            resetRoom();
         }
 
     }

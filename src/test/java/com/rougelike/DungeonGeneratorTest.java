@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class MapTest {
+public class DungeonGeneratorTest {
 
     private static final double DEFAULT_MIN_WIDTH = 10.0;
     private static final double DEFAULT_MIN_HEIGHT = 10.0;
@@ -22,7 +22,7 @@ public class MapTest {
     private static final int DEFAULT_ROOM_COUNT = 10;
     private static final int DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD = 10;
 
-    private Map map = new Map();
+    private DungeonGenerator map = new DungeonGenerator();
 
     @Test
     public void testGenerateRoomWithinBounds() {
@@ -190,19 +190,6 @@ public class MapTest {
         }
     }
 
-    private double[] randomMultipliersForAreaIsFilled(int roomCount, int roomsInX, int roomsInY) {
-        double[] randomMultipliers = new double[roomCount * 2]; // (x, y) till varje rum därför * 2
-        int index = 0;
-        for (int y = 0; y < roomsInY; y++) {
-            for (int x = 0; x < roomsInX; x++) {
-                // roomsIn* - 1.0 så det går från 0.0 till 1.0 inclusive
-                randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
-                randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
-            }
-        }
-        return randomMultipliers;
-    }
-
     @ParameterizedTest
     @CsvSource(value = { "42, 42", "82, 82" })
     public void testPlaceRoomsInAreaIfAreaIsFilled(int rows, int columns) {
@@ -212,8 +199,8 @@ public class MapTest {
         // Det får då plats 10 X 10 rum i utrymmet som har 42 X 42 tiles med storlek
         // 5.0(Map.TILE_SIZE)
         int extraForBorder = 2;
-        int roomsInX = rows / ((int) (DEFAULT_MIN_WIDTH / Map.TILE_SIZE) + extraForBorder);
-        int roomsInY = columns / ((int) (DEFAULT_MIN_HEIGHT / Map.TILE_SIZE) + extraForBorder);
+        int roomsInX = rows / ((int) (DEFAULT_MIN_WIDTH / DungeonGenerator.TILE_SIZE) + extraForBorder);
+        int roomsInY = columns / ((int) (DEFAULT_MIN_HEIGHT / DungeonGenerator.TILE_SIZE) + extraForBorder);
 
         double randomMultiplier = 0.0;
         map.setRandom(new RandomInternal(randomMultiplier));
@@ -227,22 +214,15 @@ public class MapTest {
         assertEquals(expectedSize, placedRooms.size());
     }
 
-    private double[] randomMultipliersForMultipleTries(int roomCount, int numberOfTriesBeforeDiscard) {
-        double[] randomMultipliers = new double[(roomCount * 2) * numberOfTriesBeforeDiscard];
+    private double[] randomMultipliersForAreaIsFilled(int roomCount, int roomsInX, int roomsInY) {
+        double[] randomMultipliers = new double[roomCount * 2]; // (x, y) till varje rum därför * 2
         int index = 0;
-        randomMultipliers[index++] = 0.0;
-        randomMultipliers[index++] = 0.0;
-        for (int x = 1; x < roomCount; x++) {
-            // Gör så att rummen kommer bli platserad rakt på varandra
-            // numberOfTriesBeforeDiscard - 1 gånger och den sista gången blir den
-            // platserad brevid den första
-            int lastIndex = index - 2;
-            for (int i = 0; i < numberOfTriesBeforeDiscard - 1; i++) {
-                randomMultipliers[index++] = randomMultipliers[lastIndex];
-                randomMultipliers[index++] = 0.0;
+        for (int y = 0; y < roomsInY; y++) {
+            for (int x = 0; x < roomsInX; x++) {
+                // roomsIn* - 1.0 så det går från 0.0 till 1.0 inclusive
+                randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
+                randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
             }
-            randomMultipliers[index++] = (double) x / ((double) roomCount - 1.0);
-            randomMultipliers[index++] = 0.0;
         }
         return randomMultipliers;
     }
@@ -263,6 +243,26 @@ public class MapTest {
 
         assertEquals(roomCount, placedRooms.size());
 
+    }
+
+    private double[] randomMultipliersForMultipleTries(int roomCount, int numberOfTriesBeforeDiscard) {
+        double[] randomMultipliers = new double[(roomCount * 2) * numberOfTriesBeforeDiscard];
+        int index = 0;
+        randomMultipliers[index++] = 0.0;
+        randomMultipliers[index++] = 0.0;
+        for (int x = 1; x < roomCount; x++) {
+            // Gör så att rummen kommer bli platserad rakt på varandra
+            // numberOfTriesBeforeDiscard - 1 gånger och den sista gången blir den
+            // platserad brevid den första
+            int lastIndex = index - 2;
+            for (int i = 0; i < numberOfTriesBeforeDiscard - 1; i++) {
+                randomMultipliers[index++] = randomMultipliers[lastIndex];
+                randomMultipliers[index++] = 0.0;
+            }
+            randomMultipliers[index++] = (double) x / ((double) roomCount - 1.0);
+            randomMultipliers[index++] = 0.0;
+        }
+        return randomMultipliers;
     }
 
     @Test
@@ -379,6 +379,21 @@ public class MapTest {
     }
 
     @Test
+    public void testConnectRoomsDepthFirst() {
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+
+        map.connectRooms(placedRooms);
+        int[] connectedRooms = Graph.getConnectedRooms(placedRooms, map.getCopyOfGridd());
+        for (int expected = 0; expected < connectedRooms.length; expected++) {
+            assertEquals(expected, connectedRooms[expected]);
+        }
+    }
+
+    @Test
     public void testConnectRooms() {
         double randomMultiplier = 0.0;
         map.setRandom(new RandomInternal(randomMultiplier));
@@ -404,8 +419,8 @@ public class MapTest {
         for (; secondRoomGriddIndex.row <= thirdRoomGriddIndex.row; secondRoomGriddIndex.row++) {
             assertTrue(gridd.getTile(secondRoomGriddIndex) >= 0);
         }
-        for (; thirdRoomGriddIndex.column <= secondRoomGriddIndex.column; thirdRoomGriddIndex.column++) {
-            assertTrue(gridd.getTile(thirdRoomGriddIndex) >= 0);
+        for (secondRoomGriddIndex.row--; secondRoomGriddIndex.column >= thirdRoomGriddIndex.column; secondRoomGriddIndex.column--) {
+            assertTrue(gridd.getTile(secondRoomGriddIndex) >= 0);
         }
     }
 

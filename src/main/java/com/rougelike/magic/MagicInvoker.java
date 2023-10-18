@@ -2,13 +2,14 @@ package com.rougelike.magic;
 
 import com.rougelike.Player;
 import com.rougelike.roles.*;
+import com.rougelike.races.*;
 
 abstract public class MagicInvoker {
 
     private static final double MAGE_MAGIC_MULTIPLIER = 1.1;
     private static final double KNIGHT_MAGIC_MULTIPLIER = 0.9;
-
     private static final double LEVEL_MULTIPLIER = 1.2;
+    private static final RaceImpactChecker raceImpactChecker = new RaceImpactChecker();
 
     protected String name;
 
@@ -34,6 +35,17 @@ abstract public class MagicInvoker {
         }
     }
 
+    private double checkImpactFromRace(double value, Player player, MagicElementType elementType) {
+        if (isElementTypeAir(elementType) && raceImpactChecker.isPlayerImpactByAir(player)) {
+            return value * elementType.getMultiplier(player);
+        }
+        return value;
+    }
+
+    private boolean isElementTypeAir(MagicElementType elementType) {
+        return elementType.getName().equals("Air");
+    }
+
     private Boolean isRoleNull(Player player) {
         return player.getRole() == null;
     }
@@ -47,15 +59,19 @@ abstract public class MagicInvoker {
     }
 
     public double MagicValue(Magic magic, Player player) {
-        double actualStrenght = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, player.getLevel());
+        double actualStrenght = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, adjustPlayerLevel(player));
         double roundedValue = Math.round(actualStrenght * 100.0) / 100.0;
-        if (magic.getElement().getName().equals("Air") && player.getRace().equals("Elf")) {
-            return checkImpactFromRole(roundedValue * 1.05, player);
-        }
+        roundedValue = checkImpactFromRace(roundedValue, player, magic.getElement());
         return checkImpactFromRole(roundedValue, player);
 
     }
 
-    abstract public void throwMagic(Magic magic, Player player);
+    private int adjustPlayerLevel(Player player) {
+        return player.getLevel() == 1 ? 0 : player.getLevel();
+    }
+
+    //abstract public void throwMagic(Magic magic, Player player);
+
+    //abstract public void throwMagic(Magic magic, Player player, Player enemy);
 
 }

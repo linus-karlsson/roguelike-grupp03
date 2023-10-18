@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 
 public class MagicInvokerTest {
 
-    // @Test
-    // void testSpellValueReturnsCorrectValueWhenPlayerStartLevel() {
-    //     Magic magic = new Magic(Spell.TORNADO);
-    //     MagicInvoker magicInvoker = magic.getType();
-    //     Player player = new Player("Test", new Point());
-    //     double expectedValue = 10.0;
-    //     assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
-    // }
+    @Test
+    void testSpellValueReturnsCorrectValueWhenPlayerStartLevel() {
+        Magic magic = new Magic(Spell.TORNADO);
+        MagicInvoker magicInvoker = magic.getType();
+        Player player = new Player("Test", new Human(), new Thief(), new Point());
+        double expectedValue = 10.0;
+        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+    }
 
     @Test
     void testSpellValueReturnsCorrectValueWhenPlayerLevelTwo() {
@@ -56,13 +56,22 @@ public class MagicInvokerTest {
         assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
     }
 
-    // @Test
-    // void testIfElementAirThrownByElfIncreaseMagicValueByFivePercent() {
-    //     Magic magic = new Magic(Spell.TORNADO);
-    //     MagicInvoker magicInvoker = magic.getType();
-    //     Player player = new Player("Test", new Elf(), new Thief(), new Point());
-    //     double expectedValue = 10.5;
-    //     assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
-    // }
+    @Test
+    void testIfElementAirThrownByElfIncreaseMagicValueByFivePercent() {
+        Magic magic = new Magic(Spell.TORNADO);
+        MagicInvoker magicInvoker = magic.getType();
+        Player player = new Player("Test", new Elf(), new Thief(), new Point());
+        double expectedValue = 10.5;
+        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+    }
+
+    @Test
+    void testIfElementAirThrownByOrchDecreaseValue() {
+        Magic magic = new Magic(Spell.TORNADO);
+        MagicInvoker magicInvoker = magic.getType();
+        Player player = new Player("Test", new Orc(), new Thief(), new Point());
+        double expectedValue = 9.5;
+        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+    }
 
 }

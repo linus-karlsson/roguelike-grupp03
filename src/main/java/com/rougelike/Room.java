@@ -43,7 +43,7 @@ public class Room {
     }
 
     public Point getPosition() {
-        return position;
+        return new Point(position);
     }
 
     public double getWidth() {
