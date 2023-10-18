@@ -257,6 +257,17 @@ public class PlayerEquipmentInteractionTest {
         assertTrue(player.getEquippedWeapon() != torch);
     }
 
+    @Test
+    public void unequippingWeaponReducesStats() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Torch torch = new Torch();
+        player.addWeaponToInventory(torch);
+        player.equipWeapon(torch);
+        double statsBeforeUnequipping = player.getStrength();
+        player.unequipWeapon();
+        assertTrue(player.getStrength() < statsBeforeUnequipping);
+    }
+
     // Skapa fler tester för att kolla resten av kombinationerna.
     // Skapa tester för att sätta på sig vapen.
 }

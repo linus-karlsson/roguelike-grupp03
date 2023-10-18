@@ -237,6 +237,7 @@ public class Player {
 
     public void unequipWeapon() {
         equippedWeapon = null;
+        strength -= 10;
     }
 
     public void setStatsWhenEquipping(Equipment equipment) {
