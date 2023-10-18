@@ -1,5 +1,8 @@
 package com.rougelike;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -7,12 +10,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.util.*;
-
 public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    Rectangle player;
+    Vector playerVelocity = new Vector(0, 0);
 
     @Override
     public void start(Stage primaryStage) {
@@ -23,7 +27,7 @@ public class App extends Application {
         double maxHeight = 60.0;
 
         DungeonGenerator map = new DungeonGenerator();
-        int roomCount = 40;
+        int roomCount = 30;
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth,
                 maxWidth,
                 minHeight, maxHeight);
@@ -57,8 +61,41 @@ public class App extends Application {
                 center.getChildren().add(rect);
             }
         }
+        Point pos = placedRooms.get(0).getPosition();
+        player = new Rectangle(pos.getX(), pos.getY(), 6.0, 6.0);
+        player.setFill(Color.RED);
+        player.setStroke(Color.BLACK);
+        center.getChildren().add(player);
         Scene scene = new Scene(center);
+
+        scene.setOnKeyPressed(event -> {
+            String codeString = event.getCode().getChar();
+            playerVelocity.setX(0);
+            playerVelocity.setY(0);
+            if (codeString.equals("A")) {
+                playerVelocity.setX(-2.0);
+            }
+            if (codeString.equals("W")) {
+                playerVelocity.setY(-2.0);
+            }
+            if (codeString.equals("D")) {
+                playerVelocity.setX(2.0);
+            }
+            if (codeString.equals("S")) {
+                playerVelocity.setY(2.0);
+            }
+            Point point = new Point(player.getX(), player.getY());
+            point = point.plus(playerVelocity);
+            Gridd.Index index = gridd.getGriddIndexBasedOnPosition(point);
+            Gridd.Index index2 = gridd.getGriddIndexBasedOnPosition(
+                    new Point(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
+            if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
+                player.setX(point.getX());
+                player.setY(point.getY());
+            }
+        });
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 }

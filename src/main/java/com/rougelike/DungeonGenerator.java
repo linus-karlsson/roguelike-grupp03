@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class DungeonGenerator {
-    public static final double TILE_SIZE = 5.0;
+    public static final double TILE_SIZE = 10.0;
     private static final double MIN_ROOM_WIDTH_OR_HEIGHT = TILE_SIZE;
     private static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
 
