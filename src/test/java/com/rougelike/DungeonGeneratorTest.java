@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -42,7 +43,7 @@ public class DungeonGeneratorTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = { "0.0, 100.0, 10.0, 100.0", "10.0, 100.0, 0.0, 100.0", "20.0, 401.0, 20.0, 140.0",
+    @CsvSource(value = { "4.0, 100.0, 10.0, 100.0", "10.0, 100.0, 4.0, 100.0", "20.0, 401.0, 20.0, 140.0",
             "20.0, 140.0, 20.0, 401.0" })
     public void testGenerateRoomWithinBoundsThrows(double minWidth, double maxWidth, double minHeight,
             double maxHeight) {
@@ -378,13 +379,18 @@ public class DungeonGeneratorTest {
         }
     }
 
+    // För att minimera chansen att något rum kopplar samman något annat så görs
+    // gridden större samt att testet körs flera gånger
     @Test
+    @RepeatedTest(value = 10)
     public void testConnectRoomsDepthFirst() {
         ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
+        int columns = 160;
+        int rows = 160;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
-                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+                rows, columns);
 
         map.connectRooms(placedRooms);
         int[] connectedRooms = Graph.getConnectedRooms(placedRooms, map.getCopyOfGridd());

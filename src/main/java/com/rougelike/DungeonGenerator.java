@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class DungeonGenerator {
     public static final double TILE_SIZE = 5.0;
-    private static final double MIN_ROOM_WIDTH_OR_HEIGHT = 1.0;
+    private static final double MIN_ROOM_WIDTH_OR_HEIGHT = TILE_SIZE;
     private static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
 
     private Random random;
@@ -114,8 +114,8 @@ public class DungeonGenerator {
 
             int rowDifferens = abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
             int columnDifferens = abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
-            iterateRowTilesToNextRoom(rowDifferens, indexForRowTraversal, rowDifferens);
-            iterateColumnTilesToNextRoom(columnDifferens, indexForColumnTraversal, columnDifferens);
+            iterateRowTilesToNextRoom(rowDifferens, indexForRowTraversal, rooms.size());
+            iterateColumnTilesToNextRoom(columnDifferens, indexForColumnTraversal, rooms.size());
             startRoom.setConnected(true);
             endRoom.setConnected(true);
         }
