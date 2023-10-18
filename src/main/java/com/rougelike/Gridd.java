@@ -51,7 +51,7 @@ public class Gridd {
         private Index startIndex;
         private Index endIndex;
 
-        public RoomParser() {
+        private RoomParser() {
             currentRoom = new Room(0.0, 0.0);
             index = new Index();
             startIndex = new Index();
