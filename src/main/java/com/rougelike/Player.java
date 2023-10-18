@@ -241,22 +241,24 @@ public class Player {
         intelligence += equipment.getIntelligence() + role.getIntelligenceMultiplier();
     }
 
+    public void updateCharacterWhenEquippingWeapon(Weapon weapon) {
+        equippedWeapon = weapon;
+        setStatsWhenEquipping(weapon);
+        setTotalWeaponDamage();
+    }
+
     public void equipWeapon(Weapon weapon) {
         if (!getWeaponInventory().contains(weapon)) {
             return;
         }
         if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
                 weapon.getType() == EquipmentType.CLUB)) {
-            equippedWeapon = weapon;
-            setStatsWhenEquipping(weapon);
-            setTotalWeaponDamage();
+            updateCharacterWhenEquippingWeapon(weapon);
         } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
-            equippedWeapon = weapon;
+            updateCharacterWhenEquippingWeapon(weapon);
         } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
-            equippedWeapon = weapon;
-            setTotalWeaponDamage();
+            updateCharacterWhenEquippingWeapon(weapon);
         }
-
     }
 
     public void addArmorToInventory(Armor armor) {
