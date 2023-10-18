@@ -190,19 +190,6 @@ public class DungeonGeneratorTest {
         }
     }
 
-    private double[] randomMultipliersForAreaIsFilled(int roomCount, int roomsInX, int roomsInY) {
-        double[] randomMultipliers = new double[roomCount * 2]; // (x, y) till varje rum därför * 2
-        int index = 0;
-        for (int y = 0; y < roomsInY; y++) {
-            for (int x = 0; x < roomsInX; x++) {
-                // roomsIn* - 1.0 så det går från 0.0 till 1.0 inclusive
-                randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
-                randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
-            }
-        }
-        return randomMultipliers;
-    }
-
     @ParameterizedTest
     @CsvSource(value = { "42, 42", "82, 82" })
     public void testPlaceRoomsInAreaIfAreaIsFilled(int rows, int columns) {
@@ -227,22 +214,15 @@ public class DungeonGeneratorTest {
         assertEquals(expectedSize, placedRooms.size());
     }
 
-    private double[] randomMultipliersForMultipleTries(int roomCount, int numberOfTriesBeforeDiscard) {
-        double[] randomMultipliers = new double[(roomCount * 2) * numberOfTriesBeforeDiscard];
+    private double[] randomMultipliersForAreaIsFilled(int roomCount, int roomsInX, int roomsInY) {
+        double[] randomMultipliers = new double[roomCount * 2]; // (x, y) till varje rum därför * 2
         int index = 0;
-        randomMultipliers[index++] = 0.0;
-        randomMultipliers[index++] = 0.0;
-        for (int x = 1; x < roomCount; x++) {
-            // Gör så att rummen kommer bli platserad rakt på varandra
-            // numberOfTriesBeforeDiscard - 1 gånger och den sista gången blir den
-            // platserad brevid den första
-            int lastIndex = index - 2;
-            for (int i = 0; i < numberOfTriesBeforeDiscard - 1; i++) {
-                randomMultipliers[index++] = randomMultipliers[lastIndex];
-                randomMultipliers[index++] = 0.0;
+        for (int y = 0; y < roomsInY; y++) {
+            for (int x = 0; x < roomsInX; x++) {
+                // roomsIn* - 1.0 så det går från 0.0 till 1.0 inclusive
+                randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
+                randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
             }
-            randomMultipliers[index++] = (double) x / ((double) roomCount - 1.0);
-            randomMultipliers[index++] = 0.0;
         }
         return randomMultipliers;
     }
@@ -263,6 +243,26 @@ public class DungeonGeneratorTest {
 
         assertEquals(roomCount, placedRooms.size());
 
+    }
+
+    private double[] randomMultipliersForMultipleTries(int roomCount, int numberOfTriesBeforeDiscard) {
+        double[] randomMultipliers = new double[(roomCount * 2) * numberOfTriesBeforeDiscard];
+        int index = 0;
+        randomMultipliers[index++] = 0.0;
+        randomMultipliers[index++] = 0.0;
+        for (int x = 1; x < roomCount; x++) {
+            // Gör så att rummen kommer bli platserad rakt på varandra
+            // numberOfTriesBeforeDiscard - 1 gånger och den sista gången blir den
+            // platserad brevid den första
+            int lastIndex = index - 2;
+            for (int i = 0; i < numberOfTriesBeforeDiscard - 1; i++) {
+                randomMultipliers[index++] = randomMultipliers[lastIndex];
+                randomMultipliers[index++] = 0.0;
+            }
+            randomMultipliers[index++] = (double) x / ((double) roomCount - 1.0);
+            randomMultipliers[index++] = 0.0;
+        }
+        return randomMultipliers;
     }
 
     @Test

@@ -122,6 +122,14 @@ public class Gridd {
             resetRoom();
         }
 
+        public void setRoomBorder() {
+            setTilesAboveRoom();
+            setTilesBelowRoom();
+            setTilesToLeftOfRoom();
+            setTilesToRightOfRoom();
+            resetRoom();
+        }
+
         private void setTilesAboveRoom() {
             Index i = new Index(startIndex.row - 1, startIndex.column - 1);
             for (; i.column <= endIndex.column; i.column++) {
@@ -148,14 +156,6 @@ public class Gridd {
             for (; i.row >= startIndex.row - 1; i.row--) {
                 setTile(i, BORDER_VALUE);
             }
-        }
-
-        public void setRoomBorder() {
-            setTilesAboveRoom();
-            setTilesBelowRoom();
-            setTilesToLeftOfRoom();
-            setTilesToRightOfRoom();
-            resetRoom();
         }
 
     }
