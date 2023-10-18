@@ -387,7 +387,7 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        double[] randomMultipliers = { 0.0, 0.0, 0.5, 0.0, 0.5, 0.5 };
+        double[] randomMultipliers = { 0.0, 0.0, 0.5, 0.0, 0.0, 0.5 };
         map.setRandom(new RandomInternal(randomMultipliers));
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
                 DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
@@ -403,6 +403,9 @@ public class MapTest {
         }
         for (; secondRoomGriddIndex.row <= thirdRoomGriddIndex.row; secondRoomGriddIndex.row++) {
             assertTrue(gridd.getTile(secondRoomGriddIndex) >= 0);
+        }
+        for (; thirdRoomGriddIndex.column <= secondRoomGriddIndex.column; thirdRoomGriddIndex.column++) {
+            assertTrue(gridd.getTile(thirdRoomGriddIndex) >= 0);
         }
     }
 
