@@ -9,6 +9,7 @@ import com.rougelike.equipment.Armor;
 import com.rougelike.equipment.Equipment;
 import com.rougelike.races.Race;
 import com.rougelike.roles.Knight;
+import com.rougelike.roles.Mage;
 import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
 
@@ -69,7 +70,7 @@ public class Player {
         setTotalWeaponDamage();
         isDead = false;
 
-        startingValues = new PlayerStartingValues(name, race, role, position );
+        startingValues = new PlayerStartingValues(name, race, role, position);
     }
 
     private void nextLevel() {
@@ -117,7 +118,7 @@ public class Player {
         }
     }
 
-    public double getTotalWeaponDamage(){
+    public double getTotalWeaponDamage() {
         return totalWeaponDamage;
     }
 
@@ -125,9 +126,9 @@ public class Player {
         entity.takeDamage(totalWeaponDamage);
     }
 
-    public void takeDamage(double damageTaken){
+    public void takeDamage(double damageTaken) {
         health -= damageTaken;
-        if(health <= 0){
+        if (health <= 0) {
             isDead = true;
         }
     }
@@ -238,9 +239,8 @@ public class Player {
                 weapon.getType() == EquipmentType.CLUB)) {
             equippedWeapon = weapon;
             setTotalWeaponDamage();
-            // } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND))
-            // {
-            // equippedWeapon = weapon;
+        } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
+            equippedWeapon = weapon;
         } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
             equippedWeapon = weapon;
             setTotalWeaponDamage();
@@ -272,9 +272,8 @@ public class Player {
         }
         if ((role instanceof Knight) && (offhand.getType() == EquipmentType.SHIELD)) {
             equippedOffhand = offhand;
-            // } else if ((role instanceof Mage) && (offhand.getType() ==
-            // EquipmentType.BOOK)) {
-            // equippedOffhand = offhand;
+        } else if ((role instanceof Mage) && (offhand.getType() == EquipmentType.BOOK)) {
+            equippedOffhand = offhand;
         } else if ((role instanceof Thief) && (offhand.getType() == EquipmentType.DAGGER)) {
             equippedOffhand = offhand;
         } else {
@@ -290,11 +289,11 @@ public class Player {
 
     }
 
-    public boolean isDead(){
+    public boolean isDead() {
         return isDead;
     }
 
-    public Player reset(){
+    public Player reset() {
         String name = startingValues.getName();
         Race race = startingValues.getRace();
         Role role = startingValues.getRole();
