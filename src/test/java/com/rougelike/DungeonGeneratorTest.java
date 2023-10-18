@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class MapTest {
+public class DungeonGeneratorTest {
 
     private static final double DEFAULT_MIN_WIDTH = 10.0;
     private static final double DEFAULT_MIN_HEIGHT = 10.0;
@@ -22,7 +22,7 @@ public class MapTest {
     private static final int DEFAULT_ROOM_COUNT = 10;
     private static final int DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD = 10;
 
-    private Map map = new Map();
+    private DungeonGenerator map = new DungeonGenerator();
 
     @Test
     public void testGenerateRoomWithinBounds() {
@@ -212,8 +212,8 @@ public class MapTest {
         // Det får då plats 10 X 10 rum i utrymmet som har 42 X 42 tiles med storlek
         // 5.0(Map.TILE_SIZE)
         int extraForBorder = 2;
-        int roomsInX = rows / ((int) (DEFAULT_MIN_WIDTH / Map.TILE_SIZE) + extraForBorder);
-        int roomsInY = columns / ((int) (DEFAULT_MIN_HEIGHT / Map.TILE_SIZE) + extraForBorder);
+        int roomsInX = rows / ((int) (DEFAULT_MIN_WIDTH / DungeonGenerator.TILE_SIZE) + extraForBorder);
+        int roomsInY = columns / ((int) (DEFAULT_MIN_HEIGHT / DungeonGenerator.TILE_SIZE) + extraForBorder);
 
         double randomMultiplier = 0.0;
         map.setRandom(new RandomInternal(randomMultiplier));
