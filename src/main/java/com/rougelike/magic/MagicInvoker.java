@@ -35,6 +35,14 @@ abstract public class MagicInvoker {
         }
     }
 
+    private double checkImpactFromRace(double value, Player player, MagicElementType elementType) {
+        if (elementType.getName().equals("Air") && player.getRace() instanceof Elf) {
+            return value * 1.05;
+        }
+        return value;
+        }
+    
+
     private Boolean isRoleNull(Player player) {
         return player.getRole() == null;
     }
@@ -50,9 +58,7 @@ abstract public class MagicInvoker {
     public double MagicValue(Magic magic, Player player) {
         double actualStrenght = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, player.getLevel());
         double roundedValue = Math.round(actualStrenght * 100.0) / 100.0;
-        if (magic.getElement().getName().equals("Air") && player.getRace() instanceof Elf) {
-            return checkImpactFromRole(roundedValue * 1.05, player);
-        }
+        roundedValue = checkImpactFromRace(roundedValue, player, magic.getElement());
         return checkImpactFromRole(roundedValue, player);
 
     }
