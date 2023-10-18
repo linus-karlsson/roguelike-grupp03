@@ -17,19 +17,19 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        double minWidth = 10.0;
-        double maxWidth = 30.0;
-        double minHeight = 10.0;
-        double maxHeight = 30.0;
+        double minWidth = 30.0;
+        double maxWidth = 60.0;
+        double minHeight = 30.0;
+        double maxHeight = 60.0;
 
         DungeonGenerator map = new DungeonGenerator();
-        int roomCount = 30;
+        int roomCount = 40;
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth,
                 maxWidth,
                 minHeight, maxHeight);
 
-        int rows = 80;
-        int columns = 80;
+        int rows = 60;
+        int columns = 60;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
         map.connectRooms(placedRooms);
         Gridd gridd = map.getCopyOfGridd();

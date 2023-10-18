@@ -178,20 +178,4 @@ public class DungeonGenerator {
         }
         return copy;
     }
-
-    public void printGridd() {
-        for (int row = 0; row < gridd.getRowCount(); row++) {
-            for (int column = 0; column < gridd.getColumnCount(); column++) {
-                int cellValue = gridd.getTile(row, column);
-                if (cellValue == Gridd.BORDER_VALUE || cellValue == -1)
-                    cellValue = 0;
-                else if (cellValue >= 0) {
-                    cellValue = 1;
-                }
-                System.out.print(String.format("%d%d", cellValue, cellValue));
-            }
-            System.out.println();
-        }
-    }
-
 }
