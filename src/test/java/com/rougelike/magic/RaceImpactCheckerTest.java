@@ -19,4 +19,18 @@ public class RaceImpactCheckerTest {
         assertTrue(raceImpactChecker.isPlayerImpactByAir(player)); 
     }
 
+    @Test
+    void testIfPlayerHumanNotImpactByAir() {
+        Player player = new Player("Test", new Human(), new Thief(), new Point());
+        RaceImpactChecker raceImpactChecker = new RaceImpactChecker();
+        assertFalse(raceImpactChecker.isPlayerImpactByAir(player)); 
+    }
+
+    @Test
+    void testIfPlayerOrcIsImpactByElementFire() {
+        Player player = new Player("Test", new Orc(), new Thief(), new Point());
+        RaceImpactChecker raceImpactChecker = new RaceImpactChecker();
+        assertTrue(raceImpactChecker.isPlayerImpactByFire(player)); 
+    }
+
 }
