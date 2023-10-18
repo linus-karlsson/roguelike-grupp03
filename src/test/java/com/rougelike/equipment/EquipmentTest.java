@@ -6,21 +6,25 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EquipmentTest {
 
     @Test
-    public void testStickDamage() {
+    public void getDamageReturnsCoorectValue() {
         Stick stick = new Stick();
         int expectedDamage = 3;
         assertEquals(expectedDamage, stick.getDamage());
     }
 
     @Test
-    public void testTorchDamage_NoResistances() {
-        Torch torch = new Torch();
-        int expectedDamage = 5;
-        assertEquals(expectedDamage, torch.getDamage() + torch.getElementalDamage());
+    public void getElementalDamageReturnsCorrectValue() {
+        WaterDagger waterDagger = new WaterDagger();
+        int expectedDamage = 6;
+        assertEquals(expectedDamage, waterDagger.getElementalDamage());
     }
 
-    // Test på FireSword
-    Weapon dummyWeapon = new Sword();
+    @Test
+    public void getDamageAndGetElementalDamageAddsCorrectly() {
+        Torch torch = new Torch();
+        int sumExpectedDamage = 5;
+        assertEquals(sumExpectedDamage, torch.getDamage() + torch.getElementalDamage());
+    }
 
     @Test
     public void isSubclassOfWeapon() {
@@ -33,7 +37,7 @@ public class EquipmentTest {
     }
 
     @Test
-    public void fireSwordHasCorrectName() {
+    public void getNameReturnsCorrectName() {
         FireSword fireSword = new FireSword();
         String expected = "Fire Sword";
         assertEquals(expected, fireSword.getName());
@@ -73,6 +77,24 @@ public class EquipmentTest {
     public void fireSwordHasCorrectStrength() {
         FireSword fireSword = new FireSword();
         assertEquals(8, fireSword.getStrength());
-
     }
+
+    @Test
+    public void daggerHasCorrectDexterity() {
+        Dagger dagger = new Dagger();
+        assertEquals(9, dagger.getDexterity());
+    }
+
+    @Test
+    public void airWandHasCorrectIntelligence() {
+        AirWand airWand = new AirWand();
+        assertEquals(15, airWand.getIntelligence());
+    }
+
+    @Test
+    public void earthHammerHasCorrectPrice() {
+        EarthHammer earthHammer = new EarthHammer();
+        assertEquals(90, earthHammer.getPrice());
+    }
+
 }
