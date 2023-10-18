@@ -63,7 +63,7 @@ abstract public class MagicInvoker {
     }
 
     public double MagicValue(Magic magic, Player player) {
-        double actualStrenght = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, player.getLevel());
+        double actualStrenght = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, (player.getLevel() == 1 ? 0 : player.getLevel() ));
         double roundedValue = Math.round(actualStrenght * 100.0) / 100.0;
         roundedValue = checkImpactFromRace(roundedValue, player, magic.getElement());
         return checkImpactFromRole(roundedValue, player);
