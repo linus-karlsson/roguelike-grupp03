@@ -23,9 +23,10 @@ public class HealTest {
     void testMethodHealShouldIncreasePlayersHealth() {
         Magic magic = new Magic(Spell.HEAL);
         Player player = new Player("Test", new Point()); 
+        Heal heal = (Heal)magic.getType();
         player.setHealth(50);
         double expectedValue = 60;
-        magic.getType().throwMagic(magic, player);
+        heal.throwMagic(magic, player);
         assertEquals(expectedValue, player.getHealth());
     }
 
@@ -33,9 +34,10 @@ public class HealTest {
     void testMethodHealShouldIncreasePlayersHealthToMax() {
         Magic magic = new Magic(Spell.HEAL);
         Player player = new Player("Test", new Point()); 
+        Heal heal = (Heal)magic.getType();
         player.setHealth(95);
         double expectedValue = 100;
-        magic.getType().throwMagic(magic, player);
+        heal.throwMagic(magic, player);
         assertEquals(expectedValue, player.getHealth());
     }
 }
