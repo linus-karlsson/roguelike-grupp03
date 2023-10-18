@@ -4,6 +4,7 @@ import com.rougelike.*;
 
 public class MagicElementType {
     private final String NAME;
+    protected static final double BASE_MULTIPLIER = 1.0;
 
     public MagicElementType(String name) {
         this.NAME = name;
@@ -18,6 +19,6 @@ public class MagicElementType {
     }
 
     double getMultiplier(Player player) {
-        return 1.0;
+        return BASE_MULTIPLIER;
     }
 }

@@ -6,7 +6,6 @@ import com.rougelike.*;
 // jord påverkar vatten svagare
 public class ElementEarth extends MagicElementType{
 
-    private static final double EARTH_MULTIPLIER = 1.05;
        
             public ElementEarth() {
                 super("Earth");
@@ -14,6 +13,6 @@ public class ElementEarth extends MagicElementType{
 
             @Override
             public double getMultiplier(Player player) {
-                return EARTH_MULTIPLIER;
+                return BASE_MULTIPLIER;
             }
 }
