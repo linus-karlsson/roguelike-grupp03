@@ -32,27 +32,12 @@ abstract public class MagicInvoker {
             default:
                 return value;
         }
-
     }
-
-    // Ska tas bort om switch fungerar
-    // if (player.getRole() instanceof Knight) {
-    // return calculateValueForKnight(value);
-    // }
-    // if (isMage(player)) {
-    // return calculateValueForMage(value);
-    // }
 
     private Boolean isRoleNull(Player player) {
         return player.getRole() == null;
     }
 
-    /**
-     * Tas bort om switch fungeraer
-     * private Boolean isMage(Player player) {
-     * return player.getRole() instanceof Mage;
-     * }
-     */
     private double calculateValueForMage(double actualStrenght) {
         return actualStrenght * MAGE_MAGIC_MULTIPLIER;
     }
