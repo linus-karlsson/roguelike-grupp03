@@ -1,7 +1,9 @@
 package com.rougelike;
 
 import com.rougelike.races.Dwarf;
+import com.rougelike.races.Elf;
 import com.rougelike.roles.Knight;
+import com.rougelike.roles.Thief;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,7 +48,37 @@ public class PlayerTest {
         double knightStrengthMultiplier = knight.getStrengthMultiplier();
         double totalStrength = knightStrengthMultiplier * dwarfStrength;
         double expectedDamage = knightWeaponDamage * totalStrength;
-        double playerTotalWeaponDamage = player.attackWithWeapon();
+        double playerTotalWeaponDamage = player.getTotalWeaponDamage();
         assertEquals(expectedDamage, playerTotalWeaponDamage);
+    }
+
+    @Test
+    public void TestTakeDamage(){
+        Elf elf = new Elf();
+        Thief thief = new Thief();
+        Player player = new Player("Legolas", elf, thief, new Point());
+        player.takeDamage(50);
+        double expectedHealthLeft = 50;
+        assertEquals(expectedHealthLeft, player.getHealth());
+    }
+
+    @Test void TestPlayerResetResetsHealth(){
+        Elf elf = new Elf();
+        Thief thief = new Thief();
+        Player player = new Player("Legolas", elf, thief, new Point());
+        player.setHealth(300);
+        player = player.reset();
+        double expectedHealth = 100;
+        assertEquals(expectedHealth, player.getHealth());
+    }
+
+    @Test void TestPlayerResetResetsLevel(){
+        Elf elf = new Elf();
+        Thief thief = new Thief();
+        Player player = new Player("Legolas", elf, thief, new Point());
+        player.setLevel(20);
+        player = player.reset();
+        double expectedLevel = 1;
+        assertEquals(expectedLevel, player.getLevel());
     }
 }
