@@ -102,6 +102,23 @@ public class Map {
         return value < 0 ? value * -1 : value;
     }
 
+    private void iterateRowTilesToNextRoom(int rowDifferens, Gridd.Index indexForRowTraversal, int roomCount) {
+        for (int j = 0; j <= rowDifferens; j++) {
+            int currentTileValue = gridd.getTile(indexForRowTraversal);
+            gridd.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
+            indexForRowTraversal.row++;
+        }
+        indexForRowTraversal.row--;// Reset the last iteration
+    }
+
+    private void iterateColumnTilesToNextRoom(int columnDifferens, Gridd.Index indexForColumnTraversal, int roomCount) {
+        for (int j = 0; j <= columnDifferens; j++) {
+            int currentTileValue = gridd.getTile(indexForColumnTraversal);
+            gridd.setTile(indexForColumnTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
+            indexForColumnTraversal.column++;
+        }
+    }
+
     public void connectRooms(ArrayList<Room> rooms) {
         for (int i = 0; i < rooms.size() - 1; i++) {
             Room startRoom = rooms.get(i);
@@ -118,14 +135,8 @@ public class Map {
 
             int rowDifferens = abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
             int columnDifferens = abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
-            for (int j = 0; j <= rowDifferens; j++) {
-                gridd.setTile(indexForRowTraversal, rooms.size());
-                indexForRowTraversal.row++;
-            }
-            for (int j = 0; j <= columnDifferens; j++) {
-                gridd.setTile(indexForColumnTraversal, rooms.size());
-                indexForColumnTraversal.column++;
-            }
+            iterateRowTilesToNextRoom(rowDifferens, indexForRowTraversal, rowDifferens);
+            iterateColumnTilesToNextRoom(columnDifferens, indexForColumnTraversal, columnDifferens);
             startRoom.setConnected(true);
             endRoom.setConnected(true);
         }
