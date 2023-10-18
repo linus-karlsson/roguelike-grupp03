@@ -25,9 +25,10 @@ public class MagicAttackTest {
     void testMethodAttackShouldDecreasePlayersHealth() {
         Magic magic = new Magic(Spell.TORNADO);
         Player player = new Player("Test", new Human(), new Mage(), new Point());
-        player.setHealth(50);
+        Player enemy = new Player("Test", new Human(), new Mage(), new Point());
+        enemy.setHealth(50);
         double expectedValue = 39;
-        magic.getType().throwMagic(magic, player);
+        magic.getType().throwMagic(magic, player, enemy);
         assertEquals(expectedValue, player.getHealth());
     }
 

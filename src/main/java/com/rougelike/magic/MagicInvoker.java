@@ -72,4 +72,6 @@ abstract public class MagicInvoker {
 
     abstract public void throwMagic(Magic magic, Player player);
 
+    abstract public void throwMagic(Magic magic, Player player, Player enemy);
+
 }
