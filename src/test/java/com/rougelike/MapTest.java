@@ -20,6 +20,7 @@ public class MapTest {
     private static final int DEFAULT_ROW_COUNT = 80;
     private static final int DEFAULT_COLUMN_COUNT = 80;
     private static final int DEFAULT_ROOM_COUNT = 10;
+    private static final int DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD = 10;
 
     private Map map = new Map();
 
@@ -150,7 +151,8 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
         for (int i = 0; i < placedRooms.size(); i++) {
@@ -171,7 +173,8 @@ public class MapTest {
         double randomMultiplier = 0.3;
         map.setRandom(new RandomInternal(randomMultiplier));
 
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
         for (Room room : placedRooms) {
@@ -248,11 +251,11 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        int numberOfTriesBeforeDiscard = 10;
-        map.setRandom(new RandomInternal(randomMultipliersForMultipleTries(roomCount, numberOfTriesBeforeDiscard)));
+        map.setRandom(new RandomInternal(
+                randomMultipliersForMultipleTries(roomCount, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD)));
 
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, DEFAULT_ROOM_COUNT,
-                DEFAULT_COLUMN_COUNT);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROOM_COUNT, DEFAULT_COLUMN_COUNT);
 
         assertEquals(roomCount, placedRooms.size());
 
@@ -260,13 +263,11 @@ public class MapTest {
 
     @Test
     public void testPlaceRoomsInAreaEmptyCellsAroundRoom() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        int numberOfTriesBeforeDiscard = 10;
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, DEFAULT_ROW_COUNT,
-                DEFAULT_COLUMN_COUNT);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
         for (Room room : placedRooms) {
@@ -315,8 +316,7 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        int numberOfTriesBeforeDiscard = 10;
-        map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+        map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD, DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
         int expected = Gridd.BORDER_VALUE;
@@ -336,8 +336,8 @@ public class MapTest {
     public void testPlaceRoomsInAreaOutOfBounds() {
         ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
-
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
         for (Room room : placedRooms) {
@@ -354,7 +354,9 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+
         assertTrue(placedRooms.size() > 1);
     }
 
@@ -363,9 +365,9 @@ public class MapTest {
         ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        int numberOfTriesBeforeDiscard = 10;
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, DEFAULT_ROW_COUNT,
-                DEFAULT_COLUMN_COUNT);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+
         map.connectRooms(placedRooms);
         for (Room room : placedRooms) {
             assertTrue(room.isConnected());

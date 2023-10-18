@@ -85,10 +85,10 @@ public class Player {
         velocity.clone(newVelocity);
     }
 
-    public void updatePlayerMovement(Gridd gridd, double deltaTime) {
+    public void updateMovement(Gridd gridd, double deltaTime) {
         Point newPostion = position.plus(velocity.scalarMulti(deltaTime));
         Gridd.Index index = gridd.getGriddIndexBasedOnPosition(newPostion);
-        if (gridd.getTile(index) == 1) {
+        if (gridd.getTile(index) >= 0) {
             position = newPostion;
         }
     }
@@ -110,12 +110,11 @@ public class Player {
         }
     }
 
-
     public double attackWithWeapon() {
         return totalWeaponDamage;
     }
 
-    public void takeDamage(){
+    public void takeDamage() {
 
     }
 
