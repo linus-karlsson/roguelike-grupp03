@@ -1,14 +1,17 @@
 package com.rougelike.equipment;
 
 public class WaterDagger extends Weapon {
-    private static final String WATERDAGGER_NAME = "Water Dagger";
-    private static final int WATERDAGGER_PRICE = 60;
+    private static final String NAME = "Water Dagger";
+    private static final int PRICE = 60;
     private static final EquipmentType TYPE = EquipmentType.DAGGER;
-    private static final int WATERDAGGER_DAMAGE = 2;
-    private static final int WATERDAGGER_ELEMENTAL_DAMAGE = 6;
-    private static final WeaponElementType ELEMENT = WeaponElementType.NONE;
+    private static final int STRENGTH = 0;
+    private static final int DEXTERITY = 13;
+    private static final int INTELLIGENCE = 0;
+    private static final int DAMAGE = 2;
+    private static final int ELEMENTAL_DAMAGE = 6;
+    private static final ElementType ELEMENT = ElementType.WATER;
 
     public WaterDagger() {
-        super(WATERDAGGER_NAME, WATERDAGGER_PRICE, TYPE, WATERDAGGER_DAMAGE, WATERDAGGER_ELEMENTAL_DAMAGE, ELEMENT);
+        super(NAME, PRICE, TYPE, STRENGTH, DEXTERITY, INTELLIGENCE, DAMAGE, ELEMENTAL_DAMAGE, ELEMENT);
     }
 }

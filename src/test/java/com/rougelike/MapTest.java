@@ -13,20 +13,23 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 public class MapTest {
 
+    private static final double DEFAULT_MIN_WIDTH = 10.0;
+    private static final double DEFAULT_MIN_HEIGHT = 10.0;
+    private static final double DEFAULT_MAX_WIDTH = 30.0;
+    private static final double DEFAULT_MAX_HEIGHT = 30.0;
+    private static final int DEFAULT_ROW_COUNT = 80;
+    private static final int DEFAULT_COLUMN_COUNT = 80;
+    private static final int DEFAULT_ROOM_COUNT = 10;
+    private static final int DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD = 10;
+
     private Map map = new Map();
-    private double minWidth = 10.0;
-    private double maxWidth = 30.0;
-    private double minHeight = 10.0;
-    private double maxHeight = 30.0;
-    private int rows = 80;
-    private int columns = 80;
 
     @Test
     public void testGenerateRoomWithinBounds() {
-        Room room = map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
+        Room room = map.generateRoom(DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), minWidth,
-                maxWidth, minHeight, maxHeight);
+        boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), DEFAULT_MIN_WIDTH,
+                DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
         assertTrue(expected);
     }
@@ -57,10 +60,11 @@ public class MapTest {
         double[] randomMultiplier = { 0.3, 0.6 };
         RandomInternal randomInternal = new RandomInternal(randomMultiplier);
         map.setRandom(randomInternal);
-        Room room = map.generateRoom(minWidth, maxWidth, minHeight, maxHeight);
+        Room room = map.generateRoom(DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier[0], minWidth, maxWidth) &&
-                room.getHeight() == randomDoubleInBounds(randomMultiplier[1], minHeight, maxHeight);
+        boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier[0], DEFAULT_MIN_WIDTH,
+                DEFAULT_MAX_WIDTH) &&
+                room.getHeight() == randomDoubleInBounds(randomMultiplier[1], DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
         assertTrue(expected);
     }
@@ -78,13 +82,15 @@ public class MapTest {
         map.setRandom(randomInternal);
 
         int roomCount = 5;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
         int index = 0;
         for (Room room : rooms) {
-            boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier[index++], minWidth, maxWidth) &&
-                    room.getHeight() == randomDoubleInBounds(randomMultiplier[index++], minHeight, maxHeight);
+            boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier[index++], DEFAULT_MIN_WIDTH,
+                    DEFAULT_MAX_WIDTH) &&
+                    room.getHeight() == randomDoubleInBounds(randomMultiplier[index++], DEFAULT_MIN_HEIGHT,
+                            DEFAULT_MAX_HEIGHT);
             assertTrue(expected);
         }
 
@@ -92,36 +98,29 @@ public class MapTest {
 
     @Test
     public void testGenerateMultipleRoomsVariablitiy() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
         boolean variablitiyInWidth = false;
         boolean variabilityInHeight = false;
 
-        double savedWidth = rooms.get(0).getWidth();
-        double savedHeight = rooms.get(0).getHeight();
-
+        Room lastRoom = rooms.get(rooms.size() - 1);
         for (Room room : rooms) {
-            if (savedWidth != room.getWidth()) {
-                variablitiyInWidth = true;
-            }
-            if (savedHeight != room.getHeight()) {
-                variabilityInHeight = true;
-            }
+            variablitiyInWidth |= lastRoom.getWidth() != room.getWidth();
+            variabilityInHeight |= lastRoom.getHeight() != room.getHeight();
+            lastRoom = room;
         }
         assertTrue(variablitiyInWidth && variabilityInHeight);
     }
 
     @Test
     public void testGenerateMultipleRoomsWithinBounds() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
         for (Room room : rooms) {
-            boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), minWidth,
-                    maxWidth, minHeight, maxHeight);
+            boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), DEFAULT_MIN_WIDTH,
+                    DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
             assertTrue(expected);
         }
@@ -129,18 +128,16 @@ public class MapTest {
 
     @Test
     public void testGenerateMultipleRoomsSize() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        assertEquals(roomCount, rooms.size());
+        assertEquals(DEFAULT_ROOM_COUNT, rooms.size());
     }
 
     @Test
     public void testPlaceRoomsInAreaThrows() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
         int rows = 0;
         int columns = 80;
@@ -151,11 +148,11 @@ public class MapTest {
 
     @Test
     public void testPlaceRoomsInArea() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
         for (int i = 0; i < placedRooms.size(); i++) {
@@ -170,14 +167,14 @@ public class MapTest {
 
     @Test
     public void testPlaceRoomsInAreaDependencyInjection() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
         double randomMultiplier = 0.3;
         map.setRandom(new RandomInternal(randomMultiplier));
 
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
         for (Room room : placedRooms) {
@@ -190,11 +187,11 @@ public class MapTest {
     }
 
     private double[] randomMultipliersForAreaIsFilled(int roomCount, int roomsInX, int roomsInY) {
-        double[] randomMultipliers = new double[roomCount * 2];
+        double[] randomMultipliers = new double[roomCount * 2]; // (x, y) till varje rum därför * 2
         int index = 0;
         for (int y = 0; y < roomsInY; y++) {
             for (int x = 0; x < roomsInX; x++) {
-                // - 1.0 så det går från 0.0 - 1.0 inclusive
+                // roomsIn* - 1.0 så det går från 0.0 till 1.0 inclusive
                 randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
                 randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
             }
@@ -206,21 +203,19 @@ public class MapTest {
     @CsvSource(value = { "42, 42", "82, 82" })
     public void testPlaceRoomsInAreaIfAreaIsFilled(int rows, int columns) {
         // Rooms kommer vara 10 X 10
-        // De tar alltså upp 4 X 4 cells
+        // De tar alltså upp 4 X 4 tiles
         // 2 extra rows och colummer för border
-        // Det får då plats 10 X 10 rum i utrymmet som har 42 X 42 cells med storlek 5.0
-
-        minWidth = 10.0;
-        minHeight = minWidth;
-
-        int roomsInX = rows / ((int) (minWidth / Map.TILE_SIZE) + 2);
-        int roomsInY = columns / ((int) (minHeight / Map.TILE_SIZE) + 2);
+        // Det får då plats 10 X 10 rum i utrymmet som har 42 X 42 tiles med storlek
+        // 5.0(Map.TILE_SIZE)
+        int extraForBorder = 2;
+        int roomsInX = rows / ((int) (DEFAULT_MIN_WIDTH / Map.TILE_SIZE) + extraForBorder);
+        int roomsInY = columns / ((int) (DEFAULT_MIN_HEIGHT / Map.TILE_SIZE) + extraForBorder);
 
         double randomMultiplier = 0.0;
         map.setRandom(new RandomInternal(randomMultiplier));
         int roomCount = roomsInX * roomsInY;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
         map.setRandom(new RandomInternal(randomMultipliersForAreaIsFilled(roomCount, roomsInX, roomsInY)));
 
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
@@ -231,16 +226,16 @@ public class MapTest {
     private double[] randomMultipliersForMultipleTries(int roomCount, int numberOfTriesBeforeDiscard) {
         double[] randomMultipliers = new double[(roomCount * 2) * numberOfTriesBeforeDiscard];
         int index = 0;
-        for (int x = 0; x < roomCount; x++) {
-            if (index > 0) {
-                // Gör så att andra rummet kommer bli platserad rakt på det första rummet
-                // numberOfTriesBeforeDiscard - 1 gånger och den sista gången så blir den
-                // platserad brevid
-                int lastIndex = index - 2;
-                for (int i = 0; i < numberOfTriesBeforeDiscard - 1; i++) {
-                    randomMultipliers[index++] = randomMultipliers[lastIndex];
-                    randomMultipliers[index++] = 0.0;
-                }
+        randomMultipliers[index++] = 0.0;
+        randomMultipliers[index++] = 0.0;
+        for (int x = 1; x < roomCount; x++) {
+            // Gör så att rummen kommer bli platserad rakt på varandra
+            // numberOfTriesBeforeDiscard - 1 gånger och den sista gången blir den
+            // platserad brevid den första
+            int lastIndex = index - 2;
+            for (int i = 0; i < numberOfTriesBeforeDiscard - 1; i++) {
+                randomMultipliers[index++] = randomMultipliers[lastIndex];
+                randomMultipliers[index++] = 0.0;
             }
             randomMultipliers[index++] = (double) x / ((double) roomCount - 1.0);
             randomMultipliers[index++] = 0.0;
@@ -250,34 +245,29 @@ public class MapTest {
 
     @Test
     public void testPlaceRoomsInAreaMultipleTriesIfRoomNotFit() {
-        rows = 30;
-        columns = 30;
-        minWidth = 10.0;
-        minHeight = minWidth;
-
         double randomMultiplier = 0.0;
         map.setRandom(new RandomInternal(randomMultiplier));
         int roomCount = 2;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        int numberOfTriesBeforeDiscard = 10;
-        map.setRandom(new RandomInternal(randomMultipliersForMultipleTries(roomCount, numberOfTriesBeforeDiscard)));
+        map.setRandom(new RandomInternal(
+                randomMultipliersForMultipleTries(roomCount, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD)));
 
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
-        int expectedSize = roomCount;
-        assertEquals(expectedSize, placedRooms.size());
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROOM_COUNT, DEFAULT_COLUMN_COUNT);
+
+        assertEquals(roomCount, placedRooms.size());
 
     }
 
     @Test
     public void testPlaceRoomsInAreaEmptyCellsAroundRoom() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        int numberOfTriesBeforeDiscard = 10;
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
         for (Room room : placedRooms) {
@@ -295,49 +285,48 @@ public class MapTest {
     private void checkCellsAboveRoom(Gridd gridd, Gridd.Index startIndex, int endColumn) {
         Gridd.Index i = gridd.new Index(startIndex);
         for (i.row -= 1, i.column -= 1; i.column <= endColumn; i.column++) {
-            assertTrue(gridd.getTile(i) <= Gridd.ROOM_BORDER_VALUE);
+            assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
         }
     }
 
     private void checkCellsBelowRoom(Gridd gridd, Gridd.Index endIndex, int startColumn) {
         Gridd.Index i = gridd.new Index(endIndex);
         for (i.row += 1, i.column += 1; i.column >= startColumn; i.column--) {
-            assertTrue(gridd.getTile(i) <= Gridd.ROOM_BORDER_VALUE);
+            assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
         }
     }
 
     private void checkCellsToLeftOfRoom(Gridd gridd, Gridd.Index startIndex, int endRow) {
         Gridd.Index i = gridd.new Index(startIndex);
         for (i.column -= 1; i.row <= endRow + 1; i.row++) {
-            assertTrue(gridd.getTile(i) <= Gridd.ROOM_BORDER_VALUE);
+            assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
         }
     }
 
     private void checkCellsToRightOfRoom(Gridd gridd, Gridd.Index endIndex, int startRow) {
         Gridd.Index i = gridd.new Index(endIndex);
         for (i.column += 1; i.row >= startRow + 1; i.row--) {
-            assertTrue(gridd.getTile(i) <= Gridd.ROOM_BORDER_VALUE);
+            assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
         }
     }
 
     @Test
     public void testGriddHasBorder() {
         int roomCount = 1;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        int numberOfTriesBeforeDiscard = 10;
-        map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
+        map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD, DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
-        int expected = -3;
-        int lastRow = rows - 1;
-        for (int column = 0; column < columns; column++) {
+        int expected = Gridd.BORDER_VALUE;
+        int lastRow = DEFAULT_ROW_COUNT - 1;
+        for (int column = 0; column < DEFAULT_COLUMN_COUNT; column++) {
             assertEquals(expected, gridd.getTile(0, column));
             assertEquals(expected, gridd.getTile(lastRow, column));
         }
-        int lastColumn = columns - 1;
-        for (int row = 0; row < rows; row++) {
+        int lastColumn = DEFAULT_COLUMN_COUNT - 1;
+        for (int row = 0; row < DEFAULT_ROW_COUNT; row++) {
             assertEquals(expected, gridd.getTile(row, 0));
             assertEquals(expected, gridd.getTile(row, lastColumn));
         }
@@ -345,17 +334,15 @@ public class MapTest {
 
     @Test
     public void testPlaceRoomsInAreaOutOfBounds() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+        Gridd gridd = map.getCopyOfGridd();
 
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
-
-        double widthOfArea = columns * Map.TILE_SIZE;
-        double heightOfArea = rows * Map.TILE_SIZE;
         for (Room room : placedRooms) {
-            boolean expected = (room.getPosition().getX() + room.getWidth()) < widthOfArea &&
-                    (room.getPosition().getY() + room.getHeight()) < heightOfArea;
+            boolean expected = (room.getPosition().getX() + room.getWidth()) < gridd.getWidth() &&
+                    (room.getPosition().getY() + room.getHeight()) < gridd.getHeight();
 
             assertTrue(expected);
         }
@@ -364,22 +351,23 @@ public class MapTest {
 
     @Test
     public void testPlaceRoomsInAreaReturnMultipleRooms() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 1, rows, columns);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+
         assertTrue(placedRooms.size() > 1);
     }
 
     @Test
     public void testConnectRooms() {
-        int roomCount = 10;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        int numberOfTriesBeforeDiscard = 10;
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rows, columns);
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+
         map.connectRooms(placedRooms);
         for (Room room : placedRooms) {
             assertTrue(room.isConnected());

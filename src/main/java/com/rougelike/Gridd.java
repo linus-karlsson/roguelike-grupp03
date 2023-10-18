@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 public class Gridd {
 
-    public static final int BORDER_VALUE = -3;
-    public static final int ROOM_BORDER_VALUE = -2;
+    public static final int BORDER_VALUE = -2;
 
     public class Index implements Comparable<Index> {
         int row;
@@ -124,33 +123,29 @@ public class Gridd {
 
         private void setTilesAboveRoom() {
             Index i = new Index(startIndex.row - 1, startIndex.column - 1);
-            int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
             for (; i.column <= endIndex.column; i.column++) {
-                setTile(i, borderValue);
+                setTile(i, BORDER_VALUE);
             }
         }
 
         private void setTilesBelowRoom() {
             Index i = new Index(endIndex.row + 1, endIndex.column + 1);
-            int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
             for (; i.column >= startIndex.column; i.column--) {
-                setTile(i, borderValue);
+                setTile(i, BORDER_VALUE);
             }
         }
 
         private void setTilesToLeftOfRoom() {
             Index i = new Index(startIndex.row, startIndex.column - 1);
-            int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
             for (; i.row <= endIndex.row + 1; i.row++) {
-                setTile(i, borderValue);
+                setTile(i, BORDER_VALUE);
             }
         }
 
         private void setTilesToRightOfRoom() {
             Index i = new Index(endIndex.row, endIndex.column + 1);
-            int borderValue = getTile(i) == BORDER_VALUE ? BORDER_VALUE : ROOM_BORDER_VALUE;
             for (; i.row >= startIndex.row - 1; i.row--) {
-                setTile(i, borderValue);
+                setTile(i, BORDER_VALUE);
             }
         }
 

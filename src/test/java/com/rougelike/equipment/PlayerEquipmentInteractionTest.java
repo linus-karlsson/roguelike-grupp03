@@ -72,7 +72,7 @@ public class PlayerEquipmentInteractionTest {
         Dagger dagger = new Dagger();
         FireSword fireSword = new FireSword();
         Torch torch = new Torch();
-        Wand wand = new Wand();
+        AirWand wand = new AirWand();
         Player player = new Player("Sven", new Point());
 
         player.addWeaponToInventory(dagger);
@@ -95,7 +95,7 @@ public class PlayerEquipmentInteractionTest {
         Dagger dagger = new Dagger();
         FireSword fireSword = new FireSword();
         Torch torch = new Torch();
-        Wand wand = new Wand();
+        AirWand wand = new AirWand();
         Sword sword = new Sword();
         Player player = new Player("Sven", new Point());
 
@@ -116,7 +116,7 @@ public class PlayerEquipmentInteractionTest {
         Dagger dagger = new Dagger();
         FireSword fireSword = new FireSword();
         Torch torch = new Torch();
-        Wand wand = new Wand();
+        AirWand wand = new AirWand();
         Sword sword = new Sword();
         Player player = new Player("Sven", new Point());
 
