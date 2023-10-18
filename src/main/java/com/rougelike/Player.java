@@ -242,7 +242,7 @@ public class Player {
         if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
                 weapon.getType() == EquipmentType.CLUB)) {
             equippedWeapon = weapon;
-            strength += 10;
+            strength += weapon.getStrength() * role.getStrengthMultiplier();
             setTotalWeaponDamage();
         } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
             equippedWeapon = weapon;
