@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import com.rougelike.*;
 import com.rougelike.races.Dwarf;
 import com.rougelike.races.Elf;
+import com.rougelike.races.Human;
 import com.rougelike.roles.Knight;
 import com.rougelike.roles.Mage;
 import com.rougelike.roles.Thief;
@@ -259,7 +260,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equippingWeaponIncreasesStatByCorrectAmount() {
+    public void equippingWeaponIncreasesStatsByCorrectAmount_Dwarf_Knight() {
         Knight knight = new Knight();
         Player player = new Player("Sven", new Dwarf(), knight, new Point());
         FireSword fireSword = new FireSword();
@@ -267,6 +268,29 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(fireSword);
         player.equipWeapon(fireSword);
         assertEquals(actual, player.getStrength());
+    }
+
+    @Test
+    public void equippingWeaponIncreasesStatsByCorrectAmount_Human_Mage() {
+        Mage mage = new Mage();
+        Player player = new Player("Bengt", new Human(), mage, new Point());
+        SuperiorAirWand superiorAirWand = new SuperiorAirWand();
+        double actual = (player.getIntelligence()
+                + (superiorAirWand.getIntelligence() * mage.getIntelligenceMultiplier()));
+        player.addWeaponToInventory(superiorAirWand);
+        player.equipWeapon(superiorAirWand);
+        assertEquals(actual, player.getIntelligence());
+    }
+
+    @Test
+    public void equippingWeaponIncreasesStatsByCorrectAmount_Elf_Thief() {
+        Thief thief = new Thief();
+        Player player = new Player("Tor", new Elf(), thief, new Point());
+        WaterDagger waterDagger = new WaterDagger();
+        double actual = (player.getDexterity() + (waterDagger.getDexterity() * thief.getDexterityMultiplier()));
+        player.addWeaponToInventory(waterDagger);
+        player.equipWeapon(waterDagger);
+        assertEquals(actual, player.getDexterity());
     }
 
     @Test
