@@ -1,6 +1,6 @@
 package com.rougelike.magic;
 import com.rougelike.*;
-import com.rougelike.races.Human;
+import com.rougelike.races.*;
 import com.rougelike.roles.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,6 +42,24 @@ public class MagicInvokerTest {
         MagicInvoker magicInvoker = magic.getType();
         Player player = new Player("Test", new Human(), new Knight(), new Point());
         double expectedValue = 9.0;
+        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+    }
+
+    @Test
+    void testIfNeutralElementTypeNotImpactInMagicValue() {
+        Magic magic = new Magic(Spell.HEAL);
+        MagicInvoker magicInvoker = magic.getType();
+        Player player = new Player("Test", new Human(), new Thief(), new Point());
+        double expectedValue = 10.0;
+        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+    }
+
+    @Test
+    void testIfElementAirThrownByElfIncreaseMagicValueByFivePercent() {
+        Magic magic = new Magic(Spell.TORNADO);
+        MagicInvoker magicInvoker = magic.getType();
+        Player player = new Player("Test", new Elf(), new Thief(), new Point());
+        double expectedValue = 10.5;
         assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
     }
 
