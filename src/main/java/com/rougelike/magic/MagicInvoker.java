@@ -2,6 +2,7 @@ package com.rougelike.magic;
 
 import com.rougelike.Player;
 import com.rougelike.roles.*;
+import com.rougelike.races.*;
 
 abstract public class MagicInvoker {
 
@@ -49,7 +50,7 @@ abstract public class MagicInvoker {
     public double MagicValue(Magic magic, Player player) {
         double actualStrenght = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, player.getLevel());
         double roundedValue = Math.round(actualStrenght * 100.0) / 100.0;
-        if (magic.getElement().getName().equals("Air") && player.getRace().equals("Elf")) {
+        if (magic.getElement().getName().equals("Air") && player.getRace() instanceof Elf) {
             return checkImpactFromRole(roundedValue * 1.05, player);
         }
         return checkImpactFromRole(roundedValue, player);
