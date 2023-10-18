@@ -33,4 +33,11 @@ public class RaceImpactCheckerTest {
         assertTrue(raceImpactChecker.isPlayerImpactByFire(player)); 
     }
 
+    @Test
+    void testIfPlayerDwarfNotImpactByElementFire() {
+        Player player = new Player("Test", new Dwarf(), new Thief(), new Point());
+        RaceImpactChecker raceImpactChecker = new RaceImpactChecker();
+        assertFalse(raceImpactChecker.isPlayerImpactByFire(player)); 
+    }
+
 }
