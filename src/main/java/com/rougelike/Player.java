@@ -12,6 +12,7 @@ import com.rougelike.roles.Knight;
 import com.rougelike.roles.Mage;
 import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
+import com.rougelike.magic.*;
 
 public class Player {
 
@@ -40,6 +41,7 @@ public class Player {
     private Equipment equippedOffhand;
     private ArrayList<Weapon> weaponInventory = new ArrayList<>();
     private ArrayList<Armor> armorInventory = new ArrayList<>();
+    private ArrayList<Magic> magicInventory = new ArrayList<>();
 
     private Point position;
     private Vector velocity;
