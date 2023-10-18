@@ -58,12 +58,20 @@ public class MagicElementTypeTest {
         double expectedMultiplier = 1.05;
         assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
     }
-    
+
     @Test
     void testGetMultiplierRetunsCorrectValueIfPlayerIsHumanAndElementEarth() {
         Magic magic = new Magic(Spell.POISON);
         Player player = new Player("Test", new Human(), new Thief(), new Point());
         double expectedMultiplier = 1.00;
+        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+    }
+
+    @Test
+    void testGetMultiplierReturnsCorrectValueIfPlayerIsOrcAndElementEarth() {
+        Magic magic = new Magic(Spell.POISON);
+        Player player = new Player("Test", new Orc(), new Thief(), new Point());
+        double expectedMultiplier = 0.95;
         assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
     }
 }
