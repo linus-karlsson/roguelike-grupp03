@@ -29,6 +29,7 @@ public class Player {
     private double strength;
     private double dexterity;
     private double intelligence;
+    private double armorValue;
 
     private double totalWeaponDamage;
     private int level;
@@ -218,6 +219,59 @@ public class Player {
         return this.level = level;
     }
 
+    public void equipNextWeapon() {
+
+    }
+
+    public void equipPreviousWeapon() {
+
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public Player reset() {
+        String name = startingValues.getName();
+        Race race = startingValues.getRace();
+        Role role = startingValues.getRole();
+        Point position = startingValues.getPosition();
+        return new Player(name, race, role, position);
+    }
+
+    // Metoder som hanterar equippa/unequippa
+
+    // public void setStatsWhenEquipping(Equipment equipment) {
+    // strength += equipment.getStrength() * role.getStrengthMultiplier();
+    // dexterity += equipment.getStrength() * role.getDexterityMultiplier();
+    // intelligence += equipment.getIntelligence() +
+    // role.getIntelligenceMultiplier();
+
+    // if (equipment instanceof Armor) {
+    // Armor armor = (Armor) equipment;
+    // setStatsFromArmorWhenEquipping(armor);
+    // }
+
+    // if (equipment instanceof Weapon) {
+    // Weapon weapon = (Weapon) equipment;
+    // equippedWeapon = weapon;
+    // setTotalWeaponDamage();
+    // }
+    // }
+    public void setStatsWhenEquippingWeapon(Weapon weapon) {
+        strength += weapon.getStrength() * role.getStrengthMultiplier();
+        dexterity += weapon.getStrength() * role.getDexterityMultiplier();
+        intelligence += weapon.getIntelligence() + role.getIntelligenceMultiplier();
+    }
+
+    public void setStatsWhenEquippingArmor(Armor armor) {
+        health += armor.getHealth();
+        mana += armor.getMana();
+        armorValue += armor.getArmor();
+    }
+
+    // Vapen
+
     public void addWeaponToInventory(Weapon weapon) {
         if (weaponInventory.size() == MAX_INVENTORY_CAPACITY) {
             wallet += weaponInventory.get(0).getPrice();
@@ -228,6 +282,33 @@ public class Player {
             return;
         }
         weaponInventory.add(weapon);
+    }
+
+    // public void updateCharacterWhenEquippingWeapon(Weapon weapon) {
+    // equippedWeapon = weapon;
+    // setStatsWhenEquippingWeapon(weapon);
+    // setTotalWeaponDamage();
+    // }
+
+    public void equipWeapon(Weapon weapon) {
+        if (!getWeaponInventory().contains(weapon)) {
+            return;
+        }
+        if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
+                weapon.getType() == EquipmentType.CLUB)) {
+            // updateCharacterWhenEquippingWeapon(weapon);
+            setStatsWhenEquippingWeapon(weapon);
+            equippedWeapon = weapon;
+            // equippedWeapon = weapon;
+        } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
+            setStatsWhenEquippingWeapon(weapon);
+            equippedWeapon = weapon;
+            // updateCharacterWhenEquippingWeapon(weapon);
+        } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
+            setStatsWhenEquippingWeapon(weapon);
+            equippedWeapon = weapon;
+            // updateCharacterWhenEquippingWeapon(weapon);
+        }
     }
 
     public void removeWeaponFromInventory(Weapon weapon) {
@@ -246,31 +327,7 @@ public class Player {
         intelligence -= equippedWeapon.getIntelligence() + role.getIntelligenceMultiplier();
     }
 
-    public void setStatsWhenEquipping(Equipment equipment) {
-        strength += equipment.getStrength() * role.getStrengthMultiplier();
-        dexterity += equipment.getStrength() * role.getDexterityMultiplier();
-        intelligence += equipment.getIntelligence() + role.getIntelligenceMultiplier();
-    }
-
-    public void updateCharacterWhenEquippingWeapon(Weapon weapon) {
-        equippedWeapon = weapon;
-        setStatsWhenEquipping(weapon);
-        setTotalWeaponDamage();
-    }
-
-    public void equipWeapon(Weapon weapon) {
-        if (!getWeaponInventory().contains(weapon)) {
-            return;
-        }
-        if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
-                weapon.getType() == EquipmentType.CLUB)) {
-            updateCharacterWhenEquippingWeapon(weapon);
-        } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
-            updateCharacterWhenEquippingWeapon(weapon);
-        } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
-            updateCharacterWhenEquippingWeapon(weapon);
-        }
-    }
+    // Armor
 
     public void addArmorToInventory(Armor armor) {
         if (armorInventory.size() == MAX_INVENTORY_CAPACITY) {
@@ -296,33 +353,16 @@ public class Player {
         }
         if ((role instanceof Knight) && (offhand.getType() == EquipmentType.SHIELD)) {
             equippedOffhand = offhand;
+            setStatsWhenEquippingArmor((Armor) offhand);
         } else if ((role instanceof Mage) && (offhand.getType() == EquipmentType.BOOK)) {
             equippedOffhand = offhand;
+            setStatsWhenEquippingArmor((Armor) offhand);
         } else if ((role instanceof Thief) && (offhand.getType() == EquipmentType.DAGGER)) {
             equippedOffhand = offhand;
+            setStatsWhenEquippingWeapon((Weapon) offhand);
         } else {
             return;
         }
-    }
-
-    public void equipNextWeapon() {
-
-    }
-
-    public void equipPreviousWeapon() {
-
-    }
-
-    public boolean isDead() {
-        return isDead;
-    }
-
-    public Player reset() {
-        String name = startingValues.getName();
-        Race race = startingValues.getRace();
-        Role role = startingValues.getRole();
-        Point position = startingValues.getPosition();
-        return new Player(name, race, role, position);
     }
 
 }
