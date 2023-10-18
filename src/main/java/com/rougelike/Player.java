@@ -236,8 +236,14 @@ public class Player {
     }
 
     public void unequipWeapon() {
-        strength -= equippedWeapon.getStrength() * role.getStrengthMultiplier();
+        setStatsWhenUnequippingWeapon();
         equippedWeapon = null;
+    }
+
+    public void setStatsWhenUnequippingWeapon() {
+        strength -= equippedWeapon.getStrength() * role.getStrengthMultiplier();
+        dexterity -= equippedWeapon.getStrength() * role.getDexterityMultiplier();
+        intelligence -= equippedWeapon.getIntelligence() + role.getIntelligenceMultiplier();
     }
 
     public void setStatsWhenEquipping(Equipment equipment) {
