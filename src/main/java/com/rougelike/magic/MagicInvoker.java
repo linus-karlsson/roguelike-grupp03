@@ -37,7 +37,7 @@ abstract public class MagicInvoker {
 
     private double checkImpactFromRace(double value, Player player, MagicElementType elementType) {
         if (elementType.getName().equals("Air") && player.getRace() instanceof Elf) {
-            return value * 1.05;
+            return value * elementType.getMultiplier(player);
         }
         return value;
         }

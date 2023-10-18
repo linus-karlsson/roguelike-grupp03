@@ -65,4 +65,13 @@ public class MagicInvokerTest {
         assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
     }
 
+    @Test
+    void testIfElementAirThrownByOrchNotImpactValue() {
+        Magic magic = new Magic(Spell.TORNADO);
+        MagicInvoker magicInvoker = magic.getType();
+        Player player = new Player("Test", new Orc(), new Thief(), new Point());
+        double expectedValue = 10.0;
+        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+    }
+
 }
