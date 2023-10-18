@@ -28,7 +28,8 @@ public class MagicAttackTest {
         Player enemy = new Player("Test", new Human(), new Mage(), new Point());
         enemy.setHealth(50);
         double expectedValue = 39;
-        magic.getType().throwMagic(magic, player, enemy);
+        MagicAttack magicAttack = (MagicAttack) magic.getType();
+        magicAttack.throwMagic(magic, player, enemy);
         assertEquals(expectedValue, player.getHealth());
     }
 
@@ -36,9 +37,11 @@ public class MagicAttackTest {
     void testMethodAttackShouldDecreasePlayersHealthThrownByKnight() {
         Magic magic = new Magic(Spell.TORNADO);
         Player player = new Player("Test", new Human(), new Knight(), new Point());
-        player.setHealth(50);
+        Player enemy = new Player("Test", new Human(), new Mage(), new Point());
+        enemy.setHealth(50);
         double expectedValue = 41;
-        magic.getType().throwMagic(magic, player);
+        MagicAttack magicAttack = (MagicAttack) magic.getType();
+        magicAttack.throwMagic(magic, player, enemy);
         assertEquals(expectedValue, player.getHealth());
     }
 
@@ -46,9 +49,11 @@ public class MagicAttackTest {
     void testMethodAttackShouldDecreasePlayersHealthToZeroInsteadOfNegativeHealth() {
         Magic magic = new Magic(Spell.FREEZE);
         Player player = new Player("Test", new Human(), new Mage(), new Point());
-        player.setHealth(5);
+        Player enemy = new Player("Test", new Human(), new Mage(), new Point());
+        enemy.setHealth(5);
         double expectedValue = 0;
-        magic.getType().throwMagic(magic, player);
+        MagicAttack magicAttack = (MagicAttack) magic.getType();
+        magicAttack.throwMagic(magic, player, enemy);
         assertEquals(expectedValue, player.getHealth());
     }
 
