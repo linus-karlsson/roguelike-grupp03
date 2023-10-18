@@ -3,7 +3,7 @@ package com.rougelike.magic;
 import com.rougelike.*;
 import com.rougelike.races.*;
 
-//Alv stakare, orch svagare
+//Alv starkare, orch svagare
 // Vind är starka mot jord (dvärg) och vatten (starkare vid kombination med eld)
 // Vind påverkar jord(dvärg) svagare
 public class ElementAir extends MagicElementType {
