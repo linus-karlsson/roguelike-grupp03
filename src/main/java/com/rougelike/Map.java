@@ -56,8 +56,7 @@ public class Map {
             Gridd.Index index = gridd.getRoomParser().nextIndex();
             int currentTileValue = gridd.getTile(index);
             if (currentTileValue >= 0
-                    || currentTileValue == Gridd.BORDER_VALUE
-                    || currentTileValue == Gridd.ROOM_BORDER_VALUE) {
+                    || currentTileValue == Gridd.BORDER_VALUE) {
                 return false;
             }
         }
@@ -175,7 +174,7 @@ public class Map {
         for (int row = 0; row < gridd.getRowCount(); row++) {
             for (int column = 0; column < gridd.getColumnCount(); column++) {
                 int cellValue = gridd.getTile(row, column);
-                if (cellValue == Gridd.BORDER_VALUE || cellValue == Gridd.ROOM_BORDER_VALUE || cellValue == -1)
+                if (cellValue == Gridd.BORDER_VALUE || cellValue == -1)
                     cellValue = 0;
                 else if (cellValue >= 0) {
                     cellValue = 1;
