@@ -329,11 +329,13 @@ public class Player {
     }
 
     public void addMagicToInventory(Magic magic) {
-        if (magicInventory.containsKey(magic.getName())) {
-            
-            return;
-        }
+          
         magicInventory.put(magic.getName(), magic);
+    }
+
+    public boolean hasMagicKnowledge(Magic magic) {
+        return magicInventory.containsKey(magic.getName());
+
     }
 
 }
