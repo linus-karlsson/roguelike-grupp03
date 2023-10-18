@@ -119,12 +119,14 @@ public class Map {
             int rowDifferens = abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
             int columnDifferens = abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
             for (int j = 0; j <= rowDifferens; j++) {
-                gridd.setTile(indexForRowTraversal, rooms.size());
+                int currentTileValue = gridd.getTile(indexForRowTraversal);
+                gridd.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : rooms.size());
                 indexForRowTraversal.row++;
             }
             indexForRowTraversal.row--; // Reset the last iteration
             for (int j = 0; j <= columnDifferens; j++) {
-                gridd.setTile(indexForColumnTraversal, rooms.size());
+                int currentTileValue = gridd.getTile(indexForColumnTraversal);
+                gridd.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : rooms.size());
                 indexForColumnTraversal.column++;
             }
             startRoom.setConnected(true);
