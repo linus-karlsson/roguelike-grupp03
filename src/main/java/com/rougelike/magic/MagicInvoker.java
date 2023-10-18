@@ -39,6 +39,9 @@ abstract public class MagicInvoker {
         if (elementType.getName().equals("Air") && player.getRace() instanceof Elf) {
             return value * elementType.getMultiplier(player);
         }
+        if (elementType.getName().equals("Air") && player.getRace() instanceof Orc) {
+            return value * elementType.getMultiplier(player);
+        }
         return value;
         }
     
