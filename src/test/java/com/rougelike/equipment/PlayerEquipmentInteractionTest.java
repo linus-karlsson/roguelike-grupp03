@@ -268,6 +268,19 @@ public class PlayerEquipmentInteractionTest {
         assertTrue(player.getStrength() < statsBeforeUnequipping);
     }
 
+    @Test
+    public void unequippingWeaponReducesStatsByCorrectAmount() {
+        Knight knight = new Knight();
+        Dwarf dwarf = new Dwarf();
+        Player player = new Player("Sven", dwarf, knight, new Point());
+        Torch torch = new Torch();
+        double actual = dwarf.getStartingStrength() * knight.getStrengthMultiplier();
+        player.addWeaponToInventory(torch);
+        player.equipWeapon(torch);
+        player.unequipWeapon();
+        assertEquals(actual, player.getStrength());
+    }
+
     // Skapa fler tester för att kolla resten av kombinationerna.
     // Skapa tester för att sätta på sig vapen.
 }
