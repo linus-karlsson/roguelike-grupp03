@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import com.rougelike.*;
 import com.rougelike.races.Dwarf;
 import com.rougelike.roles.Knight;
+import com.rougelike.roles.Mage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -205,10 +206,32 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
+    public void equipsWeaponIfCorrectRoleAndInInventory() {
+        FireSword fireSword = new FireSword();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Weapon actual = fireSword;
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
+        assertEquals(actual, player.getEquippedWeapon());
+    }
+
+    @Test
+    public void doesNotEquipWeaponIfWrongRole() {
+        FireSword fireSword = new FireSword();
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+        Weapon actual = player.getEquippedWeapon();
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
+        assertEquals(actual, player.getEquippedWeapon());
+    }
+
+    @Test
     public void equippingWeaponIncreasesPlayerStats() {
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        FireSword fireSword = new FireSword();
         double nothingEquippedStats = player.getStrength();
-        player.equipWeapon(new FireSword());
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
         double weaponEquippedStats = player.getStrength();
         assertTrue(weaponEquippedStats > nothingEquippedStats);
     }

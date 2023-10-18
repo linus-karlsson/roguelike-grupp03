@@ -169,6 +169,10 @@ public class Player {
         return level;
     }
 
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
     public Equipment getEquippedOffhand() {
         return equippedOffhand;
     }
@@ -238,6 +242,7 @@ public class Player {
         if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
                 weapon.getType() == EquipmentType.CLUB)) {
             equippedWeapon = weapon;
+            strength += 10;
             setTotalWeaponDamage();
         } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
             equippedWeapon = weapon;
