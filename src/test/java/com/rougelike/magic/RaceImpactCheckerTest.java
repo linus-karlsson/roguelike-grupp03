@@ -15,7 +15,8 @@ public class RaceImpactCheckerTest {
     @Test
     void testIfPlayerElfIsImpactByElementAir() {
         Player player = new Player("Test", new Elf(), new Thief(), new Point());
-        assertTrue(RaceImpactChecker.isPlayerImpactByAir(player)); 
+        RaceImpactChecker raceImpactChecker = new RaceImpactChecker();
+        assertTrue(raceImpactChecker.isPlayerImpactByAir(player)); 
     }
 
 }

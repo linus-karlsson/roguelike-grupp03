@@ -8,8 +8,8 @@ abstract public class MagicInvoker {
 
     private static final double MAGE_MAGIC_MULTIPLIER = 1.1;
     private static final double KNIGHT_MAGIC_MULTIPLIER = 0.9;
-
     private static final double LEVEL_MULTIPLIER = 1.2;
+    private static final RaceImpactChecker raceImpactChecker = new RaceImpactChecker();
 
     protected String name;
 
