@@ -146,6 +146,17 @@ public class MapTest {
         });
     }
 
+    private void checkIfRoomsHaveCorrectId(ArrayList<Room> rooms, Gridd gridd) {
+        for (int i = 0; i < rooms.size(); i++) {
+            Room room = rooms.get(i);
+            gridd.getRoomParser().setRoom(room);
+            ArrayList<Integer> roomTileList = gridd.getRoomParser().roomAreaToList();
+            for (int tile : roomTileList) {
+                assertEquals(i, tile, roomTileList.toString());
+            }
+        }
+    }
+
     @Test
     public void testPlaceRoomsInArea() {
         ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
@@ -155,14 +166,7 @@ public class MapTest {
                 DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         Gridd gridd = map.getCopyOfGridd();
 
-        for (int i = 0; i < placedRooms.size(); i++) {
-            Room room = placedRooms.get(i);
-            gridd.getRoomParser().setRoom(room);
-            ArrayList<Integer> roomTileList = gridd.getRoomParser().roomAreaToList();
-            for (int tile : roomTileList) {
-                assertEquals(i, tile, roomTileList.toString());
-            }
-        }
+        checkIfRoomsHaveCorrectId(placedRooms, gridd);
     }
 
     @Test
@@ -262,7 +266,7 @@ public class MapTest {
     }
 
     @Test
-    public void testPlaceRoomsInAreaEmptyCellsAroundRoom() {
+    public void testPlaceRoomsInAreaEmptyTilesAroundRoom() {
         ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
@@ -274,36 +278,36 @@ public class MapTest {
             gridd.getRoomParser().setRoom(room);
             Gridd.Index startIndex = gridd.getRoomParser().getRoomStartIndex();
             Gridd.Index endIndex = gridd.getRoomParser().getRoomEndIndex();
-            checkCellsAboveRoom(gridd, startIndex, endIndex.column);
-            checkCellsBelowRoom(gridd, endIndex, startIndex.column);
-            checkCellsToLeftOfRoom(gridd, startIndex, endIndex.row);
-            checkCellsToRightOfRoom(gridd, endIndex, startIndex.row);
+            checkTilesAboveRoom(gridd, startIndex, endIndex.column);
+            checkTilesBelowRoom(gridd, endIndex, startIndex.column);
+            checkTilesToLeftOfRoom(gridd, startIndex, endIndex.row);
+            checkTilesToRightOfRoom(gridd, endIndex, startIndex.row);
         }
 
     }
 
-    private void checkCellsAboveRoom(Gridd gridd, Gridd.Index startIndex, int endColumn) {
+    private void checkTilesAboveRoom(Gridd gridd, Gridd.Index startIndex, int endColumn) {
         Gridd.Index i = gridd.new Index(startIndex);
         for (i.row -= 1, i.column -= 1; i.column <= endColumn; i.column++) {
             assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
         }
     }
 
-    private void checkCellsBelowRoom(Gridd gridd, Gridd.Index endIndex, int startColumn) {
+    private void checkTilesBelowRoom(Gridd gridd, Gridd.Index endIndex, int startColumn) {
         Gridd.Index i = gridd.new Index(endIndex);
         for (i.row += 1, i.column += 1; i.column >= startColumn; i.column--) {
             assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
         }
     }
 
-    private void checkCellsToLeftOfRoom(Gridd gridd, Gridd.Index startIndex, int endRow) {
+    private void checkTilesToLeftOfRoom(Gridd gridd, Gridd.Index startIndex, int endRow) {
         Gridd.Index i = gridd.new Index(startIndex);
         for (i.column -= 1; i.row <= endRow + 1; i.row++) {
             assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
         }
     }
 
-    private void checkCellsToRightOfRoom(Gridd gridd, Gridd.Index endIndex, int startRow) {
+    private void checkTilesToRightOfRoom(Gridd gridd, Gridd.Index endIndex, int startRow) {
         Gridd.Index i = gridd.new Index(endIndex);
         for (i.column += 1; i.row >= startRow + 1; i.row--) {
             assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
@@ -361,7 +365,7 @@ public class MapTest {
     }
 
     @Test
-    public void testConnectRooms() {
+    public void testConnectRoomsAllConnected() {
         ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
@@ -372,6 +376,47 @@ public class MapTest {
         for (Room room : placedRooms) {
             assertTrue(room.isConnected());
         }
+    }
+
+    @Test
+    public void testConnectRooms() {
+        double randomMultiplier = 0.0;
+        map.setRandom(new RandomInternal(randomMultiplier));
+
+        int roomCount = 3;
+        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+
+        double[] randomMultipliers = { 0.0, 0.0, 0.5, 0.0, 0.5, 0.5 };
+        map.setRandom(new RandomInternal(randomMultipliers));
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+        map.connectRooms(placedRooms);
+        Gridd gridd = map.getCopyOfGridd();
+
+        Gridd.Index firstRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(placedRooms.get(0).getPosition());
+        Gridd.Index secondRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(placedRooms.get(1).getPosition());
+        Gridd.Index thirdRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(placedRooms.get(2).getPosition());
+
+        for (; firstRoomGriddIndex.column <= secondRoomGriddIndex.column; firstRoomGriddIndex.column++) {
+            assertTrue(gridd.getTile(firstRoomGriddIndex) >= 0);
+        }
+        for (; secondRoomGriddIndex.row <= thirdRoomGriddIndex.row; secondRoomGriddIndex.row++) {
+            assertTrue(gridd.getTile(secondRoomGriddIndex) >= 0);
+        }
+    }
+
+    @Test
+    public void testConnectRoomsAllRoomsStillHaveId() {
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+        map.connectRooms(placedRooms);
+
+        Gridd gridd = map.getCopyOfGridd();
+        checkIfRoomsHaveCorrectId(placedRooms, gridd);
     }
 
 }

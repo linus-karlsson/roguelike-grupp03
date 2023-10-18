@@ -122,6 +122,7 @@ public class Map {
                 gridd.setTile(indexForRowTraversal, rooms.size());
                 indexForRowTraversal.row++;
             }
+            indexForRowTraversal.row--; // Reset the last iteration
             for (int j = 0; j <= columnDifferens; j++) {
                 gridd.setTile(indexForColumnTraversal, rooms.size());
                 indexForColumnTraversal.column++;
