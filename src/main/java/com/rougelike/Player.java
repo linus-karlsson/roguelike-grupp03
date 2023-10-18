@@ -39,6 +39,7 @@ public class Player {
 
     private Weapon equippedWeapon;
     private Equipment equippedOffhand;
+    private Armor equippedArmor;
     private ArrayList<Weapon> weaponInventory = new ArrayList<>();
     private ArrayList<Armor> armorInventory = new ArrayList<>();
 
@@ -214,6 +215,10 @@ public class Player {
         return role;
     }
 
+    public Armor getArmor() {
+        return equippedArmor;
+    }
+
     // Vill kunna sätta level för testning
     public int setLevel(int level) {
         return this.level = level;
@@ -248,9 +253,12 @@ public class Player {
     }
 
     public void setStatsWhenEquippingArmor(Armor armor) {
+        strength += armor.getStrength() * role.getStrengthMultiplier();
+        dexterity += armor.getDexterity() * role.getDexterityMultiplier();
+        intelligence += armor.getIntelligence() * role.getIntelligenceMultiplier();
         health += armor.getHealth();
         mana += armor.getMana();
-        armorValue += armor.getArmor();
+        armorValue += armor.getArmorValue();
     }
 
     // Vapen
@@ -317,6 +325,38 @@ public class Player {
     public void removeArmorFromInventory(Armor armor) {
         wallet += armor.getPrice();
         armorInventory.remove(armor);
+    }
+
+    public void equipArmor(Armor armor) {
+        if (!getArmorInventory().contains(armor)) {
+            return;
+        }
+        if (role instanceof Knight && (armor.getType() == EquipmentType.HEAVY_ARMOR)) {
+            setStatsWhenEquippingArmor(armor);
+            equippedArmor = armor;
+        }
+        if (role instanceof Mage && (armor.getType() == EquipmentType.LIGHT_ARMOR)) {
+            setStatsWhenEquippingArmor(armor);
+            equippedArmor = armor;
+        }
+        if (role instanceof Thief && (armor.getType() == EquipmentType.MEDIUM_ARMOR)) {
+            setStatsWhenEquippingArmor(armor);
+            equippedArmor = armor;
+        }
+    }
+
+    public void setStatswhenUnequippingArmor() {
+        strength -= equippedArmor.getStrength() * role.getStrengthMultiplier();
+        dexterity -= equippedArmor.getDexterity() * role.getDexterityMultiplier();
+        intelligence -= equippedArmor.getIntelligence() * role.getIntelligenceMultiplier();
+        health -= equippedArmor.getHealth();
+        mana -= equippedArmor.getMana();
+        armorValue -= equippedArmor.getArmorValue();
+    }
+
+    public void unequipArmor() {
+        setStatswhenUnequippingArmor();
+        equippedArmor = null;
     }
 
     public void equipOffhand(Equipment offhand) {
