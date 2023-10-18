@@ -215,7 +215,11 @@ public class Player {
         return role;
     }
 
-    public Armor getArmor() {
+    public double getArmorValue() {
+        return armorValue;
+    }
+
+    public Armor getEquippedArmor() {
         return equippedArmor;
     }
 

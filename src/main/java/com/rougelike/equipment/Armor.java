@@ -4,7 +4,7 @@ public class Armor extends Equipment {
 
     private int health;
     private int mana;
-    private int armor;
+    private int armorValue;
     private ElementType elementType;
 
     public Armor(String name, int price, EquipmentType type, int strength, int dexterity, int intelligence, int health,
@@ -12,12 +12,12 @@ public class Armor extends Equipment {
         super(name, price, type, strength, dexterity, intelligence);
         this.health = health;
         this.mana = mana;
-        this.armor = armor;
+        this.armorValue = armor;
         this.elementType = elementType;
     }
 
-    public int getArmor() {
-        return armor;
+    public int getArmorValue() {
+        return armorValue;
     }
 
     public ElementType getElementType() {

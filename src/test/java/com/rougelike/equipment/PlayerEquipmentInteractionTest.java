@@ -64,9 +64,9 @@ public class PlayerEquipmentInteractionTest {
     public void correctValueStartingMoney() {
         Player player = new Player("Sven", new Point());
 
-        int actual = 100;
+        int expected = 100;
 
-        assertEquals(actual, player.getWallet());
+        assertEquals(expected, player.getWallet());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class PlayerEquipmentInteractionTest {
         Sword sword = new Sword();
         Player player = new Player("Sven", new Point());
 
-        int actual = player.getWallet() + stick.getPrice();
+        int expected = player.getWallet() + stick.getPrice();
 
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
@@ -133,7 +133,7 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(wand);
         player.addWeaponToInventory(sword);
 
-        assertEquals(actual, player.getWallet());
+        assertEquals(expected, player.getWallet());
     }
 
     @Test
@@ -142,12 +142,12 @@ public class PlayerEquipmentInteractionTest {
         Stick stick = new Stick();
         Player player = new Player("Sven", new Point());
 
-        int actual = 1;
+        int expected = 1;
 
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(stick);
 
-        assertEquals(actual, player.getWeaponInventory().size());
+        assertEquals(expected, player.getWeaponInventory().size());
     }
 
     // Fungerar inte längre då metoden kräver en klass.
@@ -177,9 +177,9 @@ public class PlayerEquipmentInteractionTest {
         Knight knight = new Knight();
         Player player = new Player("Sven", dwarf, knight, new Point());
 
-        Equipment actual = null;
+        Equipment expected = null;
         player.equipOffhand(shield);
-        assertEquals(actual, player.getEquippedOffhand());
+        assertEquals(expected, player.getEquippedOffhand());
     }
 
     @Test
@@ -201,51 +201,51 @@ public class PlayerEquipmentInteractionTest {
         Knight knight = new Knight();
         Player player = new Player("Sven", dwarf, knight, new Point());
 
-        Equipment actual = shield;
+        Equipment expected = shield;
         player.addArmorToInventory(shield);
         player.equipOffhand(shield);
 
-        assertEquals(actual, player.getEquippedOffhand());
+        assertEquals(expected, player.getEquippedOffhand());
     }
 
     @Test
     public void equipsSwordIfCorrectRoleAndInInventory() {
         FireSword fireSword = new FireSword();
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
-        Weapon actual = fireSword;
+        Weapon expected = fireSword;
         player.addWeaponToInventory(fireSword);
         player.equipWeapon(fireSword);
-        assertEquals(actual, player.getEquippedWeapon());
+        assertEquals(expected, player.getEquippedWeapon());
     }
 
     @Test
     public void equipsWandIfCorrectRoleAndInInventory() {
         SuperiorAirWand superiorAirWand = new SuperiorAirWand();
         Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
-        Weapon actual = superiorAirWand;
+        Weapon expected = superiorAirWand;
         player.addWeaponToInventory(superiorAirWand);
         player.equipWeapon(superiorAirWand);
-        assertEquals(actual, player.getEquippedWeapon());
+        assertEquals(expected, player.getEquippedWeapon());
     }
 
     @Test
     public void equipsDaggerIfCorrectRoleAndInInvetory() {
         WaterDagger waterDagger = new WaterDagger();
         Player player = new Player("Sven", new Elf(), new Thief(), new Point());
-        Weapon actual = waterDagger;
+        Weapon expected = waterDagger;
         player.addWeaponToInventory(waterDagger);
         player.equipWeapon(waterDagger);
-        assertEquals(actual, player.getEquippedWeapon());
+        assertEquals(expected, player.getEquippedWeapon());
     }
 
     @Test
     public void doesNotEquipWeaponIfWrongRole() {
         FireSword fireSword = new FireSword();
         Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
-        Weapon actual = player.getEquippedWeapon();
+        Weapon expected = player.getEquippedWeapon();
         player.addWeaponToInventory(fireSword);
         player.equipWeapon(fireSword);
-        assertEquals(actual, player.getEquippedWeapon());
+        assertEquals(expected, player.getEquippedWeapon());
     }
 
     @Test
@@ -264,10 +264,10 @@ public class PlayerEquipmentInteractionTest {
         Knight knight = new Knight();
         Player player = new Player("Sven", new Dwarf(), knight, new Point());
         FireSword fireSword = new FireSword();
-        double actual = (player.getStrength() + (fireSword.getStrength() * knight.getStrengthMultiplier()));
+        double expected = (player.getStrength() + (fireSword.getStrength() * knight.getStrengthMultiplier()));
         player.addWeaponToInventory(fireSword);
         player.equipWeapon(fireSword);
-        assertEquals(actual, player.getStrength());
+        assertEquals(expected, player.getStrength());
     }
 
     @Test
@@ -275,11 +275,11 @@ public class PlayerEquipmentInteractionTest {
         Mage mage = new Mage();
         Player player = new Player("Bengt", new Human(), mage, new Point());
         SuperiorAirWand superiorAirWand = new SuperiorAirWand();
-        double actual = (player.getIntelligence()
+        double expected = (player.getIntelligence()
                 + (superiorAirWand.getIntelligence() * mage.getIntelligenceMultiplier()));
         player.addWeaponToInventory(superiorAirWand);
         player.equipWeapon(superiorAirWand);
-        assertEquals(actual, player.getIntelligence());
+        assertEquals(expected, player.getIntelligence());
     }
 
     @Test
@@ -287,10 +287,10 @@ public class PlayerEquipmentInteractionTest {
         Thief thief = new Thief();
         Player player = new Player("Tor", new Elf(), thief, new Point());
         WaterDagger waterDagger = new WaterDagger();
-        double actual = (player.getDexterity() + (waterDagger.getDexterity() * thief.getDexterityMultiplier()));
+        double expected = (player.getDexterity() + (waterDagger.getDexterity() * thief.getDexterityMultiplier()));
         player.addWeaponToInventory(waterDagger);
         player.equipWeapon(waterDagger);
-        assertEquals(actual, player.getDexterity());
+        assertEquals(expected, player.getDexterity());
     }
 
     @Test
@@ -320,11 +320,90 @@ public class PlayerEquipmentInteractionTest {
         Dwarf dwarf = new Dwarf();
         Player player = new Player("Sven", dwarf, knight, new Point());
         Torch torch = new Torch();
-        double actual = dwarf.getStartingStrength() * knight.getStrengthMultiplier();
+        double expected = dwarf.getStartingStrength() * knight.getStrengthMultiplier();
         player.addWeaponToInventory(torch);
         player.equipWeapon(torch);
         player.unequipWeapon();
-        assertEquals(actual, player.getStrength());
+        assertEquals(expected, player.getStrength());
+    }
+
+    @Test
+    public void canNotEquipArmorIfNotInInventory() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        player.equipArmor(heavyArmor);
+        assertFalse(player.getEquippedArmor() == heavyArmor);
+    }
+
+    @Test
+    public void canEquipArmorIfCorrectRole_Knight() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        player.addArmorToInventory(heavyArmor);
+        player.equipArmor(heavyArmor);
+        assertTrue(player.getEquippedArmor() == heavyArmor);
+    }
+
+    @Test
+    public void canEquipArmorIfCorrectRole_Mage() {
+        LightArmor lightArmor = new LightArmor();
+        Player player = new Player("Sven", new Elf(), new Mage(), new Point());
+        player.addArmorToInventory(lightArmor);
+        player.equipArmor(lightArmor);
+        assertTrue(player.getEquippedArmor() == lightArmor);
+    }
+
+    @Test
+    public void canEquipArmorIfCorrectRole_Thief() {
+        MediumArmor mediumArmor = new MediumArmor();
+        Player player = new Player("Sven", new Human(), new Thief(), new Point());
+        player.addArmorToInventory(mediumArmor);
+        player.equipArmor(mediumArmor);
+        assertTrue(player.getEquippedArmor() == mediumArmor);
+    }
+
+    @Test
+    public void canNotEquipArmorIfWrongRole() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+        player.addArmorToInventory(heavyArmor);
+        player.equipArmor(heavyArmor);
+        assertFalse(player.getEquippedArmor() == heavyArmor);
+    }
+
+    @Test
+    public void equippingArmorIncreasesStatsByCorrectAmount() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Knight knight = new Knight();
+        Player player = new Player("Sven", new Dwarf(), knight, new Point());
+        double[] expected = { player.getStrength() + (heavyArmor.getStrength() * knight.getStrengthMultiplier()),
+                player.getDexterity() + (heavyArmor.getDexterity() * knight.getDexterityMultiplier()),
+                player.getIntelligence() + (heavyArmor.getIntelligence() * knight.getIntelligenceMultiplier()),
+                player.getHealth() + heavyArmor.getHealth(), player.getMana() + heavyArmor.getMana(),
+                player.getArmorValue() + heavyArmor.getArmorValue() };
+        player.addArmorToInventory(heavyArmor);
+        player.equipArmor(heavyArmor);
+        double[] equippedStats = { player.getStrength(), player.getDexterity(), player.getIntelligence(),
+                player.getHealth(), player.getMana(), player.getArmorValue() };
+        assertArrayEquals(expected, equippedStats);
+    }
+
+    @Test
+    public void unequippingArmorDecreasesStatsByCorrectAmount() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Knight knight = new Knight();
+        Player player = new Player("Sven", new Dwarf(), knight, new Point());
+        player.addArmorToInventory(heavyArmor);
+        player.equipArmor(heavyArmor);
+        double[] expected = { player.getStrength() - (heavyArmor.getStrength() * knight.getStrengthMultiplier()),
+                player.getDexterity() - (heavyArmor.getDexterity() * knight.getDexterityMultiplier()),
+                player.getIntelligence() - (heavyArmor.getIntelligence() * knight.getIntelligenceMultiplier()),
+                player.getHealth() - heavyArmor.getHealth(), player.getMana() - heavyArmor.getMana(),
+                player.getArmorValue() - heavyArmor.getArmorValue() };
+        player.unequipArmor();
+        double[] actual = { player.getStrength(), player.getDexterity(), player.getIntelligence(),
+                player.getHealth(), player.getMana(), player.getArmorValue() };
+        assertArrayEquals(expected, actual);
     }
 
     // Skapa fler tester för att kolla resten av kombinationerna.
