@@ -1,5 +1,7 @@
 package com.rougelike.magic;
 
+import com.rougelike.*;
+
 public class MagicElementType {
     private final String NAME;
 
@@ -15,7 +17,7 @@ public class MagicElementType {
         return NAME;
     }
 
-    double getMultiplier() {
+    double getMultiplier(Player player) {
         return 1.0;
     }
 }
