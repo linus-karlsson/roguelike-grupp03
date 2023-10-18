@@ -103,19 +103,17 @@ public class Map {
     }
 
     private void iterateRowTilesToNextRoom(int rowDifferens, Gridd.Index indexForRowTraversal, int roomCount) {
-        for (int j = 0; j <= rowDifferens; j++) {
+        for (int j = 0; j <= rowDifferens; j++, indexForRowTraversal.row++) {
             int currentTileValue = gridd.getTile(indexForRowTraversal);
             gridd.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
-            indexForRowTraversal.row++;
         }
-        indexForRowTraversal.row--;// Reset the last iteration
+        indexForRowTraversal.row--; // Reset the last addition
     }
 
     private void iterateColumnTilesToNextRoom(int columnDifferens, Gridd.Index indexForColumnTraversal, int roomCount) {
-        for (int j = 0; j <= columnDifferens; j++) {
+        for (int j = 0; j <= columnDifferens; j++, indexForColumnTraversal.column++) {
             int currentTileValue = gridd.getTile(indexForColumnTraversal);
             gridd.setTile(indexForColumnTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
-            indexForColumnTraversal.column++;
         }
     }
 

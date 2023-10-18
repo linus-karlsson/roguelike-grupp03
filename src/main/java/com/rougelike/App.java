@@ -18,6 +18,8 @@ public class App {
         int columns = 40;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
         map.connectRooms(placedRooms);
+        Gridd gridd = map.getCopyOfGridd();
+        int[] connectedRooms = Graph.getConnectedRooms(placedRooms, gridd);
         map.printGridd();
     }
 }

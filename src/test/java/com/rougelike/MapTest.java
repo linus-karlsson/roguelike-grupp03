@@ -379,6 +379,21 @@ public class MapTest {
     }
 
     @Test
+    public void testConnectRoomsDepthFirst() {
+        ArrayList<Room> rooms = map.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+
+        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
+
+        map.connectRooms(placedRooms);
+        int[] connectedRooms = Graph.getConnectedRooms(placedRooms, map.getCopyOfGridd());
+        for (int expected = 0; expected < connectedRooms.length; expected++) {
+            assertEquals(expected, connectedRooms[expected]);
+        }
+    }
+
+    @Test
     public void testConnectRooms() {
         double randomMultiplier = 0.0;
         map.setRandom(new RandomInternal(randomMultiplier));
@@ -404,8 +419,8 @@ public class MapTest {
         for (; secondRoomGriddIndex.row <= thirdRoomGriddIndex.row; secondRoomGriddIndex.row++) {
             assertTrue(gridd.getTile(secondRoomGriddIndex) >= 0);
         }
-        for (; thirdRoomGriddIndex.column <= secondRoomGriddIndex.column; thirdRoomGriddIndex.column++) {
-            assertTrue(gridd.getTile(thirdRoomGriddIndex) >= 0);
+        for (secondRoomGriddIndex.row--; secondRoomGriddIndex.column >= thirdRoomGriddIndex.column; secondRoomGriddIndex.column--) {
+            assertTrue(gridd.getTile(secondRoomGriddIndex) >= 0);
         }
     }
 
