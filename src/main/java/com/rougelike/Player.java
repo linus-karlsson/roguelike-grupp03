@@ -241,27 +241,10 @@ public class Player {
 
     // Metoder som hanterar equippa/unequippa
 
-    // public void setStatsWhenEquipping(Equipment equipment) {
-    // strength += equipment.getStrength() * role.getStrengthMultiplier();
-    // dexterity += equipment.getStrength() * role.getDexterityMultiplier();
-    // intelligence += equipment.getIntelligence() +
-    // role.getIntelligenceMultiplier();
-
-    // if (equipment instanceof Armor) {
-    // Armor armor = (Armor) equipment;
-    // setStatsFromArmorWhenEquipping(armor);
-    // }
-
-    // if (equipment instanceof Weapon) {
-    // Weapon weapon = (Weapon) equipment;
-    // equippedWeapon = weapon;
-    // setTotalWeaponDamage();
-    // }
-    // }
     public void setStatsWhenEquippingWeapon(Weapon weapon) {
         strength += weapon.getStrength() * role.getStrengthMultiplier();
-        dexterity += weapon.getStrength() * role.getDexterityMultiplier();
-        intelligence += weapon.getIntelligence() + role.getIntelligenceMultiplier();
+        dexterity += weapon.getDexterity() * role.getDexterityMultiplier();
+        intelligence += weapon.getIntelligence() * role.getIntelligenceMultiplier();
     }
 
     public void setStatsWhenEquippingArmor(Armor armor) {
@@ -284,30 +267,20 @@ public class Player {
         weaponInventory.add(weapon);
     }
 
-    // public void updateCharacterWhenEquippingWeapon(Weapon weapon) {
-    // equippedWeapon = weapon;
-    // setStatsWhenEquippingWeapon(weapon);
-    // setTotalWeaponDamage();
-    // }
-
     public void equipWeapon(Weapon weapon) {
         if (!getWeaponInventory().contains(weapon)) {
             return;
         }
         if (role instanceof Knight && (weapon.getType() == EquipmentType.SWORD ||
                 weapon.getType() == EquipmentType.CLUB)) {
-            // updateCharacterWhenEquippingWeapon(weapon);
             setStatsWhenEquippingWeapon(weapon);
             equippedWeapon = weapon;
-            // equippedWeapon = weapon;
         } else if (role instanceof Mage && (weapon.getType() == EquipmentType.WAND)) {
             setStatsWhenEquippingWeapon(weapon);
             equippedWeapon = weapon;
-            // updateCharacterWhenEquippingWeapon(weapon);
         } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
             setStatsWhenEquippingWeapon(weapon);
             equippedWeapon = weapon;
-            // updateCharacterWhenEquippingWeapon(weapon);
         }
     }
 
