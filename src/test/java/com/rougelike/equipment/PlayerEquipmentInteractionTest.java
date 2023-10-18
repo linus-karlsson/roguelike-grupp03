@@ -4,8 +4,10 @@ import org.junit.jupiter.api.*;
 
 import com.rougelike.*;
 import com.rougelike.races.Dwarf;
+import com.rougelike.races.Elf;
 import com.rougelike.roles.Knight;
 import com.rougelike.roles.Mage;
+import com.rougelike.roles.Thief;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -206,12 +208,32 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equipsWeaponIfCorrectRoleAndInInventory() {
+    public void equipsSwordIfCorrectRoleAndInInventory() {
         FireSword fireSword = new FireSword();
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         Weapon actual = fireSword;
         player.addWeaponToInventory(fireSword);
         player.equipWeapon(fireSword);
+        assertEquals(actual, player.getEquippedWeapon());
+    }
+
+    @Test
+    public void equipsWandIfCorrectRoleAndInInventory() {
+        SuperiorAirWand superiorAirWand = new SuperiorAirWand();
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+        Weapon actual = superiorAirWand;
+        player.addWeaponToInventory(superiorAirWand);
+        player.equipWeapon(superiorAirWand);
+        assertEquals(actual, player.getEquippedWeapon());
+    }
+
+    @Test
+    public void equipsDaggerIfCorrectRoleAndInInvetory() {
+        WaterDagger waterDagger = new WaterDagger();
+        Player player = new Player("Sven", new Elf(), new Thief(), new Point());
+        Weapon actual = waterDagger;
+        player.addWeaponToInventory(waterDagger);
+        player.equipWeapon(waterDagger);
         assertEquals(actual, player.getEquippedWeapon());
     }
 
