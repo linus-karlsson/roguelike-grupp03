@@ -236,8 +236,8 @@ public class Player {
     }
 
     public void unequipWeapon() {
+        strength -= equippedWeapon.getStrength() * role.getStrengthMultiplier();
         equippedWeapon = null;
-        strength -= 10;
     }
 
     public void setStatsWhenEquipping(Equipment equipment) {
