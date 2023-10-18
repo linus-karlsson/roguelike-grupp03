@@ -235,6 +235,10 @@ public class Player {
         weaponInventory.remove(weapon);
     }
 
+    public void unequipWeapon() {
+        equippedWeapon = null;
+    }
+
     public void setStatsWhenEquipping(Equipment equipment) {
         strength += equipment.getStrength() * role.getStrengthMultiplier();
         dexterity += equipment.getStrength() * role.getDexterityMultiplier();
