@@ -2,6 +2,7 @@ package com.rougelike;
 
 import java.util.ArrayList;
 
+import com.rougelike.enemies.Entity;
 import com.rougelike.equipment.EquipmentType;
 import com.rougelike.equipment.Weapon;
 import com.rougelike.equipment.Armor;
@@ -13,15 +14,15 @@ import com.rougelike.roles.Thief;
 
 public class Player {
 
+    private PlayerStartingValues startingValues;
+
     private Race race;
     private Role role;
     private static final int MAX_LEVEL = 60;
     private static final double LEVEL_MULTIPLIER = 3.5;
     private static final int MAX_INVENTORY_CAPACITY = 5;
     private static final int STARTING_MONEY = 100;
-
     private String name;
-    // private Race race;
     private double health;
     private double mana;
     private double strength;
@@ -42,6 +43,8 @@ public class Player {
     private Point position;
     private Vector velocity;
 
+    private boolean isDead;
+
     public Player(String name, Point position) {
         this.name = name;
         this.health = 100;
@@ -52,6 +55,7 @@ public class Player {
 
     public Player(String name, Race race, Role role, Point position) {
         this(name, position);
+        this.level = 1;
         this.race = race;
         this.role = role;
         this.health = race.getStartingHealth() * role.getHealthMultiplier();
@@ -63,6 +67,9 @@ public class Player {
         this.equippedWeapon = role.getStartingWeapon();
         weaponInventory.add(role.getStartingWeapon());
         setTotalWeaponDamage();
+        isDead = false;
+
+        startingValues = new PlayerStartingValues(name, race, role, position );
     }
 
     private void nextLevel() {
@@ -110,12 +117,19 @@ public class Player {
         }
     }
 
-    public double attackWithWeapon() {
+    public double getTotalWeaponDamage(){
         return totalWeaponDamage;
     }
 
-    public void takeDamage() {
+    public void attackWithWeapon(Entity entity) {
+        entity.takeDamage(totalWeaponDamage);
+    }
 
+    public void takeDamage(double damageTaken){
+        health -= damageTaken;
+        if(health <= 0){
+            isDead = true;
+        }
     }
 
     public String getName() {
@@ -274,6 +288,18 @@ public class Player {
 
     public void equipPreviousWeapon() {
 
+    }
+
+    public boolean isDead(){
+        return isDead;
+    }
+
+    public Player reset(){
+        String name = startingValues.getName();
+        Race race = startingValues.getRace();
+        Role role = startingValues.getRole();
+        Point position = startingValues.getPosition();
+        return new Player(name, race, role, position);
     }
 
 }
