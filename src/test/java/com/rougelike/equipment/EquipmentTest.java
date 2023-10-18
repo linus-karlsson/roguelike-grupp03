@@ -68,4 +68,11 @@ public class EquipmentTest {
 
         assertEquals(expected, fireSword.getWeaponElementType());
     }
+
+    @Test
+    public void fireSwordHasCorrectStrength() {
+        FireSword fireSword = new FireSword();
+        assertEquals(8, fireSword.getStrength());
+
+    }
 }

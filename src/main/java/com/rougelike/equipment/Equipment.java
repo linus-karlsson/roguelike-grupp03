@@ -12,6 +12,9 @@ public abstract class Equipment {
         this.name = name;
         this.price = price;
         this.type = type;
+        this.strength = strength;
+        this.dexterity = dexterity;
+        this.intelligence = intelligence;
     }
 
     public String getName() {

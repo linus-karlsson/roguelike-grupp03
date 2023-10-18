@@ -236,6 +236,17 @@ public class PlayerEquipmentInteractionTest {
         assertTrue(weaponEquippedStats > nothingEquippedStats);
     }
 
+    @Test
+    public void equippingWeaponIncreasesStatByCorrectAmount() {
+        Knight knight = new Knight();
+        Player player = new Player("Sven", new Dwarf(), knight, new Point());
+        FireSword fireSword = new FireSword();
+        double actual = (player.getStrength() + (fireSword.getStrength() * knight.getStrengthMultiplier()));
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
+        assertEquals(actual, player.getStrength());
+    }
+
     // Skapa fler tester för att kolla resten av kombinationerna.
     // Skapa tester för att sätta på sig vapen.
 }
