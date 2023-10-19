@@ -137,8 +137,8 @@ public class Player {
     }
 
     public void takeDamage(double damageTaken) {
-        if(role instanceof Thief){
-            if(((Thief) role).isInvisible()){
+        if (role instanceof Thief) {
+            if (((Thief) role).isInvisible()) {
                 return;
             }
         }
@@ -411,4 +411,24 @@ public class Player {
         return magicInventory;
     }
 
+    public void debuff(Entity enemy) {
+        if (!(role instanceof Mage)) {
+            return;
+        }
+        ((Mage) role).debuff(enemy, level);
+    }
+
+    public void shieldBash(Entity enemy){
+        if (!(role instanceof Knight)) {
+            return;
+        }
+        ((Knight) role).shieldBash(enemy);
+    }
+
+    public void invisibility(){
+        if (!(role instanceof Thief)) {
+            return;
+        }
+        ((Thief) role).invisibility();
+    }
 }

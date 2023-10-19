@@ -106,7 +106,7 @@ public class PlayerTest {
         Player player = new Player("Legolas", elf, thief, new Point());
         Troll troll = new Troll();
         double expectedPlayerHealth = player.getHealth();
-        thief.invisibility();
+        player.invisibility();
         troll.attack(player);
         assertEquals(expectedPlayerHealth, player.getHealth());
     }
@@ -118,10 +118,22 @@ public class PlayerTest {
         Player player = new Player("Aragorn", human, knight, new Point());
         Witch witch = new Witch();
         double expectedPlayerHealth = player.getHealth();
-        knight.shieldBash(witch);
+        player.shieldBash(witch);
         witch.attack(player);
         assertEquals(expectedPlayerHealth, player.getHealth());
     }
 
+
+    @Test
+    public void TestPlayerMageDebuffEnemy(){
+        Human human = new Human();
+        Mage mage = new Mage();
+        Player player = new Player("Gandalf", human, mage, new Point());
+        player.setLevel(49);
+        Troll troll = new Troll();
+        double expectedTrollHealth = troll.getHealth() * 0.8;
+        player.debuff(troll);
+        assertEquals(expectedTrollHealth, troll.getHealth());
+    }
 
 }

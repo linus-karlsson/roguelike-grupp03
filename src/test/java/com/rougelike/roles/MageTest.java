@@ -15,7 +15,7 @@ public class MageTest {
         Mage mage = new Mage();
         Troll troll = new Troll();
         double trollStartingDamage = troll.getDamage();
-        mage.debuff(troll);
+        mage.debuff(troll, 1);
         assertNotEquals(trollStartingDamage, troll.getDamage());
     }
 }

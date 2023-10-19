@@ -59,4 +59,12 @@ public abstract class Entity {
         return stunned;
     }
 
+    public void setHealth(double health){
+        this.health = health;
+    }
+
+    public void setDamage(double damage){
+        this.damage = damage;
+    }
+
 }
