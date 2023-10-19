@@ -206,6 +206,39 @@ public class Gridd {
         }
     }
 
+    public void setBorder() {
+        int lastRow = getRowCount() - 1;
+        for (int column = 0; column < getColumnCount(); column++) {
+            setTile(0, column, Gridd.BORDER_VALUE);
+            setTile(lastRow, column, Gridd.BORDER_VALUE);
+        }
+        int lastColumn = getColumnCount() - 1;
+        for (int row = 0; row < getRowCount(); row++) {
+            setTile(row, 0, Gridd.BORDER_VALUE);
+            setTile(row, lastColumn, Gridd.BORDER_VALUE);
+        }
+    }
+
+    public boolean hasBorder() {
+        int lastRow = getRowCount() - 1;
+        for (int column = 0; column < getColumnCount(); column++) {
+            if (getTile(0, column) != Gridd.BORDER_VALUE
+                    || getTile(lastRow, column) != Gridd.BORDER_VALUE) {
+                return false;
+            }
+
+        }
+        int lastColumn = getColumnCount() - 1;
+        for (int row = 0; row < getRowCount(); row++) {
+            if (getTile(row, 0) != Gridd.BORDER_VALUE
+                    || getTile(row, lastColumn) != Gridd.BORDER_VALUE) {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
     public double getTileSize() {
         return tileSize;
     }

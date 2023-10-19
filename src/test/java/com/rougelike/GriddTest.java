@@ -87,4 +87,31 @@ public class GriddTest {
         assertEquals(3, cellCountInY);
 
     }
+
+    @Test
+    public void testSetBorder() {
+        gridd.setBorder();
+        int expected = Gridd.BORDER_VALUE;
+        int lastRow = gridd.getRowCount() - 1;
+        for (int column = 0; column < gridd.getColumnCount(); column++) {
+            assertEquals(expected, gridd.getTile(0, column));
+            assertEquals(expected, gridd.getTile(lastRow, column));
+        }
+        int lastColumn = gridd.getColumnCount() - 1;
+        for (int row = 0; row < gridd.getRowCount(); row++) {
+            assertEquals(expected, gridd.getTile(row, 0));
+            assertEquals(expected, gridd.getTile(row, lastColumn));
+        }
+    }
+
+    @Test
+    public void testHasBorder() {
+        gridd.setBorder();
+        assertTrue(gridd.hasBorder());
+    }
+
+    @Test
+    public void testHasNotBorder() {
+        assertFalse(gridd.hasBorder());
+    }
 }
