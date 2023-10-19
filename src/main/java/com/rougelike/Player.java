@@ -127,14 +127,16 @@ public class Player {
         return totalWeaponDamage;
     }
 
-    public void attackWithWeapon(Entity entity) {
-        entity.takeDamage(totalWeaponDamage);
-    }
+    public void attackEnemyWithWeapon(Entity enemy) {
+            enemy.takeDamage(totalWeaponDamage);
+        }
+
 
     public void takeDamage(double damageTaken) {
         health -= damageTaken;
         if (health <= 0) {
             isDead = true;
+            reset();
         }
     }
 

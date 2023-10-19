@@ -1,8 +1,12 @@
 package com.rougelike;
 
+import com.rougelike.enemies.Troll;
+import com.rougelike.enemies.Witch;
 import com.rougelike.races.Dwarf;
 import com.rougelike.races.Elf;
+import com.rougelike.races.Human;
 import com.rougelike.roles.Knight;
+import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -81,4 +85,41 @@ public class PlayerTest {
         double expectedLevel = 1;
         assertEquals(expectedLevel, player.getLevel());
     }
+
+    @Test
+    public void TestPlayerThiefCantAttackWhenInvisible(){
+        Elf elf = new Elf();
+        Thief thief = new Thief();
+        Player player = new Player("Legolas", elf, thief, new Point());
+        Troll troll = new Troll();
+        double expectedTrollHealth = troll.getHealth();
+        thief.invisibility();
+        player.attackEnemyWithWeapon(troll);
+        assertEquals(expectedTrollHealth, troll.getHealth());
+    }
+
+    @Test
+    public void TestPlayerThiefAvoidsDamageWhenInvisible(){
+        Elf elf = new Elf();
+        Thief thief = new Thief();
+        Player player = new Player("Legolas", elf, thief, new Point());
+        Troll troll = new Troll();
+        double expectedPlayerHealth = player.getHealth();
+        thief.invisibility();
+        troll.attack(player);
+        assertEquals(expectedPlayerHealth, player.getHealth());
+    }
+
+    @Test
+    public void TestPlayerKnightShieldBashStunsEnemy(){
+        Human human = new Human();
+        Knight knight = new Knight();
+        Player player = new Player("Aragorn", human, knight, new Point());
+        Witch witch = new Witch();
+        double expectedPlayerHealth = player.getHealth();
+        knight.shieldBash(witch);
+        witch.attack(player);
+        assertEquals(expectedPlayerHealth, player.getHealth());
+    }
+
 }

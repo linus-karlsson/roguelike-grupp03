@@ -58,7 +58,7 @@ public abstract class Role {
         return eligibleEquipment;
     }
 
-    public abstract int roleSpecialAttack();
+
 
 
 

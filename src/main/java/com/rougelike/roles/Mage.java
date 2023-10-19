@@ -20,8 +20,5 @@ public class Mage extends Role {
 
     }
 
-    @Override
-    public int roleSpecialAttack() {
-        return 30;
-    }
+
 }

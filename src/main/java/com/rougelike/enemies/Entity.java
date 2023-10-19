@@ -19,6 +19,9 @@ public abstract class Entity {
     }
 
     public void attack (Player player){
+        if(isDead){
+            return;
+        }
         player.takeDamage(damage);
     }
 
@@ -33,7 +36,16 @@ public abstract class Entity {
         return isDead;
     }
 
+    public double getHealth(){
+        return health;
+    }
+
+    public double getDamage(){
+        return damage;
+    }
     public ElementType getElement(){
         return element;
     }
+
+
 }

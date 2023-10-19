@@ -1,6 +1,7 @@
 package com.rougelike.roles;
 
 
+import com.rougelike.enemies.Entity;
 import com.rougelike.equipment.EquipmentType;
 import com.rougelike.equipment.Sword;
 import com.rougelike.equipment.Weapon;
@@ -20,8 +21,5 @@ public class Knight extends Role {
 
     }
 
-    @Override
-    public int roleSpecialAttack() {
-        return 20;
-    }
+
 }
