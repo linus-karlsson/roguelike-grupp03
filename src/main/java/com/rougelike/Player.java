@@ -96,6 +96,10 @@ public class Player {
         xp += gainedXp;
     }
 
+    public Point getPosition() {
+        return new Point(position);
+    }
+
     public void setVelocity(Vector newVelocity) {
         velocity.clone(newVelocity);
     }
@@ -395,6 +399,8 @@ public class Player {
             setStatsWhenEquippingWeapon((Weapon) offhand);
         }
     }
+
+    // ----------------
 
     public void addMagicToInventory(Magic magic) {
         if (hasMagicKnowledge(magic)) {
