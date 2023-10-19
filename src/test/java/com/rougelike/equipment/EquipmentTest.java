@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EquipmentTest {
 
     @Test
-    public void getDamageReturnsCoorectValue() {
+    public void getDamageReturnsCorrectValue() {
         Stick stick = new Stick();
         int expectedDamage = 3;
         assertEquals(expectedDamage, stick.getDamage());

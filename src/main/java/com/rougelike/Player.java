@@ -401,6 +401,8 @@ public class Player {
         }
     }
 
+    // ----------------
+
     public void addMagicToInventory(Magic magic) {
         if (hasMagicKnowledge(magic)) {
             return;
