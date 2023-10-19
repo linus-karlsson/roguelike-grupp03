@@ -50,17 +50,17 @@ abstract public class MagicInvoker {
         return player.getRole() == null;
     }
 
-    private double calculateValueForMage(double actualStrenght) {
-        return actualStrenght * MAGE_MAGIC_MULTIPLIER;
+    private double calculateValueForMage(double actualStrength) {
+        return actualStrength * MAGE_MAGIC_MULTIPLIER;
     }
 
-    private double calculateValueForKnight(double actualStrenght) {
-        return actualStrenght * KNIGHT_MAGIC_MULTIPLIER;
+    private double calculateValueForKnight(double actualStrength) {
+        return actualStrength * KNIGHT_MAGIC_MULTIPLIER;
     }
 
     public double magicValue(Magic magic, Player player) {
-        double actualStrenght = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, adjustPlayerLevel(player));
-        double roundedValue = Math.round(actualStrenght * 100.0) / 100.0;
+        double actualStrength = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, adjustPlayerLevel(player));
+        double roundedValue = Math.round(actualStrength * 100.0) / 100.0;
         roundedValue = checkImpactFromRace(roundedValue, player, magic.getElement());
         return checkImpactFromRole(roundedValue, player);
 
