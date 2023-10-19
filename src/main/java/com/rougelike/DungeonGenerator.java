@@ -118,10 +118,28 @@ public class DungeonGenerator {
         griddParser.placeRoomInGridd();
     }
 
+    private Room getNextNonConnectedRoom(ArrayList<Room> rooms, int index) {
+        int count = 1;
+        Room endRoom = null;
+        do {
+            endRoom = rooms.get(index++ % rooms.size());
+            if (count++ == rooms.size()) {
+                return null;
+            }
+        } while (endRoom.isConnected());
+        return endRoom;
+    }
+
     public void connectRooms(ArrayList<Room> rooms) {
+        int endRoomIndex = 1;
         for (int i = 0; i < rooms.size() - 1; i++) {
             Room startRoom = rooms.get(i);
-            Room endRoom = rooms.get(i + 1);
+            Room endRoom = getNextNonConnectedRoom(rooms, endRoomIndex);
+            if (endRoom == null) {
+                return;
+            }
+            endRoomIndex = endRoom.getId();
+
             Gridd.Index startRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(startRoom.getPosition());
             Gridd.Index endRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(endRoom.getPosition());
 
@@ -134,8 +152,8 @@ public class DungeonGenerator {
 
             int rowDifferens = abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
             int columnDifferens = abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
-            iterateRowTilesToNextRoom(rowDifferens, indexForRowTraversal, rooms.size());
-            iterateColumnTilesToNextRoom(columnDifferens, indexForColumnTraversal, rooms.size());
+            iterateRowTilesToNextRoom(rowDifferens, indexForRowTraversal, rooms);
+            iterateColumnTilesToNextRoom(columnDifferens, indexForColumnTraversal, rooms);
             startRoom.setConnected(true);
             endRoom.setConnected(true);
         }
@@ -145,18 +163,36 @@ public class DungeonGenerator {
         return value < 0 ? value * -1 : value;
     }
 
-    private void iterateRowTilesToNextRoom(int rowDifferens, Gridd.Index indexForRowTraversal, int roomCount) {
+    private void iterateRowTilesToNextRoom(int rowDifferens, Gridd.Index indexForRowTraversal, ArrayList<Room> rooms) {
         for (int j = 0; j <= rowDifferens; j++, indexForRowTraversal.row++) {
             int currentTileValue = gridd.getTile(indexForRowTraversal);
-            gridd.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
+            gridd.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : rooms.size());
+            checkAdjacentTiles(gridd, indexForRowTraversal, rooms);
         }
         indexForRowTraversal.row--; // Reset the last addition
     }
 
-    private void iterateColumnTilesToNextRoom(int columnDifferens, Gridd.Index indexForColumnTraversal, int roomCount) {
+    private void iterateColumnTilesToNextRoom(int columnDifferens, Gridd.Index indexForColumnTraversal,
+            ArrayList<Room> rooms) {
         for (int j = 0; j <= columnDifferens; j++, indexForColumnTraversal.column++) {
             int currentTileValue = gridd.getTile(indexForColumnTraversal);
-            gridd.setTile(indexForColumnTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
+            gridd.setTile(indexForColumnTraversal, currentTileValue >= 0 ? currentTileValue : rooms.size());
+            checkAdjacentTiles(gridd, indexForColumnTraversal, rooms);
+        }
+    }
+
+    private void checkAdjacentTiles(Gridd gridd, Gridd.Index index, ArrayList<Room> rooms) {
+        for (int i = -1; i < 2; i += 2) {
+            int tileValue = gridd.getTile(gridd.new Index(index.row + i, index.column));
+            if (tileValue >= 0 && tileValue < rooms.size()) {
+                rooms.get(tileValue).setConnected(true);
+            }
+        }
+        for (int i = -1; i < 2; i += 2) {
+            int tileValue = gridd.getTile(gridd.new Index(index.row + i, index.column));
+            if (tileValue >= 0 && tileValue < rooms.size()) {
+                rooms.get(tileValue).setConnected(true);
+            }
         }
     }
 

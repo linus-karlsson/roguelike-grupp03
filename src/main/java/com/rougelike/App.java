@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class App extends Application implements Runnable {
+public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
@@ -77,16 +77,25 @@ public class App extends Application implements Runnable {
         scene.setOnKeyPressed(event -> {
             String codeString = event.getCode().getChar();
             if (codeString.equals("A")) {
-                playerVelocity.setX(-50.0);
+                playerVelocity.setX(-2.0);
             }
             if (codeString.equals("W")) {
-                playerVelocity.setY(-50.0);
+                playerVelocity.setY(-2.0);
             }
             if (codeString.equals("D")) {
-                playerVelocity.setX(50.0);
+                playerVelocity.setX(2.0);
             }
             if (codeString.equals("S")) {
-                playerVelocity.setY(50.0);
+                playerVelocity.setY(2.0);
+            }
+            Point point = new Point(player.getX(), player.getY());
+            point = point.plus(playerVelocity);
+            Gridd.Index index = gridd.getGriddIndexBasedOnPosition(point);
+            Gridd.Index index2 = gridd.getGriddIndexBasedOnPosition(
+                    new Point(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
+            if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
+                player.setX(point.getX());
+                player.setY(point.getY());
             }
         });
         scene.setOnKeyReleased(event -> {
@@ -114,36 +123,5 @@ public class App extends Application implements Runnable {
         });
         primaryStage.setScene(scene);
         primaryStage.show();
-        start();
     }
-
-    public synchronized void start() {
-        if (running) {
-            return;
-        }
-        running = true;
-        Thread thread = new Thread(this);
-        thread.start();
-    }
-
-    public void run() {
-        double dt = 0.016;
-        while (true) {
-            Point point = new Point(player.getX(), player.getY());
-            point = point.plus(playerVelocity.scalarMulti(dt));
-            Gridd.Index index = gridd.getGriddIndexBasedOnPosition(point);
-            Gridd.Index index2 = gridd.getGriddIndexBasedOnPosition(
-                    new Point(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
-            if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
-                player.setX(point.getX());
-                player.setY(point.getY());
-            }
-            try {
-                Thread.sleep(16);
-            } catch (InterruptedException e) {
-
-            }
-        }
-    }
-
 }
