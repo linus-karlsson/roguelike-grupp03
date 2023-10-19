@@ -129,14 +129,25 @@ public class Player {
         return totalWeaponDamage;
     }
 
-    public void attackWithWeapon(Entity entity) {
-        entity.takeDamage(totalWeaponDamage);
+    public void attackEnemyWithWeapon(Entity enemy) {
+        if (role instanceof Thief) {
+            if (((Thief) role).isInvisible()) {
+                return;
+            }
+            enemy.takeDamage(totalWeaponDamage);
+        }
     }
 
     public void takeDamage(double damageTaken) {
+        if (role instanceof Thief) {
+            if (((Thief) role).isInvisible()) {
+                return;
+            }
+        }
         health -= damageTaken;
         if (health <= 0) {
             isDead = true;
+            reset();
         }
     }
 
@@ -401,4 +412,24 @@ public class Player {
         return magicInventory;
     }
 
+    public void debuff(Entity enemy) {
+        if (!(role instanceof Mage)) {
+            return;
+        }
+        ((Mage) role).debuff(enemy, level);
+    }
+
+    public void shieldBash(Entity enemy){
+        if (!(role instanceof Knight)) {
+            return;
+        }
+        ((Knight) role).shieldBash(enemy);
+    }
+
+    public void invisibility(){
+        if (!(role instanceof Thief)) {
+            return;
+        }
+        ((Thief) role).invisibility();
+    }
 }

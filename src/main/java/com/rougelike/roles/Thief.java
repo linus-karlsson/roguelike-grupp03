@@ -2,7 +2,6 @@ package com.rougelike.roles;
 
 import com.rougelike.equipment.Dagger;
 import com.rougelike.equipment.EquipmentType;
-import com.rougelike.equipment.Sword;
 import com.rougelike.equipment.Weapon;
 
 public class Thief extends Role {
@@ -14,12 +13,24 @@ public class Thief extends Role {
     private static final double THIEF_INTELLIGENCE_MULTIPLIER = 1.0;
 
     private static final Weapon THIEF_STARTING_WEAPON = new Dagger();
+
+    private boolean invisible = false;
     public Thief(){
         super(THIEF_HEALTH_MULTIPLIER, THIEF_MANA_MULTIPLIER,THIEF_STRENGTH_MULTIPLIER,THIEF_DEXTERITY_MULTIPLIER,THIEF_INTELLIGENCE_MULTIPLIER, THIEF_STARTING_WEAPON, EquipmentType.LIGHT_ARMOR, EquipmentType.MEDIUM_ARMOR, EquipmentType.DAGGER);
     }
 
-    @Override
-    public int roleSpecialAttack() {
-        return 40;
+
+
+    public void invisibility(){
+        invisible = true;
     }
+
+    public void reEmerge(){
+        invisible = false;
+    }
+
+    public boolean isInvisible(){
+        return invisible;
+    }
+
 }

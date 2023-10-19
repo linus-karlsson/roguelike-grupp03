@@ -1,11 +1,11 @@
 package com.rougelike.races;
 
 public abstract class Race {
-    private double startingHealth;
-    private double startingMana;
-    private double startingStrength;
-    private double startingDexterity;
-    private double startingIntelligence;
+    private final double startingHealth;
+    private final double startingMana;
+    private final double startingStrength;
+    private final double startingDexterity;
+    private final double startingIntelligence;
 
 
 
