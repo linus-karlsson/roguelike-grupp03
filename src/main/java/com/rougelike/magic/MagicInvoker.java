@@ -58,7 +58,7 @@ abstract public class MagicInvoker {
         return actualStrenght * KNIGHT_MAGIC_MULTIPLIER;
     }
 
-    public double MagicValue(Magic magic, Player player) {
+    public double magicValue(Magic magic, Player player) {
         double actualStrenght = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, adjustPlayerLevel(player));
         double roundedValue = Math.round(actualStrenght * 100.0) / 100.0;
         roundedValue = checkImpactFromRace(roundedValue, player, magic.getElement());
@@ -70,8 +70,6 @@ abstract public class MagicInvoker {
         return player.getLevel() == 1 ? 0 : player.getLevel();
     }
 
-    //abstract public void throwMagic(Magic magic, Player player);
-
-    //abstract public void throwMagic(Magic magic, Player player, Player enemy);
+    abstract public double throwMagic(Magic magic, Player player);
 
 }

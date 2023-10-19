@@ -12,7 +12,8 @@ public class MagicDefence extends MagicInvoker {
         return super.name;
     }
 
-    public void throwMagic(Magic magic, Player player) {
+    public double throwMagic(Magic magic, Player player) {
+        return magicValue(magic, player)/2;
         // för utveckling
     }
 

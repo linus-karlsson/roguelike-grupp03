@@ -14,9 +14,11 @@ public class Heal extends MagicInvoker{
         return super.name;
     }
 
-    public void throwMagic(Magic magic, Player player) {
-        double healthBeforeControl = player.getHealth() + MagicValue(magic, player);
-        player.setHealth(healthBeforeControl > MAX_HEALTH ? MAX_HEALTH : healthBeforeControl);
+
+    //Kod ska gås igenom
+    public double throwMagic(Magic magic, Player player) {
+        double healthBeforeControl = player.getHealth() + magicValue(magic, player);
+        return (healthBeforeControl > MAX_HEALTH ? MAX_HEALTH : healthBeforeControl);
     }
     
 }

@@ -29,7 +29,7 @@ public class MagicAttackTest {
         enemy.setHealth(50);
         double expectedValue = 39;
         MagicAttack magicAttack = (MagicAttack) magic.getType();
-        magicAttack.throwMagic(magic, player, enemy);
+        magicAttack.throwMagic(magic, player);
         assertEquals(expectedValue, player.getHealth());
     }
 
@@ -41,7 +41,7 @@ public class MagicAttackTest {
         enemy.setHealth(50);
         double expectedValue = 41;
         MagicAttack magicAttack = (MagicAttack) magic.getType();
-        magicAttack.throwMagic(magic, player, enemy);
+        magicAttack.throwMagic(magic, player);
         assertEquals(expectedValue, player.getHealth());
     }
 
@@ -53,7 +53,7 @@ public class MagicAttackTest {
         enemy.setHealth(5);
         double expectedValue = 0;
         MagicAttack magicAttack = (MagicAttack) magic.getType();
-        magicAttack.throwMagic(magic, player, enemy);
+        magicAttack.throwMagic(magic, player);
         assertEquals(expectedValue, player.getHealth());
     }
 

@@ -23,5 +23,7 @@ public class MagicInventoryPlayerTest {
         player.addMagicToInventory(magic);
         assertEquals(1, player.getMagicInventory().size());
     }
+
+    
     
 }

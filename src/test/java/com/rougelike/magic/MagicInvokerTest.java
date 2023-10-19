@@ -16,7 +16,7 @@ public class MagicInvokerTest {
         MagicInvoker magicInvoker = magic.getType();
         Player player = new Player("Test", new Human(), new Thief(), new Point());
         double expectedValue = 10.0;
-        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+        assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
 
     @Test
@@ -26,7 +26,7 @@ public class MagicInvokerTest {
         Player player = new Player("Test", new Human(), new Thief(), new Point());
         player.setLevel(2);
         double expectedValue = 14.4;
-        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+        assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
 
     @Test
@@ -35,7 +35,7 @@ public class MagicInvokerTest {
         MagicInvoker magicInvoker = magic.getType();
         Player player = new Player("Test", new Human(), new Mage(), new Point());
         double expectedValue = 11.0;
-        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+        assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class MagicInvokerTest {
         MagicInvoker magicInvoker = magic.getType();
         Player player = new Player("Test", new Human(), new Knight(), new Point());
         double expectedValue = 9.0;
-        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+        assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class MagicInvokerTest {
         MagicInvoker magicInvoker = magic.getType();
         Player player = new Player("Test", new Human(), new Thief(), new Point());
         double expectedValue = 10.0;
-        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+        assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class MagicInvokerTest {
         MagicInvoker magicInvoker = magic.getType();
         Player player = new Player("Test", new Elf(), new Thief(), new Point());
         double expectedValue = 10.5;
-        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+        assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class MagicInvokerTest {
         MagicInvoker magicInvoker = magic.getType();
         Player player = new Player("Test", new Orc(), new Thief(), new Point());
         double expectedValue = 9.5;
-        assertEquals(expectedValue, magicInvoker.MagicValue(magic, player));
+        assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
 
 }
