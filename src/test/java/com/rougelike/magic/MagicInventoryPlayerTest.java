@@ -1,6 +1,9 @@
 package com.rougelike.magic;
 
 import com.rougelike.*;
+import com.rougelike.enemies.*; 
+import com.rougelike.equipment.*;   
+
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,14 +25,6 @@ public class MagicInventoryPlayerTest {
         player.addMagicToInventory(magic);
         player.addMagicToInventory(magic);
         assertEquals(1, player.getMagicInventory().size());
-    }
-
-    @Test
-    void testuseMagicReturnsPositiveDouble() {
-        Player player = new Player("Test", new Point());
-        player.addMagicToInventory(new Magic(Spell.TORNADO));
-        Double expectedValue = 10.0;
-        assertEquals(expectedValue, player.useMagic("Tornado"));
     }
 
     @Test
@@ -56,5 +51,16 @@ public class MagicInventoryPlayerTest {
         });
     }
 
-    
+    @Test
+    public void testUseMagic() {
+        Player player = new Player( "Test", new Point());
+        Entity enemy = new Troll();
+        Magic magic = new Magic(Spell.FIREBALL);
+        player.addMagicToInventory(magic);
+        player.useMagic("Fireball", enemy);
+        double expectedValue = 40.0;
+        assertEquals(expectedValue, enemy.getHealth());
+    }
 }
+    
+

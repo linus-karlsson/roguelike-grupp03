@@ -417,13 +417,41 @@ public class Player {
         return magicInventory;
     }
 
-    public double useMagic(String magic) {
+    public void useMagic(String magic) {
         if (magic == null || magic.equals("")) {
             throw new IllegalArgumentException("Magic must have a name");
         } else if (!hasMagicKnowledge(magic)) {
             throw new IllegalArgumentException("Player does not have knowledge of that magic");
         }
-        return 10.0;
+        Magic magicToUse = magicInventory.get(magic);
+        switch (magicToUse.getName()) {
+            case "Attack":
+                takeDamage(magicToUse.getType().throwMagic(magicToUse, this));
+            case "Defence":
+                // return magicInventory.get(magic).throwMagic(magicInventory.get(magic), this);
+                break;
+            case "Heal":
+                // return magicInventory.get(magic).throwMagic(magicInventory.get(magic), this);
+                break;
+        }
+    }
+
+    public void useMagic(String magic, Entity enemy) {
+        if (magic == null || magic.equals("")) {
+            throw new IllegalArgumentException("Magic must have a name");
+        } else if (!hasMagicKnowledge(magic)) {
+            throw new IllegalArgumentException("Player does not have knowledge of that magic");
+        } else if (enemy == null) {
+            throw new IllegalArgumentException("Enemy must not be null");
+        } else if (enemy.isDead()) {
+            throw new IllegalArgumentException("Enemy must not be dead");
+        }
+        Magic magicToUse = magicInventory.get(magic);
+        if ((!magicToUse.getType().getName().equals("Attack"))) {
+            throw new IllegalArgumentException("Magic must be of type MagicAttack");
+        }
+        enemy.takeDamage(magicToUse.getType().throwMagic(magicToUse, this));
+
     }
 
     public void debuff(Entity enemy) {
