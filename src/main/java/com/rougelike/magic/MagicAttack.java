@@ -16,11 +16,10 @@ public class MagicAttack extends MagicInvoker {
 
     private boolean succeedToInvokeSpell(Player player) {
         Random random = new Random();
-       if (player.getRole() instanceof Mage) {
-        return (random.nextInt(100) + 1) < 98;
-       }
-       
-        return true;
+        if (player.getRole() instanceof Mage) {
+            return (random.nextInt(100) + 1) < 98;
+        } else
+            return (random.nextInt(100) + 1) < 95;
     }
 
     public double throwMagic(Magic magic, Player player) {
