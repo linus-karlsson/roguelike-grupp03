@@ -24,6 +24,14 @@ public class PlayerEquipmentInteractionTest {
         assertTrue(player.getWeaponInventory().contains(stick));
     }
 
+    @Test
+    public void canAddArmorToInventory() {
+        LightArmor lightArmor = new LightArmor();
+        Player player = new Player("Sven", new Point());
+        player.addArmorToInventory(lightArmor);
+        assertTrue(player.getArmorInventory().contains(lightArmor));
+    }
+
     // @Test
     // public void onlyWeaponsCanBeAddedToWeaponInventory() {
     // HeavyArmor heavyArmor = new HeavyArmor();
@@ -45,6 +53,24 @@ public class PlayerEquipmentInteractionTest {
         }
 
         assertTrue(player.getWeaponInventory().size() < 6);
+    }
+
+    @Test
+    public void canNotHaveMoreThanFiveArmorsInArmorInventory() {
+        Tome tome = new Tome();
+        Shield shield = new Shield();
+        LightArmor lightArmor = new LightArmor();
+        MediumArmor mediumArmor = new MediumArmor();
+        HeavyArmor heavyArmor = new HeavyArmor();
+        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
+        Player player = new Player("Sven", new Point());
+        player.addArmorToInventory(tome);
+        player.addArmorToInventory(shield);
+        player.addArmorToInventory(lightArmor);
+        player.addArmorToInventory(mediumArmor);
+        player.addArmorToInventory(heavyArmor);
+        player.addArmorToInventory(superiorHeavyArmor);
+        assertTrue(player.getArmorInventory().size() < 6);
     }
 
     @Test
@@ -93,6 +119,26 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
+    public void inventoryAtCapacityMinusOne_AddsArmor() {
+        Tome tome = new Tome();
+        Shield shield = new Shield();
+        LightArmor lightArmor = new LightArmor();
+        MediumArmor mediumArmor = new MediumArmor();
+        HeavyArmor heavyArmor = new HeavyArmor();
+
+        Player player = new Player("Sven", new Point());
+        player.addArmorToInventory(tome);
+        player.addArmorToInventory(shield);
+        player.addArmorToInventory(lightArmor);
+        player.addArmorToInventory(mediumArmor);
+        player.addArmorToInventory(heavyArmor);
+
+        assertTrue(player.getArmorInventory().contains(heavyArmor)
+                && player.getArmorInventory().size() == player.getMaxInventoryCapacity());
+
+    }
+
+    @Test
     public void ifAtMaxCapacity_RemoveEarliestAddedWeapon() {
 
         Stick stick = new Stick();
@@ -114,6 +160,26 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
+    public void ifAtMaxCapacity_RemoveEarliestAddedArmor() {
+        Tome tome = new Tome();
+        Shield shield = new Shield();
+        LightArmor lightArmor = new LightArmor();
+        MediumArmor mediumArmor = new MediumArmor();
+        HeavyArmor heavyArmor = new HeavyArmor();
+        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
+        Player player = new Player("Sven", new Point());
+
+        player.addArmorToInventory(tome);
+        player.addArmorToInventory(shield);
+        player.addArmorToInventory(lightArmor);
+        player.addArmorToInventory(mediumArmor);
+        player.addArmorToInventory(heavyArmor);
+        player.addArmorToInventory(superiorHeavyArmor);
+
+        assertFalse(player.getArmorInventory().contains(tome));
+    }
+
+    @Test
     public void removingWeaponDueToCapacityReturnsWeaponsCost() {
 
         Stick stick = new Stick();
@@ -132,6 +198,28 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(torch);
         player.addWeaponToInventory(wand);
         player.addWeaponToInventory(sword);
+
+        assertEquals(expected, player.getWallet());
+    }
+
+    @Test
+    public void removingArmorDueToCapacityReturnsArmorCost() {
+        Tome tome = new Tome();
+        Shield shield = new Shield();
+        LightArmor lightArmor = new LightArmor();
+        MediumArmor mediumArmor = new MediumArmor();
+        HeavyArmor heavyArmor = new HeavyArmor();
+        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
+        Player player = new Player("Sven", new Point());
+
+        int expected = player.getWallet() + tome.getPrice();
+
+        player.addArmorToInventory(tome);
+        player.addArmorToInventory(shield);
+        player.addArmorToInventory(lightArmor);
+        player.addArmorToInventory(mediumArmor);
+        player.addArmorToInventory(heavyArmor);
+        player.addArmorToInventory(superiorHeavyArmor);
 
         assertEquals(expected, player.getWallet());
     }
@@ -246,6 +334,14 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(fireSword);
         player.equipWeapon(fireSword);
         assertEquals(expected, player.getEquippedWeapon());
+    }
+
+    @Test
+    public void doesNotEquipWeaponIfNotInWeaponInventory() {
+        FireSword fireSword = new FireSword();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        player.equipWeapon(fireSword);
+        assertFalse(player.getEquippedWeapon() == fireSword);
     }
 
     @Test
@@ -369,6 +465,16 @@ public class PlayerEquipmentInteractionTest {
         player.addArmorToInventory(heavyArmor);
         player.equipArmor(heavyArmor);
         assertFalse(player.getEquippedArmor() == heavyArmor);
+    }
+
+    @Test
+    public void canUnequipArmor() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        HeavyArmor heavyArmor = new HeavyArmor();
+        player.addArmorToInventory(heavyArmor);
+        player.equipArmor(heavyArmor);
+        player.unequipArmor();
+        assertTrue(player.getEquippedArmor() == null);
     }
 
     @Test
