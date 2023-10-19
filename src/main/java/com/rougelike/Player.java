@@ -419,14 +419,14 @@ public class Player {
         ((Mage) role).debuff(enemy, level);
     }
 
-    public void shieldBash(Entity enemy){
+    public void shieldBash(Entity enemy) {
         if (!(role instanceof Knight)) {
             return;
         }
         ((Knight) role).shieldBash(enemy);
     }
 
-    public void invisibility(){
+    public void invisibility() {
         if (!(role instanceof Thief)) {
             return;
         }
