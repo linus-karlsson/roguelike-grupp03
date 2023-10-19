@@ -2,6 +2,7 @@ package com.rougelike;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 
 public class DungeonGenerator {
     public static final double TILE_SIZE = 10.0;
@@ -84,21 +85,8 @@ public class DungeonGenerator {
     private Gridd setUpGridd(int rows, int columns) {
         Gridd gridd = new Gridd(rows, columns, TILE_SIZE);
         gridd.fillWithValue(-1);
-        setUpGriddBorder(gridd);
+        gridd.setBorder();
         return gridd;
-    }
-
-    private void setUpGriddBorder(Gridd gridd) {
-        int lastRow = gridd.getRowCount() - 1;
-        for (int column = 0; column < gridd.getColumnCount(); column++) {
-            gridd.setTile(0, column, Gridd.BORDER_VALUE);
-            gridd.setTile(lastRow, column, Gridd.BORDER_VALUE);
-        }
-        int lastColumn = gridd.getColumnCount() - 1;
-        for (int row = 0; row < gridd.getRowCount(); row++) {
-            gridd.setTile(row, 0, Gridd.BORDER_VALUE);
-            gridd.setTile(row, lastColumn, Gridd.BORDER_VALUE);
-        }
     }
 
     private boolean checkIfRoomCanBePlaced(Gridd gridd) {
@@ -196,6 +184,60 @@ public class DungeonGenerator {
         }
     }
 
+    public int[] getConnectedRooms(ArrayList<Room> placedRooms, Gridd gridd) {
+        if (!gridd.hasBorder()) {
+            throw new IllegalArgumentException("Gridd must have a border");
+        }
+        Stack<Gridd.Index> stack = new Stack<>();
+        stack.add(gridd.getGriddIndexBasedOnPosition(placedRooms.get(0).getPosition()));
+
+        int[] roomsFound = getArrayOfNegtiveOnes(placedRooms.size());
+        int[][] visited = getGriddOfZeros(gridd.getRowCount(), gridd.getColumnCount());
+        while (!stack.isEmpty()) {
+            Gridd.Index currentIndex = stack.pop();
+            int tileValue = gridd.getTile(currentIndex);
+            if (isValid(tileValue, visited, currentIndex)) {
+                visited[currentIndex.row][currentIndex.column] = 1;
+                if (tileValue < placedRooms.size()) {
+                    roomsFound[tileValue] = tileValue;
+                }
+                addAdjacentTiles(stack, gridd, currentIndex);
+            }
+        }
+        return roomsFound;
+    }
+
+    private int[] getArrayOfNegtiveOnes(int size) {
+        int[] result = new int[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = -1;
+        }
+        return result;
+    }
+
+    private int[][] getGriddOfZeros(int rows, int columns) {
+        int[][] gridd = new int[rows][columns];
+        for (int row = 0; row < gridd.length; row++) {
+            for (int column = 0; column < gridd[0].length; column++) {
+                gridd[row][column] = 0;
+            }
+        }
+        return gridd;
+    }
+
+    private boolean isValid(int tileValue, int[][] visited, Gridd.Index currentIndex) {
+        return tileValue >= 0 && visited[currentIndex.row][currentIndex.column] != 1;
+    }
+
+    private void addAdjacentTiles(Stack<Gridd.Index> stack, Gridd gridd, Gridd.Index index) {
+        for (int i = -1; i < 2; i += 2) {
+            stack.add(gridd.new Index(index.row + i, index.column));
+        }
+        for (int i = -1; i < 2; i += 2) {
+            stack.add(gridd.new Index(index.row, index.column + i));
+        }
+    }
+
     public Gridd getCopyOfGridd() {
         Gridd copy = new Gridd(gridd.getRowCount(), gridd.getColumnCount(),
                 gridd.getTileSize());
@@ -206,4 +248,5 @@ public class DungeonGenerator {
         }
         return copy;
     }
+
 }
