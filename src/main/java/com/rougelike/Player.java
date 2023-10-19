@@ -1,7 +1,9 @@
 package com.rougelike;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import com.rougelike.enemies.Entity;
 import com.rougelike.equipment.EquipmentType;
@@ -202,16 +204,16 @@ public class Player {
         return wallet;
     }
 
-    public ArrayList<Weapon> getWeaponInventory() {
-        return weaponInventory;
+    public List<Weapon> getWeaponInventory() {
+        return Collections.unmodifiableList(weaponInventory);
     }
 
     public int getMaxInventoryCapacity() {
         return MAX_INVENTORY_CAPACITY;
     }
 
-    public ArrayList<Armor> getArmorInventory() {
-        return armorInventory;
+    public List<Armor> getArmorInventory() {
+        return Collections.unmodifiableList(armorInventory);
     }
 
     public Role getRole() {
