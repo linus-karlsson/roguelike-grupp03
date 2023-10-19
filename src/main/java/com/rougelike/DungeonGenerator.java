@@ -23,6 +23,34 @@ public class DungeonGenerator {
         this.random = random;
     }
 
+    public Room generateRoom(double minWidth, double maxWidth, double minHeight, double maxHeight) {
+
+        if (minWidth < MIN_ROOM_WIDTH_OR_HEIGHT || minHeight < MIN_ROOM_WIDTH_OR_HEIGHT) {
+            throw new IllegalArgumentException(
+                    String.format("Min width or height of rooms: %f", MIN_ROOM_WIDTH_OR_HEIGHT));
+        } else if (maxWidth > MAX_ROOM_WIDTH_OR_HEIGHT || maxHeight > MAX_ROOM_WIDTH_OR_HEIGHT) {
+            throw new IllegalArgumentException(
+                    String.format("Max width or height of rooms: %f", MAX_ROOM_WIDTH_OR_HEIGHT));
+        }
+        Room room = new Room(randomDoubleInBounds(minWidth, maxWidth), randomDoubleInBounds(minHeight, maxHeight));
+        return room;
+    }
+
+    private double randomDoubleInBounds(double low, double high) {
+        return (random.nextDouble() * (high - low)) + low;
+    }
+
+    public ArrayList<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
+            double maxHeight) {
+        ArrayList<Room> result = new ArrayList<>(roomCount);
+
+        for (int i = 0; i < roomCount; i++) {
+            result.add(generateRoom(minWidth, maxWidth, minHeight, maxHeight));
+        }
+
+        return result;
+    }
+
     public ArrayList<Room> placeRoomsInArea(ArrayList<Room> rooms, int numberOfTriesBeforeDiscard, int rows,
             int columns) {
         if (rows <= 0 || columns <= 0) {
@@ -138,34 +166,6 @@ public class DungeonGenerator {
             int currentTileValue = gridd.getTile(indexForColumnTraversal);
             gridd.setTile(indexForColumnTraversal, currentTileValue >= 0 ? currentTileValue : roomCount);
         }
-    }
-
-    public ArrayList<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
-            double maxHeight) {
-        ArrayList<Room> result = new ArrayList<>(roomCount);
-
-        for (int i = 0; i < roomCount; i++) {
-            result.add(generateRoom(minWidth, maxWidth, minHeight, maxHeight));
-        }
-
-        return result;
-    }
-
-    public Room generateRoom(double minWidth, double maxWidth, double minHeight, double maxHeight) {
-
-        if (minWidth < MIN_ROOM_WIDTH_OR_HEIGHT || minHeight < MIN_ROOM_WIDTH_OR_HEIGHT) {
-            throw new IllegalArgumentException(
-                    String.format("Min width or height of rooms: %f", MIN_ROOM_WIDTH_OR_HEIGHT));
-        } else if (maxWidth > MAX_ROOM_WIDTH_OR_HEIGHT || maxHeight > MAX_ROOM_WIDTH_OR_HEIGHT) {
-            throw new IllegalArgumentException(
-                    String.format("Max width or height of rooms: %f", MAX_ROOM_WIDTH_OR_HEIGHT));
-        }
-        Room room = new Room(randomDoubleInBounds(minWidth, maxWidth), randomDoubleInBounds(minHeight, maxHeight));
-        return room;
-    }
-
-    private double randomDoubleInBounds(double low, double high) {
-        return (random.nextDouble() * (high - low)) + low;
     }
 
     public Gridd getCopyOfGridd() {
