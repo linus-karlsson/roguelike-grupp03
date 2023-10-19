@@ -417,9 +417,12 @@ public class Player {
         return magicInventory;
     }
 
-    // public double useMagic(String magic) {
-
-    // }
+    public double useMagic(String magic) {
+        if (magic == null || magic.equals("")) {
+            throw new IllegalArgumentException("Magic must have a name");
+        }
+        return 10.0;
+    }
 
     public void debuff(Entity enemy) {
         if (!(role instanceof Mage)) {

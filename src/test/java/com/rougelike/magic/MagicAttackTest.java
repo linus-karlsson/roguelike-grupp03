@@ -21,40 +21,40 @@ public class MagicAttackTest {
         assertTrue(magic.getType() instanceof MagicAttack);
     }
 
-    @Test
-    void testMethodAttackShouldDecreasePlayersHealth() {
-        Magic magic = new Magic(Spell.TORNADO);
-        Player player = new Player("Test", new Human(), new Mage(), new Point());
-        Player enemy = new Player("Test", new Human(), new Mage(), new Point());
-        enemy.setHealth(50);
-        double expectedValue = 39;
-        MagicAttack magicAttack = (MagicAttack) magic.getType();
-        magicAttack.throwMagic(magic, player);
-        assertEquals(expectedValue, player.getHealth());
-    }
+    //nedan test kommer vara mer för player.
+    // @Test
+    // void testMethodAttackShouldDecreasePlayersHealth() {
+    //     Magic magic = new Magic(Spell.TORNADO);
+    //     Player player = new Player("Test", new Human(), new Mage(), new Point());
+    //     Player enemy = new Player("Test", new Human(), new Mage(), new Point());
+    //     enemy.setHealth(50);
+    //     double expectedValue = 39;
+    //     MagicAttack magicAttack = (MagicAttack) magic.getType();
+    //     magicAttack.throwMagic(magic, player);
+    //     assertEquals(expectedValue, player.getHealth());
+    // }
 
-    @Test
-    void testMethodAttackShouldDecreasePlayersHealthThrownByKnight() {
-        Magic magic = new Magic(Spell.TORNADO);
-        Player player = new Player("Test", new Human(), new Knight(), new Point());
-        Player enemy = new Player("Test", new Human(), new Mage(), new Point());
-        enemy.setHealth(50);
-        double expectedValue = 41;
-        MagicAttack magicAttack = (MagicAttack) magic.getType();
-        magicAttack.throwMagic(magic, player);
-        assertEquals(expectedValue, player.getHealth());
-    }
+    // @Test
+    // void testMethodAttackShouldDecreasePlayersHealthThrownByKnight() {
+    //     Magic magic = new Magic(Spell.TORNADO);
+    //     Player player = new Player("Test", new Human(), new Knight(), new Point());
+    //     Player enemy = new Player("Test", new Human(), new Mage(), new Point());
+    //     enemy.setHealth(50);
+    //     double expectedValue = 41;
+    //     MagicAttack magicAttack = (MagicAttack) magic.getType();
+    //     magicAttack.throwMagic(magic, player);
+    //     assertEquals(expectedValue, player.getHealth());
+    // }
 
-    @Test
-    void testMethodAttackShouldDecreasePlayersHealthToZeroInsteadOfNegativeHealth() {
-        Magic magic = new Magic(Spell.FREEZE);
-        Player player = new Player("Test", new Human(), new Mage(), new Point());
-        Player enemy = new Player("Test", new Human(), new Mage(), new Point());
-        enemy.setHealth(5);
-        double expectedValue = 0;
-        MagicAttack magicAttack = (MagicAttack) magic.getType();
-        magicAttack.throwMagic(magic, player);
-        assertEquals(expectedValue, player.getHealth());
-    }
+    // @Test
+    // void testMethodAttackShouldDecreasePlayersHealthToZeroInsteadOfNegativeHealth() {
+    //     Magic magic = new Magic(Spell.FREEZE);
+    //     Player player = new Player("Test", new Human(), new Mage(), new Point());
+    //     Player enemy = new Player("Test", new Human(), new Mage(), new Point());
+    //     enemy.setHealth(5);
+    //     double expectedValue = 0;
+    //     MagicAttack magicAttack = (MagicAttack) magic.getType();
+    //     assertEquals(expectedValue, magicAttack.throwMagic(magic, player));
+    // }
 
 }

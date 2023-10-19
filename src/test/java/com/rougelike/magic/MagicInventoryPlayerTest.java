@@ -24,6 +24,36 @@ public class MagicInventoryPlayerTest {
         assertEquals(1, player.getMagicInventory().size());
     }
 
-    
+    @Test
+    void testuseMagicReturnsPositiveDouble() {
+        Player player = new Player("Test", new Point());
+        Double expectedValue = 10.0;
+        assertEquals(expectedValue, player.useMagic("Tornado"));
+    }
+
+    @Test
+    void testUseMagicWithNoArgumentShouldThrowException() {
+        Player player = new Player("Test", new Point());
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.useMagic("");
+        });
+    }
+
+    @Test
+    void testUseMagicWithNullArgumentShouldThrowException() {
+        Player player = new Player("Test", new Point());
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.useMagic(null);
+        });
+    }
+
+    @Test
+    void testUseMagicWithMagicNotInInventoryShouldThrowException() {
+        Player player = new Player("Test", new Point());
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.useMagic("Tornado");
+        });
+    }
+
     
 }
