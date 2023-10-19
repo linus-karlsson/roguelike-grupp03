@@ -12,7 +12,7 @@ public class MagicInventoryPlayerTest {
         Magic magic = new Magic(Spell.HEAL);
         Player player = new Player("Test", new Point()); 
         player.addMagicToInventory(magic);
-        assertTrue(player.hasMagicKnowledge(magic));
+        assertTrue(player.hasMagicKnowledge(magic.getName()));
     }
 
     @Test
@@ -27,6 +27,7 @@ public class MagicInventoryPlayerTest {
     @Test
     void testuseMagicReturnsPositiveDouble() {
         Player player = new Player("Test", new Point());
+        player.addMagicToInventory(new Magic(Spell.TORNADO));
         Double expectedValue = 10.0;
         assertEquals(expectedValue, player.useMagic("Tornado"));
     }

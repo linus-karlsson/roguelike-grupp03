@@ -403,14 +403,14 @@ public class Player {
     // ----------------
 
     public void addMagicToInventory(Magic magic) {
-        if (hasMagicKnowledge(magic)) {
+        if (hasMagicKnowledge(magic.getName())) {
             return;
         }
         magicInventory.put(magic.getName(), magic);
     }
 
-    public boolean hasMagicKnowledge(Magic magic) {
-        return magicInventory.containsKey(magic.getName());
+    public boolean hasMagicKnowledge(String magic) {
+        return magicInventory.containsKey(magic);
     }
 
     public HashMap<String, Magic> getMagicInventory() {
@@ -420,6 +420,8 @@ public class Player {
     public double useMagic(String magic) {
         if (magic == null || magic.equals("")) {
             throw new IllegalArgumentException("Magic must have a name");
+        } else if (!hasMagicKnowledge(magic)) {
+            throw new IllegalArgumentException("Player does not have knowledge of that magic");
         }
         return 10.0;
     }
