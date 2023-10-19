@@ -46,11 +46,19 @@ public class PlayerEquipmentInteractionTest {
     @Test
     public void canNotHaveMoreThanFiveWeaponsInWeaponInventory() {
         Stick stick = new Stick();
+        Dagger dagger = new Dagger();
+        FireSword fireSword = new FireSword();
+        Torch torch = new Torch();
+        AirWand wand = new AirWand();
+        Sword sword = new Sword();
         Player player = new Player("Sven", new Point());
 
-        for (int i = 0; i < 6; i++) {
-            player.addWeaponToInventory(stick);
-        }
+        player.addWeaponToInventory(stick);
+        player.addWeaponToInventory(dagger);
+        player.addWeaponToInventory(fireSword);
+        player.addWeaponToInventory(torch);
+        player.addWeaponToInventory(wand);
+        player.addWeaponToInventory(sword);
 
         assertTrue(player.getWeaponInventory().size() < 6);
     }
@@ -236,6 +244,164 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(stick);
 
         assertEquals(expected, player.getWeaponInventory().size());
+    }
+
+    @Test
+    public void cantRemoveEquippedArmor() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        player.addArmorToInventory(heavyArmor);
+        player.equipArmor(heavyArmor);
+        player.removeArmorFromInventory(heavyArmor);
+        assertTrue(player.getArmorInventory().contains(heavyArmor));
+    }
+
+    @Test
+    public void cantRemoveEquippedWeapon() {
+        Stick stick = new Stick();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        player.addWeaponToInventory(stick);
+        player.equipWeapon(stick);
+        player.removeWeaponFromInventory(stick);
+        assertTrue(player.getWeaponInventory().contains(stick));
+    }
+
+    @Test
+    public void addingNullToWeaponInventoryThrowsException() {
+        Player player = new Player("Sven", new Point());
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.addWeaponToInventory(null);
+        });
+    }
+
+    @Test
+    public void addingNullToArmorInventoryThrowsException() {
+        Player player = new Player("Sven", new Point());
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.addArmorToInventory(null);
+        });
+    }
+
+    @Test
+    public void removingNullFromWeaponInventoryThrowsException() {
+        Player player = new Player("Sven", new Point());
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.removeWeaponFromInventory(null);
+        });
+    }
+
+    @Test
+    public void removingNullFromArmorInventoryThrowsException() {
+        Player player = new Player("Sven", new Point());
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.removeArmorFromInventory(null);
+        });
+    }
+
+    @Test
+    public void armorInventoryContainsNoDuplicates() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Player player = new Player("Sven", new Point());
+        int expected = 1;
+        player.addArmorToInventory(heavyArmor);
+        player.addArmorToInventory(heavyArmor);
+
+        assertEquals(expected, player.getArmorInventory().size());
+    }
+
+    @Test
+    public void cantRemoveEquippedWeaponWhenRemovingDueToCapacityAndRemovesNextIndexedWeaponInstead() {
+        Stick stick = new Stick();
+        Dagger dagger = new Dagger();
+        FireSword fireSword = new FireSword();
+        Torch torch = new Torch();
+        AirWand wand = new AirWand();
+        Sword sword = new Sword();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+
+        player.addWeaponToInventory(stick);
+        player.equipWeapon(stick);
+
+        player.addWeaponToInventory(dagger);
+        player.addWeaponToInventory(fireSword);
+        player.addWeaponToInventory(torch);
+        player.addWeaponToInventory(wand);
+        player.addWeaponToInventory(sword);
+
+        assertTrue(player.getEquippedWeapon() == stick && player.getWeaponInventory().contains(stick)
+                && !(player.getWeaponInventory().contains(dagger)));
+    }
+
+    @Test
+    public void removesThirdItemWhenTheFirstAndSecondWeaponAreUneligibleForRemoval() {
+        WaterDagger waterDagger = new WaterDagger();
+        Dagger dagger = new Dagger();
+        FireSword fireSword = new FireSword();
+        Torch torch = new Torch();
+        AirWand wand = new AirWand();
+        Sword sword = new Sword();
+        Player player = new Player("Sven", new Dwarf(), new Thief(), new Point());
+
+        player.addWeaponToInventory(waterDagger);
+        player.equipWeapon(waterDagger);
+        player.addWeaponToInventory(dagger);
+        player.equipOffhand(dagger);
+
+        player.addWeaponToInventory(fireSword);
+        player.addWeaponToInventory(torch);
+        player.addWeaponToInventory(wand);
+        player.addWeaponToInventory(sword);
+
+        assertTrue(player.getEquippedWeapon() == waterDagger && player.getEquippedOffhand() == dagger
+                && player.getWeaponInventory().contains(waterDagger) && player.getWeaponInventory().contains(dagger)
+                && !(player.getWeaponInventory().contains(fireSword)) && player.getWeaponInventory().contains(sword));
+    }
+
+    @Test
+    public void cantRemoveEquippedArmorWhenRemovingDueToCapacityAndRemovesNextIndexedArmorInstead() {
+        Tome tome = new Tome();
+        Shield shield = new Shield();
+        LightArmor lightArmor = new LightArmor();
+        MediumArmor mediumArmor = new MediumArmor();
+        HeavyArmor heavyArmor = new HeavyArmor();
+        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+
+        player.addArmorToInventory(tome);
+        player.equipOffhand(tome);
+        player.addArmorToInventory(shield);
+        player.addArmorToInventory(lightArmor);
+        player.addArmorToInventory(mediumArmor);
+        player.addArmorToInventory(heavyArmor);
+        player.addArmorToInventory(superiorHeavyArmor);
+
+        assertTrue(player.getEquippedOffhand() == tome && player.getArmorInventory().contains(tome)
+                && !(player.getArmorInventory().contains(shield)));
+    }
+
+    @Test
+    public void removesThirdItemWhenTheFirstAndSecondArmorAreUneligibleForRemoval() {
+        Tome tome = new Tome();
+        LightArmor lightArmor = new LightArmor();
+        Shield shield = new Shield();
+        MediumArmor mediumArmor = new MediumArmor();
+        HeavyArmor heavyArmor = new HeavyArmor();
+        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+
+        player.addArmorToInventory(tome);
+        player.equipOffhand(tome);
+        player.addArmorToInventory(lightArmor);
+        player.equipArmor(lightArmor);
+        player.addArmorToInventory(shield);
+        player.addArmorToInventory(mediumArmor);
+        player.addArmorToInventory(heavyArmor);
+        player.addArmorToInventory(superiorHeavyArmor);
+
+        assertTrue(player.getEquippedArmor() == lightArmor && player.getEquippedOffhand() == tome
+                && player.getArmorInventory().contains(lightArmor) && player.getArmorInventory().contains(tome)
+                && !(player.getArmorInventory().contains(shield))
+                && player.getArmorInventory().contains(superiorHeavyArmor));
     }
 
     // Fungerar inte längre då metoden kräver en klass.
