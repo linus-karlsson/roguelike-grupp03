@@ -70,8 +70,8 @@ abstract public class MagicInvoker {
         return player.getLevel() == 1 ? 0 : player.getLevel();
     }
 
-    //abstract public void throwMagic(Magic magic, Player player);
+    // abstract public void throwMagic(Magic magic, Player player);
 
-    //abstract public void throwMagic(Magic magic, Player player, Player enemy);
+    // abstract public void throwMagic(Magic magic, Player player, Player enemy);
 
 }
