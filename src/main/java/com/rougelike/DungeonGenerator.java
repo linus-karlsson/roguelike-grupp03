@@ -106,18 +106,6 @@ public class DungeonGenerator {
         griddParser.placeRoomInGridd();
     }
 
-    private Room getNextNonConnectedRoom(ArrayList<Room> rooms, int index) {
-        int count = 1;
-        Room endRoom = null;
-        do {
-            endRoom = rooms.get(index++ % rooms.size());
-            if (count++ == rooms.size()) {
-                return null;
-            }
-        } while (endRoom.isConnected());
-        return endRoom;
-    }
-
     public void connectRooms(ArrayList<Room> rooms) {
         int endRoomIndex = 1;
         for (int i = 0; i < rooms.size() - 1; i++) {
@@ -145,6 +133,15 @@ public class DungeonGenerator {
             startRoom.setConnected(true);
             endRoom.setConnected(true);
         }
+    }
+
+    private Room getNextNonConnectedRoom(ArrayList<Room> rooms, int index) {
+        int count = 0;
+        Room endRoom = null;
+        do {
+            endRoom = rooms.get(index++ % rooms.size());
+        } while (endRoom.isConnected() && count++ < rooms.size());
+        return endRoom;
     }
 
     private int abs(int value) {
