@@ -287,13 +287,25 @@ public class Player {
     // Vapen
 
     public void addWeaponToInventory(Weapon weapon) {
-        if (weaponInventory.size() == MAX_INVENTORY_CAPACITY) {
-            wallet += weaponInventory.get(0).getPrice();
-            weaponInventory.remove(0);
+        if (weapon == null) {
+            throw new IllegalArgumentException("Vapen kan ej vara null");
         }
         if (weaponInventory.contains(weapon)) {
             System.err.println("Kan inte ha dubletter av vapen");
             return;
+        }
+        if (weaponInventory.size() == MAX_INVENTORY_CAPACITY) {
+            Weapon weaponToRemove = null;
+            for (Weapon w : weaponInventory) {
+                if (w != getEquippedWeapon() && w != getEquippedOffhand()) {
+                    weaponToRemove = w;
+                    break;
+                }
+            }
+            if (weaponToRemove != null) {
+                weaponInventory.remove(weaponToRemove);
+                wallet += weaponToRemove.getPrice();
+            }
         }
         weaponInventory.add(weapon);
     }
@@ -316,6 +328,13 @@ public class Player {
     }
 
     public void removeWeaponFromInventory(Weapon weapon) {
+        if (weapon == null) {
+            throw new IllegalArgumentException("Armor kan ej vara null");
+        }
+        if (weapon == getEquippedWeapon() || weapon == getEquippedOffhand()) {
+            System.err.println("Kan ej ta bort equippat föremål");
+            return;
+        }
         wallet += weapon.getPrice();
         weaponInventory.remove(weapon);
     }
@@ -334,18 +353,37 @@ public class Player {
     // Armor
 
     public void addArmorToInventory(Armor armor) {
-        if (armorInventory.size() == MAX_INVENTORY_CAPACITY) {
-            wallet += armorInventory.get(0).getPrice();
-            armorInventory.remove(0);
+        if (armor == null) {
+            throw new IllegalArgumentException("Armor kan ej vara null");
         }
         if (armorInventory.contains(armor)) {
             System.err.println("Kan inte ha dubletter av armor");
             return;
         }
+        if (armorInventory.size() == MAX_INVENTORY_CAPACITY) {
+            Armor armorToRemove = null;
+            for (Armor a : armorInventory) {
+                if (a != getEquippedArmor() && a != getEquippedOffhand()) {
+                    armorToRemove = a;
+                    break;
+                }
+            }
+            if (armorToRemove != null) {
+                armorInventory.remove(armorToRemove);
+                wallet += armorToRemove.getPrice();
+            }
+        }
         armorInventory.add(armor);
     }
 
     public void removeArmorFromInventory(Armor armor) {
+        if (armor == null) {
+            throw new IllegalArgumentException("Armor kan ej vara null");
+        }
+        if (armor == getEquippedArmor() || armor == getEquippedOffhand()) {
+            System.err.println("Kan ej ta bort equippat föremål");
+            return;
+        }
         wallet += armor.getPrice();
         armorInventory.remove(armor);
     }
