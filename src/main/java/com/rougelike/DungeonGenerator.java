@@ -83,17 +83,9 @@ public class DungeonGenerator {
 
     private Gridd setUpGridd(int rows, int columns) {
         Gridd gridd = new Gridd(rows, columns, TILE_SIZE);
-        fillGriddWithNegativeOne(gridd);
+        gridd.fillWithValue(-1);
         setUpGriddBorder(gridd);
         return gridd;
-    }
-
-    private void fillGriddWithNegativeOne(Gridd gridd) {
-        for (int row = 0; row < gridd.getRowCount(); row++) {
-            for (int column = 0; column < gridd.getColumnCount(); column++) {
-                gridd.setTile(row, column, -1);
-            }
-        }
     }
 
     private void setUpGriddBorder(Gridd gridd) {

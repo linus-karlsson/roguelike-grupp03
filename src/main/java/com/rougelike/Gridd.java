@@ -198,6 +198,14 @@ public class Gridd {
         setTile(index.row, index.column, value);
     }
 
+    public void fillWithValue(int value) {
+        for (int row = 0; row < getRowCount(); row++) {
+            for (int column = 0; column < getColumnCount(); column++) {
+                setTile(row, column, value);
+            }
+        }
+    }
+
     public double getTileSize() {
         return tileSize;
     }

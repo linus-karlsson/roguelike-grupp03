@@ -2,8 +2,6 @@ package com.rougelike;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.time.Duration;
-import java.time.Instant;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -62,7 +60,7 @@ public class App extends Application implements Runnable {
                     } else {
                         rect.setFill(Color.WHITE);
                     }
-                } else if (tileValue == gridd.BORDER_VALUE) {
+                } else if (tileValue == Gridd.BORDER_VALUE) {
                     rect.setFill(Color.BLUE);
                 }
                 rect.setStroke(Color.RED);
@@ -78,48 +76,45 @@ public class App extends Application implements Runnable {
 
         scene.setOnKeyPressed(event -> {
             String codeString = event.getCode().getChar();
-            playerVelocity.setX(0);
-            playerVelocity.setY(0);
             if (codeString.equals("A")) {
-                playerVelocity.setX(-2.0);
+                playerVelocity.setX(-50.0);
             }
             if (codeString.equals("W")) {
-                playerVelocity.setY(-2.0);
+                playerVelocity.setY(-50.0);
             }
             if (codeString.equals("D")) {
-                playerVelocity.setX(2.0);
+                playerVelocity.setX(50.0);
             }
             if (codeString.equals("S")) {
-                playerVelocity.setY(2.0);
-            }
-            Point point = new Point(player.getX(), player.getY());
-            point = point.plus(playerVelocity);
-            Gridd.Index index = gridd.getGriddIndexBasedOnPosition(point);
-            Gridd.Index index2 = gridd.getGriddIndexBasedOnPosition(
-                    new Point(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
-            if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
-                player.setX(point.getX());
-                player.setY(point.getY());
+                playerVelocity.setY(50.0);
             }
         });
         scene.setOnKeyReleased(event -> {
             String codeString = event.getCode().getChar();
             if (codeString.equals("A")) {
-                playerVelocity.setX(0.0);
+                if (playerVelocity.getX() < 0.0) {
+                    playerVelocity.setX(0.0);
+                }
             }
             if (codeString.equals("W")) {
-                playerVelocity.setY(0.0);
+                if (playerVelocity.getY() < 0.0) {
+                    playerVelocity.setY(0.0);
+                }
             }
             if (codeString.equals("D")) {
-                playerVelocity.setX(0.0);
+                if (playerVelocity.getX() > 0.0) {
+                    playerVelocity.setX(0.0);
+                }
             }
             if (codeString.equals("S")) {
-                playerVelocity.setY(0.0);
+                if (playerVelocity.getY() > 0.0) {
+                    playerVelocity.setY(0.0);
+                }
             }
         });
         primaryStage.setScene(scene);
         primaryStage.show();
-        // start();
+        start();
     }
 
     public synchronized void start() {
@@ -132,11 +127,10 @@ public class App extends Application implements Runnable {
     }
 
     public void run() {
-        double dt = 0.0016;
+        double dt = 0.016;
         while (true) {
-            Instant start = Instant.now();
             Point point = new Point(player.getX(), player.getY());
-            point = point.plus(playerVelocity);
+            point = point.plus(playerVelocity.scalarMulti(dt));
             Gridd.Index index = gridd.getGriddIndexBasedOnPosition(point);
             Gridd.Index index2 = gridd.getGriddIndexBasedOnPosition(
                     new Point(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
@@ -144,9 +138,11 @@ public class App extends Application implements Runnable {
                 player.setX(point.getX());
                 player.setY(point.getY());
             }
-            Instant end = Instant.now();
-            dt = ((double) Duration.between(start, end).toNanos()) / 1000_000_000.0;
-            System.out.println(dt);
+            try {
+                Thread.sleep(16);
+            } catch (InterruptedException e) {
+
+            }
         }
     }
 

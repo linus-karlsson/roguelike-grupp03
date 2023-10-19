@@ -32,11 +32,49 @@ public class PlayerTest {
         assertEquals(level + 1, player.getLevel());
     }
 
+    private void setUpMovementTest(Vector velocity, Point roomPosition, Point playerPosition) {
+        int rowCount = 10;
+        int columnCount = 10;
+        double tileSize = 5.0;
+        Gridd gridd = new Gridd(rowCount, columnCount, tileSize);
+        gridd.fillWithValue(-1);
+        Room room = new Room(10.0, 10.0);
+        room.setPosition(10.0, 10.0);
+        gridd.getRoomParser().setRoom(room);
+        gridd.getRoomParser().placeRoomInGridd();
+
+        Player player = new Player("Test", room.getPosition());
+        double deltaTime = 1.0;
+        player.setVelocity(velocity);
+        player.updateMovement(gridd, deltaTime);
+
+        roomPosition.clone(room.getPosition());
+        playerPosition.clone(player.getPosition());
+    }
+
+    @Test
+    public void testUpdateMovementShoulNotMove() {
+        Point roomPosition = new Point();
+        Point playerPosition = new Point();
+        setUpMovementTest(new Vector(-5.0, -5.0), roomPosition, playerPosition);
+        assertEquals(roomPosition.getX(), playerPosition.getX());
+        assertEquals(roomPosition.getY(), playerPosition.getY());
+    }
+
+    @Test
+    public void testUpdateMovementShoulMove() {
+        Point roomPosition = new Point();
+        Point playerPosition = new Point();
+        setUpMovementTest(new Vector(5.0, 5.0), roomPosition, playerPosition);
+        assertNotEquals(roomPosition.getX(), playerPosition.getX());
+        assertNotEquals(roomPosition.getY(), playerPosition.getY());
+    }
+
     @Test
     public void TestPlayerInstanceCreationDwarfKnight() {
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Gimli", dwarf, knight,new Point());
+        Player player = new Player("Gimli", dwarf, knight, new Point());
         double expectedHealth = dwarf.getStartingHealth() * knight.getHealthMultiplier();
         double expectedIntelligence = dwarf.getStartingIntelligence() * knight.getIntelligenceMultiplier();
         assertEquals(expectedHealth, player.getHealth());
@@ -44,7 +82,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void TestTotalWeaponDamage(){
+    public void TestTotalWeaponDamage() {
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
         Player player = new Player("Gimli", dwarf, knight, new Point());
@@ -58,7 +96,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void TestTakeDamage(){
+    public void TestTakeDamage() {
         Elf elf = new Elf();
         Thief thief = new Thief();
         Player player = new Player("Legolas", elf, thief, new Point());
@@ -67,7 +105,8 @@ public class PlayerTest {
         assertEquals(expectedHealthLeft, player.getHealth());
     }
 
-    @Test void TestPlayerResetResetsHealth(){
+    @Test
+    void TestPlayerResetResetsHealth() {
         Elf elf = new Elf();
         Thief thief = new Thief();
         Player player = new Player("Legolas", elf, thief, new Point());
@@ -77,7 +116,8 @@ public class PlayerTest {
         assertEquals(expectedHealth, player.getHealth());
     }
 
-    @Test void TestPlayerResetResetsLevel(){
+    @Test
+    void TestPlayerResetResetsLevel() {
         Elf elf = new Elf();
         Thief thief = new Thief();
         Player player = new Player("Legolas", elf, thief, new Point());
@@ -88,7 +128,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void TestPlayerThiefCantAttackWhenInvisible(){
+    public void TestPlayerThiefCantAttackWhenInvisible() {
         Elf elf = new Elf();
         Thief thief = new Thief();
         Player player = new Player("Legolas", elf, thief, new Point());
@@ -100,7 +140,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void TestPlayerThiefAvoidsDamageWhenInvisible(){
+    public void TestPlayerThiefAvoidsDamageWhenInvisible() {
         Elf elf = new Elf();
         Thief thief = new Thief();
         Player player = new Player("Legolas", elf, thief, new Point());
@@ -112,7 +152,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void TestPlayerKnightShieldBashStunsEnemy(){
+    public void TestPlayerKnightShieldBashStunsEnemy() {
         Human human = new Human();
         Knight knight = new Knight();
         Player player = new Player("Aragorn", human, knight, new Point());
@@ -123,9 +163,8 @@ public class PlayerTest {
         assertEquals(expectedPlayerHealth, player.getHealth());
     }
 
-
     @Test
-    public void TestPlayerMageDebuffEnemy(){
+    public void TestPlayerMageDebuffEnemy() {
         Human human = new Human();
         Mage mage = new Mage();
         Player player = new Player("Gandalf", human, mage, new Point());

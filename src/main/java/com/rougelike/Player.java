@@ -96,6 +96,10 @@ public class Player {
         xp += gainedXp;
     }
 
+    public Point getPosition() {
+        return new Point(position);
+    }
+
     public void setVelocity(Vector newVelocity) {
         velocity.clone(newVelocity);
     }
