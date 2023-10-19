@@ -373,17 +373,16 @@ public class Player {
             System.err.println("Måste finnas i weapon inventory eller armor inventory för att kunna equippa");
             return;
         }
-        if ((role instanceof Knight) && (offhand.getType() == EquipmentType.SHIELD)) {
+        if ((role instanceof Knight) && (offhand instanceof Armor) && (offhand.getType() == EquipmentType.SHIELD)) {
             equippedOffhand = offhand;
             setStatsWhenEquippingArmor((Armor) offhand);
-        } else if ((role instanceof Mage) && (offhand.getType() == EquipmentType.BOOK)) {
+        } else if ((role instanceof Mage) && (offhand instanceof Armor) && (offhand.getType() == EquipmentType.BOOK)) {
             equippedOffhand = offhand;
             setStatsWhenEquippingArmor((Armor) offhand);
-        } else if ((role instanceof Thief) && (offhand.getType() == EquipmentType.DAGGER)) {
+        } else if ((role instanceof Thief) && (offhand instanceof Weapon)
+                && (offhand.getType() == EquipmentType.DAGGER)) {
             equippedOffhand = offhand;
             setStatsWhenEquippingWeapon((Weapon) offhand);
-        } else {
-            return;
         }
     }
 
