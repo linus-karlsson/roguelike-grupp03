@@ -7,7 +7,7 @@ public abstract class Entity {
 
     private double health;
     private double damage;
-    private ElementType element;
+    private final ElementType element;
     private boolean dead = false;
     private boolean stunned = false;
 

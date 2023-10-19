@@ -8,15 +8,15 @@ import java.util.*;
 
 public abstract class Role {
 
-    private double healthMultiplier;
-    private double manaMultiplier;
-    private double strengthMultiplier;
-    private double dexterityMultiplier;
-    private double intelligenceMultiplier;
+    private final double healthMultiplier;
+    private final double manaMultiplier;
+    private final double strengthMultiplier;
+    private final double dexterityMultiplier;
+    private final double intelligenceMultiplier;
 
-    private final Set<EquipmentType> eligibleEquipment = new HashSet();
+    private final Set<EquipmentType> eligibleEquipment = new HashSet<>();
 
-    private Weapon startingWeapon;
+    private final Weapon startingWeapon;
 
 
     public Role(double healthMultiplier, double manaMultiplier, double strengthMultiplier, double dexterityMultiplier, double intelligenceMultiplier, Weapon startingWeapon, EquipmentType... eligibleEquipment) {
@@ -54,7 +54,7 @@ public abstract class Role {
         return startingWeapon;
     }
 
-    public Set getEligibleEquipment(){
+    public Set<EquipmentType> getEligibleEquipment(){
         return eligibleEquipment;
     }
 

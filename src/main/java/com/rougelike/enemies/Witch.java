@@ -11,7 +11,7 @@ public class Witch extends Entity {
     private static final double WITCH_DAMAGE = 15;
     private static final ElementType WITCH_ELEMENT = ElementType.FIRE;
 
-    private Magic magic = new Magic(Spell.FIREBALL);
+    private final Magic magic = new Magic(Spell.FIREBALL);
 
 
     public Witch(){

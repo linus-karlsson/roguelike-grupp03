@@ -1,9 +1,7 @@
 package com.rougelike.enemies;
 import com.rougelike.Player;
 import com.rougelike.Point;
-import com.rougelike.races.Dwarf;
 import com.rougelike.races.Elf;
-import com.rougelike.roles.Knight;
 import com.rougelike.roles.Thief;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;

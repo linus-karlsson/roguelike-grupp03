@@ -1,13 +1,7 @@
 package com.rougelike;
 
-import com.rougelike.equipment.Armor;
-import com.rougelike.equipment.Equipment;
-import com.rougelike.equipment.EquipmentType;
-import com.rougelike.equipment.Weapon;
 import com.rougelike.races.Race;
 import com.rougelike.roles.Role;
-
-import java.util.ArrayList;
 
 public class PlayerStartingValues {
 

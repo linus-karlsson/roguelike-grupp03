@@ -2,7 +2,6 @@ package com.rougelike.roles;
 
 import com.rougelike.equipment.Dagger;
 import com.rougelike.equipment.EquipmentType;
-import com.rougelike.equipment.Sword;
 import com.rougelike.equipment.Weapon;
 
 public class Thief extends Role {

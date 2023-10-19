@@ -2,7 +2,6 @@ package com.rougelike.roles;
 
 import com.rougelike.enemies.Entity;
 import com.rougelike.equipment.EquipmentType;
-import com.rougelike.equipment.Sword;
 import com.rougelike.equipment.AirWand;
 import com.rougelike.equipment.Weapon;
 
