@@ -2,6 +2,8 @@ package com.rougelike;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.time.Duration;
+import java.time.Instant;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -10,13 +12,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class App extends Application {
+public class App extends Application implements Runnable {
     public static void main(String[] args) {
         launch(args);
     }
 
     Rectangle player;
     Vector playerVelocity = new Vector(0, 0);
+    Gridd gridd;
+    boolean running = false;
 
     @Override
     public void start(Stage primaryStage) {
@@ -36,9 +40,10 @@ public class App extends Application {
         int columns = 60;
         ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
         map.connectRooms(placedRooms);
-        Gridd gridd = map.getCopyOfGridd();
+        gridd = map.getCopyOfGridd();
 
         Random rand = new Random();
+        rand.nextInt(roomCount);
 
         Color[] roomColors = new Color[placedRooms.size()];
         for (int i = 0; i < placedRooms.size(); i++) {
@@ -57,7 +62,10 @@ public class App extends Application {
                     } else {
                         rect.setFill(Color.WHITE);
                     }
+                } else if (tileValue == gridd.BORDER_VALUE) {
+                    rect.setFill(Color.BLUE);
                 }
+                rect.setStroke(Color.RED);
                 center.getChildren().add(rect);
             }
         }
@@ -94,8 +102,52 @@ public class App extends Application {
                 player.setY(point.getY());
             }
         });
+        scene.setOnKeyReleased(event -> {
+            String codeString = event.getCode().getChar();
+            if (codeString.equals("A")) {
+                playerVelocity.setX(0.0);
+            }
+            if (codeString.equals("W")) {
+                playerVelocity.setY(0.0);
+            }
+            if (codeString.equals("D")) {
+                playerVelocity.setX(0.0);
+            }
+            if (codeString.equals("S")) {
+                playerVelocity.setY(0.0);
+            }
+        });
         primaryStage.setScene(scene);
         primaryStage.show();
+        // start();
+    }
+
+    public synchronized void start() {
+        if (running) {
+            return;
+        }
+        running = true;
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+
+    public void run() {
+        double dt = 0.0016;
+        while (true) {
+            Instant start = Instant.now();
+            Point point = new Point(player.getX(), player.getY());
+            point = point.plus(playerVelocity);
+            Gridd.Index index = gridd.getGriddIndexBasedOnPosition(point);
+            Gridd.Index index2 = gridd.getGriddIndexBasedOnPosition(
+                    new Point(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
+            if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
+                player.setX(point.getX());
+                player.setY(point.getY());
+            }
+            Instant end = Instant.now();
+            dt = ((double) Duration.between(start, end).toNanos()) / 1000_000_000.0;
+            System.out.println(dt);
+        }
     }
 
 }
