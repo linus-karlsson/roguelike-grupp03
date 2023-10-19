@@ -15,9 +15,23 @@ public class Thief extends Role {
 
     private static final Weapon THIEF_STARTING_WEAPON = new Dagger();
 
-    public Thief() {
-        super(THIEF_HEALTH_MULTIPLIER, THIEF_MANA_MULTIPLIER, THIEF_STRENGTH_MULTIPLIER, THIEF_DEXTERITY_MULTIPLIER, THIEF_INTELLIGENCE_MULTIPLIER, THIEF_STARTING_WEAPON, EquipmentType.LIGHT_ARMOR, EquipmentType.MEDIUM_ARMOR, EquipmentType.DAGGER);
+    private boolean invisible = false;
+    public Thief(){
+        super(THIEF_HEALTH_MULTIPLIER, THIEF_MANA_MULTIPLIER,THIEF_STRENGTH_MULTIPLIER,THIEF_DEXTERITY_MULTIPLIER,THIEF_INTELLIGENCE_MULTIPLIER, THIEF_STARTING_WEAPON, EquipmentType.LIGHT_ARMOR, EquipmentType.MEDIUM_ARMOR, EquipmentType.DAGGER);
     }
 
+
+
+    public void invisibility(){
+        invisible = true;
+    }
+
+    public void reEmerge(){
+        invisible = false;
+    }
+
+    public boolean isInvisible(){
+        return invisible;
+    }
 
 }

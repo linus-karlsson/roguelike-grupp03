@@ -16,10 +16,13 @@ public class Knight extends Role {
 
     private static final Weapon KNIGHT_STARTING_WEAPON = new Sword();
 
-    public Knight(){
-       super(KNIGHT_HEALTH_MULTIPLIER, KNIGHT_MANA_MULTIPLIER, KNIGHT_STRENGTH_MULTIPLIER, KNIGHT_DEXTERITY_MULTIPLIER, KNIGHT_INTELLIGENCE_MULTIPLIER, KNIGHT_STARTING_WEAPON, EquipmentType.SWORD, EquipmentType.SHIELD, EquipmentType.HEAVY_ARMOR, EquipmentType.LIGHT_ARMOR);
+    public Knight() {
+        super(KNIGHT_HEALTH_MULTIPLIER, KNIGHT_MANA_MULTIPLIER, KNIGHT_STRENGTH_MULTIPLIER, KNIGHT_DEXTERITY_MULTIPLIER, KNIGHT_INTELLIGENCE_MULTIPLIER, KNIGHT_STARTING_WEAPON, EquipmentType.SWORD, EquipmentType.SHIELD, EquipmentType.HEAVY_ARMOR, EquipmentType.LIGHT_ARMOR);
 
     }
 
 
+    public void shieldBash(Entity enemy) {
+        enemy.getStunned();
+    }
 }

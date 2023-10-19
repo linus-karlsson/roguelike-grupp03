@@ -2,14 +2,14 @@ package com.rougelike.enemies;
 
 import com.rougelike.Player;
 import com.rougelike.equipment.ElementType;
-import com.rougelike.magic.MagicElementType;
 
 public abstract class Entity {
 
     private double health;
     private double damage;
     private ElementType element;
-    private boolean isDead = false;
+    private boolean dead = false;
+    private boolean stunned = false;
 
 
     public Entity(double health, double damage, ElementType element){
@@ -19,7 +19,7 @@ public abstract class Entity {
     }
 
     public void attack (Player player){
-        if(isDead){
+        if(dead || stunned){
             return;
         }
         player.takeDamage(damage);
@@ -28,12 +28,12 @@ public abstract class Entity {
     public void takeDamage(double damageTaken){
         health -= damageTaken;
         if(health <= 0){
-            isDead = true;
+            dead = true;
         }
     }
 
     public boolean isDead(){
-        return isDead;
+        return dead;
     }
 
     public double getHealth(){
@@ -47,5 +47,16 @@ public abstract class Entity {
         return element;
     }
 
+    public void getStunned(){
+        stunned = true;
+    }
+
+    public void getUnStunned(){
+        stunned = false;
+    }
+
+    public boolean isStunned(){
+        return stunned;
+    }
 
 }

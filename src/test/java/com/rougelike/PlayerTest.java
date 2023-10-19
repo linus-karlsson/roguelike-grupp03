@@ -6,6 +6,7 @@ import com.rougelike.races.Dwarf;
 import com.rougelike.races.Elf;
 import com.rougelike.races.Human;
 import com.rougelike.roles.Knight;
+import com.rougelike.roles.Mage;
 import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
 import org.junit.jupiter.api.*;
@@ -121,5 +122,6 @@ public class PlayerTest {
         witch.attack(player);
         assertEquals(expectedPlayerHealth, player.getHealth());
     }
+
 
 }

@@ -128,11 +128,20 @@ public class Player {
     }
 
     public void attackEnemyWithWeapon(Entity enemy) {
+        if (role instanceof Thief) {
+            if (((Thief) role).isInvisible()) {
+                return;
+            }
             enemy.takeDamage(totalWeaponDamage);
         }
-
+    }
 
     public void takeDamage(double damageTaken) {
+        if(role instanceof Thief){
+            if(((Thief) role).isInvisible()){
+                return;
+            }
+        }
         health -= damageTaken;
         if (health <= 0) {
             isDead = true;
