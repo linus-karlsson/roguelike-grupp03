@@ -428,10 +428,10 @@ public class Player {
             case "Attack":
                 takeDamage(magicToUse.getType().throwMagic(magicToUse, this));
             case "Defence":
-                // return magicInventory.get(magic).throwMagic(magicInventory.get(magic), this);
+                // to be implemented
                 break;
             case "Heal":
-                // return magicInventory.get(magic).throwMagic(magicInventory.get(magic), this);
+                setHealth(magicToUse.getType().throwMagic(magicToUse, this));
                 break;
         }
     }

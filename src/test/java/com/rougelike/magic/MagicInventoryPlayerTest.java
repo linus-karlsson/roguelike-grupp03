@@ -52,7 +52,7 @@ public class MagicInventoryPlayerTest {
     }
 
     @Test
-    public void testUseMagic() {
+    void testUseMagic() {
         Player player = new Player( "Test", new Point());
         Entity enemy = new Troll();
         Magic magic = new Magic(Spell.FIREBALL);
@@ -60,6 +60,17 @@ public class MagicInventoryPlayerTest {
         player.useMagic("Fireball", enemy);
         double expectedValue = 40.0;
         assertEquals(expectedValue, enemy.getHealth());
+    }
+
+    @Test
+    void testUseMagicWithHealthShouldIncresePlayersHelth() {
+        Player player = new Player( "Test", new Point());
+        Magic magic = new Magic(Spell.HEAL);
+        player.addMagicToInventory(magic);
+        player.setHealth(50);
+        player.useMagic("Heal");
+        double expectedValue = 60.0;
+        assertEquals(expectedValue, player.getHealth());
     }
 }
     
