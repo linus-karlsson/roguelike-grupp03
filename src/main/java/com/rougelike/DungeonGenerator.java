@@ -122,13 +122,13 @@ public class DungeonGenerator {
         griddParser.placeRoomInGridd();
     }
 
-    public void connectRooms(List<Room> rooms) {
-        int endRoomIndex = 1;
-        for (int i = 0; i < rooms.size() - 1; i++) {
+    public int connectRooms(List<Room> rooms) {
+        int corridorCount = 0;
+        for (int i = 0, endRoomIndex = 1; i < rooms.size() - 1; i++) {
             Room startRoom = rooms.get(i);
             Room endRoom = getNextNonConnectedRoom(rooms, endRoomIndex);
             if (endRoom == null) {
-                return;
+                return corridorCount;
             }
             endRoomIndex = endRoom.getId();
 
@@ -148,7 +148,9 @@ public class DungeonGenerator {
             iterateColumnTilesToNextRoom(columnDifference, indexForColumnTraversal, rooms);
             startRoom.setConnected(true);
             endRoom.setConnected(true);
+            corridorCount++;
         }
+        return corridorCount;
     }
 
     private Room getNextNonConnectedRoom(List<Room> rooms, int index) {

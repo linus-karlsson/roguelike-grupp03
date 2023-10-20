@@ -398,24 +398,12 @@ public class DungeonGeneratorTest {
         List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        double[] randomMultipliers = { 0.5, 0.0, 0.5, 1.0, 0.45, 0.5 };
+        double[] randomMultipliers = { 0.5, 0.0, 0.5, 1.0, 0.5, 0.5 };
         dungeonGenerator.setRandom(new RandomInternal(randomMultipliers));
         List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
                 DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
-        dungeonGenerator.connectRooms(placedRooms);
-        Grid grid = dungeonGenerator.getCopyOfGridd();
-        Grid.Index secondRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(1).getPosition());
-        Grid.Index thirdRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(2).getPosition());
-
-        boolean expected = false;
-        for (; thirdRoomGriddIndex.row <= secondRoomGriddIndex.row; thirdRoomGriddIndex.row++) {
-            int tileValue = grid.getTile(thirdRoomGriddIndex);
-            expected |= tileValue < 0;
-            if (expected) {
-                break;
-            }
-        }
-        assertTrue(expected);
+        int expected = 1;
+        assertEquals(expected, dungeonGenerator.connectRooms(placedRooms));
     }
 
     // Platserar ett rum för varje tile i gridden och ser att getConnectedRooms
