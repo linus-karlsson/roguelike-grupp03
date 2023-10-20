@@ -1,6 +1,5 @@
-package com.rougelike.enemies;
+package com.rougelike;
 
-import com.rougelike.Player;
 import com.rougelike.equipment.ElementType;
 
 public abstract class Entity {
@@ -11,59 +10,63 @@ public abstract class Entity {
     private boolean dead = false;
     private boolean stunned = false;
 
-
-    public Entity(double health, double damage, ElementType element){
+    public Entity(double health, double damage, ElementType element) {
         this.health = health;
         this.element = element;
         this.damage = damage;
     }
 
-    public void attack (Player player){
-        if(dead || stunned){
+    public void attack(Entity entity) {
+        if (dead || stunned) {
             return;
         }
-        player.takeDamage(damage);
+        entity.takeDamage(damage);
     }
 
-    public void takeDamage(double damageTaken){
+    public void takeDamage(double damageTaken) {
         health -= damageTaken;
-        if(health <= 0){
+        if (health <= 0) {
             dead = true;
         }
     }
 
-    public boolean isDead(){
+    public boolean isDead() {
         return dead;
     }
 
-    public double getHealth(){
+    public void setIsDead(boolean isDead) {
+        dead = isDead;
+    }
+
+    public double getHealth() {
         return health;
     }
 
-    public double getDamage(){
+    public double getDamage() {
         return damage;
     }
-    public ElementType getElement(){
+
+    public ElementType getElement() {
         return element;
     }
 
-    public void setStunned(){
+    public void setStunned() {
         stunned = true;
     }
 
-    public void setUnStunned(){
+    public void setUnStunned() {
         stunned = false;
     }
 
-    public boolean isStunned(){
+    public boolean isStunned() {
         return stunned;
     }
 
-    public void setHealth(double health){
+    public void setHealth(double health) {
         this.health = health;
     }
 
-    public void setDamage(double damage){
+    public void setDamage(double damage) {
         this.damage = damage;
     }
 

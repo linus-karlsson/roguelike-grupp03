@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import com.rougelike.enemies.Entity;
 import com.rougelike.equipment.*;
 import com.rougelike.races.Race;
 import com.rougelike.roles.Knight;
@@ -14,7 +13,7 @@ import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
 import com.rougelike.magic.*;
 
-public class Player {
+public class Player extends Entity {
 
     private PlayerStartingValues startingValues;
 
@@ -25,7 +24,6 @@ public class Player {
     private static final int MAX_INVENTORY_CAPACITY = 5;
     private static final int STARTING_MONEY = 100;
     private String name;
-    private double health;
     private double mana;
     private double strength;
     private double dexterity;
@@ -48,11 +46,9 @@ public class Player {
     private Point2D position;
     private Vector2D velocity;
 
-    private boolean isDead;
-
     public Player(String name, Point2D position) {
+        super(100.0, 0.0, ElementType.AIR);
         this.name = name;
-        this.health = 100;
         xpToNextLevel = 200.0;
         this.position = new Point2D(position);
         this.velocity = new Vector2D();
@@ -63,7 +59,7 @@ public class Player {
         this.level = 1;
         this.race = race;
         this.role = role;
-        this.health = race.getStartingHealth() * role.getHealthMultiplier();
+        setHealth(race.getStartingHealth() * role.getHealthMultiplier());
         this.mana = race.getStartingMana() * role.getManaMultiplier();
         this.strength = race.getStartingStrength() * role.getStrengthMultiplier();
         this.dexterity = race.getStartingDexterity() * role.getDexterityMultiplier();
@@ -72,8 +68,6 @@ public class Player {
         this.equippedWeapon = role.getStartingWeapon();
         weaponInventory.add(role.getStartingWeapon());
         setTotalWeaponDamage();
-        isDead = false;
-
         startingValues = new PlayerStartingValues(name, race, role, position);
     }
 
@@ -148,10 +142,7 @@ public class Player {
                 return;
             }
         }
-        health -= damageTaken;
-        if (health <= 0) {
-            isDead = true;
-        }
+        super.takeDamage(damageTaken);
     }
 
     public boolean weaponIsEffective(ElementType enemyElement) {
@@ -174,14 +165,6 @@ public class Player {
 
     public Race getRace() {
         return race;
-    }
-
-    public double setHealth(double health) {
-        return this.health = health;
-    }
-
-    public double getHealth() {
-        return health;
     }
 
     public double getMana() {
@@ -268,10 +251,6 @@ public class Player {
 
     }
 
-    public boolean isDead() {
-        return isDead;
-    }
-
     public Player reset() {
         String name = startingValues.getName();
         Race race = startingValues.getRace();
@@ -292,7 +271,7 @@ public class Player {
         strength += armor.getStrength() * role.getStrengthMultiplier();
         dexterity += armor.getDexterity() * role.getDexterityMultiplier();
         intelligence += armor.getIntelligence() * role.getIntelligenceMultiplier();
-        health += armor.getHealth();
+        setHealth(getHealth() + armor.getHealth());
         mana += armor.getMana();
         armorValue += armor.getArmorValue();
     }
@@ -423,7 +402,7 @@ public class Player {
         strength -= equippedArmor.getStrength() * role.getStrengthMultiplier();
         dexterity -= equippedArmor.getDexterity() * role.getDexterityMultiplier();
         intelligence -= equippedArmor.getIntelligence() * role.getIntelligenceMultiplier();
-        health -= equippedArmor.getHealth();
+        setHealth(getHealth() - equippedArmor.getHealth());
         mana -= equippedArmor.getMana();
         armorValue -= equippedArmor.getArmorValue();
     }
