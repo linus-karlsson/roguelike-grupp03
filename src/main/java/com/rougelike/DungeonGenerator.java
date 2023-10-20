@@ -43,12 +43,12 @@ public class DungeonGenerator {
         return (random.nextDouble() * (high - low)) + low;
     }
 
-    public ArrayList<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
+    public List<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
             double maxHeight) {
         if (roomCount <= 0) {
             throw new IllegalArgumentException("roomCount can't be less or equals to 0");
         }
-        ArrayList<Room> result = new ArrayList<>(roomCount);
+        List<Room> result = new ArrayList<>(roomCount);
         for (int i = 0; i < roomCount; i++) {
             result.add(generateRoom(minWidth, maxWidth, minHeight, maxHeight));
         }
@@ -56,7 +56,7 @@ public class DungeonGenerator {
         return result;
     }
 
-    public List<Room> placeRoomsInArea(ArrayList<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
+    public List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
             int columnCount) {
         checkArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount);
         grid = setUpGridd(rowCount, columnCount);
@@ -84,7 +84,7 @@ public class DungeonGenerator {
         return Collections.unmodifiableList(roomsPlaced);
     }
 
-    private void checkArgumentsInPlaceRooomsInArea(ArrayList<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
+    private void checkArgumentsInPlaceRooomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
             int columnCount) {
         if (rooms == null) {
             throw new IllegalArgumentException("rooms can't be null");
@@ -108,6 +108,7 @@ public class DungeonGenerator {
         while (grid.getRoomParser().hasNextIndex()) {
             Grid.Index index = grid.getRoomParser().nextIndex();
             int currentTileValue = grid.getTile(index);
+            // Kollar att tileValue är ett rum eller en korridor hence >= 0
             if (currentTileValue >= 0
                     || currentTileValue == Grid.BORDER_VALUE) {
                 return false;
@@ -141,10 +142,10 @@ public class DungeonGenerator {
                     ? startRoomGriddIndex
                     : endRoomGriddIndex;
 
-            int rowDifferens = abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
-            int columnDifferens = abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
-            iterateRowTilesToNextRoom(rowDifferens, indexForRowTraversal, rooms);
-            iterateColumnTilesToNextRoom(columnDifferens, indexForColumnTraversal, rooms);
+            int rowDifference = abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
+            int columnDifference = abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
+            iterateRowTilesToNextRoom(rowDifference, indexForRowTraversal, rooms);
+            iterateColumnTilesToNextRoom(columnDifference, indexForColumnTraversal, rooms);
             startRoom.setConnected(true);
             endRoom.setConnected(true);
         }
@@ -155,16 +156,16 @@ public class DungeonGenerator {
         Room endRoom = null;
         do {
             endRoom = rooms.get(index++ % rooms.size());
-        } while (endRoom.isConnected() && count++ < rooms.size());
-        return endRoom;
+        } while (endRoom.isConnected() && ++count < rooms.size());
+        return count != rooms.size() ? endRoom : null;
     }
 
     private int abs(int value) {
         return value < 0 ? value * -1 : value;
     }
 
-    private void iterateRowTilesToNextRoom(int rowDifferens, Grid.Index indexForRowTraversal, List<Room> rooms) {
-        for (int j = 0; j <= rowDifferens; j++, indexForRowTraversal.row++) {
+    private void iterateRowTilesToNextRoom(int rowDifference, Grid.Index indexForRowTraversal, List<Room> rooms) {
+        for (int j = 0; j <= rowDifference; j++, indexForRowTraversal.row++) {
             int currentTileValue = grid.getTile(indexForRowTraversal);
             grid.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : rooms.size());
             checkAdjacentTiles(grid, indexForRowTraversal, rooms);
@@ -172,9 +173,9 @@ public class DungeonGenerator {
         indexForRowTraversal.row--; // Reset the last addition
     }
 
-    private void iterateColumnTilesToNextRoom(int columnDifferens, Grid.Index indexForColumnTraversal,
+    private void iterateColumnTilesToNextRoom(int columnDifference, Grid.Index indexForColumnTraversal,
             List<Room> rooms) {
-        for (int j = 0; j <= columnDifferens; j++, indexForColumnTraversal.column++) {
+        for (int j = 0; j <= columnDifference; j++, indexForColumnTraversal.column++) {
             int currentTileValue = grid.getTile(indexForColumnTraversal);
             grid.setTile(indexForColumnTraversal, currentTileValue >= 0 ? currentTileValue : rooms.size());
             checkAdjacentTiles(grid, indexForColumnTraversal, rooms);
@@ -190,7 +191,7 @@ public class DungeonGenerator {
             }
         }
         for (int i = -1; i < 2; i += 2) {
-            int tileValue = grid.getTile(grid.new Index(index.row + i, index.column));
+            int tileValue = grid.getTile(grid.new Index(index.row, index.column + i));
             if (tileValue >= 0 && tileValue < rooms.size()) {
                 rooms.get(tileValue).setConnected(true);
             }

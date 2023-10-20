@@ -30,18 +30,20 @@ public class App extends Application {
         double minHeight = 30.0;
         double maxHeight = 60.0;
 
-        DungeonGenerator map = new DungeonGenerator();
-        int roomCount = 30;
-        ArrayList<Room> rooms = map.generateListOfRooms(roomCount, minWidth,
-                maxWidth,
+        DungeonGenerator dungeonGenerator = new DungeonGenerator();
+        double randomMultiplier = 1.0;
+        dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
+
+        int roomCount = 3;
+        List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
 
-        int rows = 60;
-        int columns = 60;
-        List<Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
-
-        map.connectRooms(placedRooms);
-        gridd = map.getCopyOfGridd();
+        double[] randomMultipliers = { 0.5, 0.0, 0.5, 1.0, 0.45, 0.5 };
+        dungeonGenerator.setRandom(new RandomInternal(randomMultipliers));
+        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 10,
+                80, 80);
+        dungeonGenerator.connectRooms(placedRooms);
+        gridd = dungeonGenerator.getCopyOfGridd();
 
         Random rand = new Random();
         rand.nextInt(roomCount);
