@@ -1,9 +1,8 @@
 package com.rougelike.magic;
 
 import com.rougelike.*;
-import com.rougelike.enemies.*; 
-import com.rougelike.equipment.*;   
-
+import com.rougelike.enemies.*;
+import com.rougelike.equipment.*;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +12,7 @@ public class MagicInventoryPlayerTest {
     @Test
     void testMethodAddMagicToInventoryShouldAddMagicToInventory() {
         Magic magic = new Magic(Spell.HEAL);
-        Player player = new Player("Test", new Point()); 
+        Player player = new Player("Test", new Point2D());
         player.addMagicToInventory(magic);
         assertTrue(player.hasMagicKnowledge(magic.getName()));
     }
@@ -21,7 +20,7 @@ public class MagicInventoryPlayerTest {
     @Test
     void testMethodAddMagicToInventoryShouldNotAddMagicToInventory() {
         Magic magic = new Magic(Spell.HEAL);
-        Player player = new Player("Test", new Point()); 
+        Player player = new Player("Test", new Point2D());
         player.addMagicToInventory(magic);
         player.addMagicToInventory(magic);
         assertEquals(1, player.getMagicInventory().size());
@@ -29,7 +28,7 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithNoArgumentShouldThrowException() {
-        Player player = new Player("Test", new Point());
+        Player player = new Player("Test", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.useMagic("");
         });
@@ -37,7 +36,7 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithNullArgumentShouldThrowException() {
-        Player player = new Player("Test", new Point());
+        Player player = new Player("Test", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.useMagic(null);
         });
@@ -45,7 +44,7 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithMagicNotInInventoryShouldThrowException() {
-        Player player = new Player("Test", new Point());
+        Player player = new Player("Test", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.useMagic("Tornado");
         });
@@ -53,7 +52,7 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagic() {
-        Player player = new Player( "Test", new Point());
+        Player player = new Player("Test", new Point2D());
         Entity enemy = new Troll();
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
@@ -64,7 +63,7 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithHealthShouldIncresePlayersHelth() {
-        Player player = new Player( "Test", new Point());
+        Player player = new Player("Test", new Point2D());
         Magic magic = new Magic(Spell.HEAL);
         player.addMagicToInventory(magic);
         player.setHealth(50);
@@ -73,5 +72,3 @@ public class MagicInventoryPlayerTest {
         assertEquals(expectedValue, player.getHealth());
     }
 }
-    
-

@@ -48,20 +48,20 @@ public class Player {
     private ArrayList<Armor> armorInventory = new ArrayList<>();
     private HashMap<String, Magic> magicInventory = new HashMap<>();
 
-    private Point position;
-    private Vector velocity;
+    private Point2D position;
+    private Vector2D velocity;
 
     private boolean isDead;
 
-    public Player(String name, Point position) {
+    public Player(String name, Point2D position) {
         this.name = name;
         this.health = 100;
         xpToNextLevel = 200.0;
-        this.position = new Point(position);
-        this.velocity = new Vector();
+        this.position = new Point2D(position);
+        this.velocity = new Vector2D();
     }
 
-    public Player(String name, Race race, Role role, Point position) {
+    public Player(String name, Race race, Role role, Point2D position) {
         this(name, position);
         this.level = 1;
         this.race = race;
@@ -96,16 +96,16 @@ public class Player {
         xp += gainedXp;
     }
 
-    public Point getPosition() {
-        return new Point(position);
+    public Point2D getPosition() {
+        return new Point2D(position);
     }
 
-    public void setVelocity(Vector newVelocity) {
+    public void setVelocity(Vector2D newVelocity) {
         velocity.clone(newVelocity);
     }
 
     public void updateMovement(Gridd gridd, double deltaTime) {
-        Point newPostion = position.plus(velocity.scalarMulti(deltaTime));
+        Point2D newPostion = position.plus(velocity.scalarMulti(deltaTime));
         Gridd.Index index = gridd.getGriddIndexBasedOnPosition(newPostion);
         if (gridd.getTile(index) >= 0) {
             position = newPostion;
@@ -263,7 +263,7 @@ public class Player {
         String name = startingValues.getName();
         Race race = startingValues.getRace();
         Role role = startingValues.getRole();
-        Point position = startingValues.getPosition();
+        Point2D position = startingValues.getPosition();
         return new Player(name, race, role, position);
     }
 

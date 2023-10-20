@@ -2,7 +2,7 @@ package com.rougelike;
 
 public class Room {
     private int id;
-    private Point position;
+    private Point2D position;
     private double width;
     private double height;
     private boolean connected;
@@ -10,7 +10,7 @@ public class Room {
     public Room(double width, double height) {
         this.width = width;
         this.height = height;
-        position = new Point();
+        position = new Point2D();
         id = 0;
         connected = false;
     }
@@ -42,8 +42,8 @@ public class Room {
         position.setY(y);
     }
 
-    public Point getPosition() {
-        return new Point(position);
+    public Point2D getPosition() {
+        return new Point2D(position);
     }
 
     public double getWidth() {

@@ -65,7 +65,7 @@ public class GriddTest {
     public void testGetGriddIndexBasedOnPosition() {
         int cellsInX = 3;
         int cellsInY = 2;
-        Point point = new Point(tileSize * cellsInX, tileSize * cellsInY);
+        Point2D point = new Point2D(tileSize * cellsInX, tileSize * cellsInY);
         Gridd.Index expected = gridd.new Index(cellsInY, cellsInX);
         Gridd.Index griddIndex = gridd.getGriddIndexBasedOnPosition(point);
         assertTrue(expected.equals(griddIndex));

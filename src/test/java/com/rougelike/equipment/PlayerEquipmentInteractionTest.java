@@ -17,7 +17,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void canAddWeaponToInventory() {
         Stick stick = new Stick();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         player.addWeaponToInventory(stick);
 
@@ -27,7 +27,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void canAddArmorToInventory() {
         LightArmor lightArmor = new LightArmor();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
         player.addArmorToInventory(lightArmor);
         assertTrue(player.getArmorInventory().contains(lightArmor));
     }
@@ -51,7 +51,7 @@ public class PlayerEquipmentInteractionTest {
         Torch torch = new Torch();
         AirWand wand = new AirWand();
         Sword sword = new Sword();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
@@ -71,7 +71,7 @@ public class PlayerEquipmentInteractionTest {
         MediumArmor mediumArmor = new MediumArmor();
         HeavyArmor heavyArmor = new HeavyArmor();
         SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
         player.addArmorToInventory(tome);
         player.addArmorToInventory(shield);
         player.addArmorToInventory(lightArmor);
@@ -85,7 +85,7 @@ public class PlayerEquipmentInteractionTest {
     void canRemoveWeaponFromWeaponInventory() {
         Stick stick = new Stick();
         Dagger dagger = new Dagger();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
@@ -95,8 +95,8 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    void correctValueStartingMoney() {
-        Player player = new Player("Sven", new Point());
+    public void correctValueStartingMoney() {
+        Player player = new Player("Sven", new Point2D());
 
         int expected = 100;
 
@@ -111,7 +111,7 @@ public class PlayerEquipmentInteractionTest {
         FireSword fireSword = new FireSword();
         Torch torch = new Torch();
         AirWand wand = new AirWand();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         player.addWeaponToInventory(dagger);
         player.addWeaponToInventory(fireSword);
@@ -134,7 +134,7 @@ public class PlayerEquipmentInteractionTest {
         MediumArmor mediumArmor = new MediumArmor();
         HeavyArmor heavyArmor = new HeavyArmor();
 
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
         player.addArmorToInventory(tome);
         player.addArmorToInventory(shield);
         player.addArmorToInventory(lightArmor);
@@ -155,7 +155,7 @@ public class PlayerEquipmentInteractionTest {
         Torch torch = new Torch();
         AirWand wand = new AirWand();
         Sword sword = new Sword();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
@@ -175,7 +175,7 @@ public class PlayerEquipmentInteractionTest {
         MediumArmor mediumArmor = new MediumArmor();
         HeavyArmor heavyArmor = new HeavyArmor();
         SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         player.addArmorToInventory(tome);
         player.addArmorToInventory(shield);
@@ -196,7 +196,7 @@ public class PlayerEquipmentInteractionTest {
         Torch torch = new Torch();
         AirWand wand = new AirWand();
         Sword sword = new Sword();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         int expected = player.getWallet() + stick.getPrice();
 
@@ -218,7 +218,7 @@ public class PlayerEquipmentInteractionTest {
         MediumArmor mediumArmor = new MediumArmor();
         HeavyArmor heavyArmor = new HeavyArmor();
         SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         int expected = player.getWallet() + tome.getPrice();
 
@@ -236,7 +236,7 @@ public class PlayerEquipmentInteractionTest {
     void weaponInventoryContainsNoDuplicates() {
 
         Stick stick = new Stick();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         int expected = 1;
 
@@ -249,7 +249,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void cantRemoveEquippedArmor() {
         HeavyArmor heavyArmor = new HeavyArmor();
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         player.addArmorToInventory(heavyArmor);
         player.equipArmor(heavyArmor);
         player.removeArmorFromInventory(heavyArmor);
@@ -259,7 +259,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void cantRemoveEquippedWeapon() {
         Stick stick = new Stick();
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         player.addWeaponToInventory(stick);
         player.equipWeapon(stick);
         player.removeWeaponFromInventory(stick);
@@ -267,32 +267,32 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    void addingNullToWeaponInventoryThrowsException() {
-        Player player = new Player("Sven", new Point());
+    public void addingNullToWeaponInventoryThrowsException() {
+        Player player = new Player("Sven", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.addWeaponToInventory(null);
         });
     }
 
     @Test
-    void addingNullToArmorInventoryThrowsException() {
-        Player player = new Player("Sven", new Point());
+    public void addingNullToArmorInventoryThrowsException() {
+        Player player = new Player("Sven", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.addArmorToInventory(null);
         });
     }
 
     @Test
-    void removingNullFromWeaponInventoryThrowsException() {
-        Player player = new Player("Sven", new Point());
+    public void removingNullFromWeaponInventoryThrowsException() {
+        Player player = new Player("Sven", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.removeWeaponFromInventory(null);
         });
     }
 
     @Test
-    void removingNullFromArmorInventoryThrowsException() {
-        Player player = new Player("Sven", new Point());
+    public void removingNullFromArmorInventoryThrowsException() {
+        Player player = new Player("Sven", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.removeArmorFromInventory(null);
         });
@@ -301,7 +301,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void armorInventoryContainsNoDuplicates() {
         HeavyArmor heavyArmor = new HeavyArmor();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
         int expected = 1;
         player.addArmorToInventory(heavyArmor);
         player.addArmorToInventory(heavyArmor);
@@ -317,7 +317,7 @@ public class PlayerEquipmentInteractionTest {
         Torch torch = new Torch();
         AirWand wand = new AirWand();
         Sword sword = new Sword();
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
 
         player.addWeaponToInventory(stick);
         player.equipWeapon(stick);
@@ -340,7 +340,7 @@ public class PlayerEquipmentInteractionTest {
         Torch torch = new Torch();
         AirWand wand = new AirWand();
         Sword sword = new Sword();
-        Player player = new Player("Sven", new Dwarf(), new Thief(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Thief(), new Point2D());
 
         player.addWeaponToInventory(waterDagger);
         player.equipWeapon(waterDagger);
@@ -365,7 +365,7 @@ public class PlayerEquipmentInteractionTest {
         MediumArmor mediumArmor = new MediumArmor();
         HeavyArmor heavyArmor = new HeavyArmor();
         SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
-        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
 
         player.addArmorToInventory(tome);
         player.equipOffhand(tome);
@@ -387,7 +387,7 @@ public class PlayerEquipmentInteractionTest {
         MediumArmor mediumArmor = new MediumArmor();
         HeavyArmor heavyArmor = new HeavyArmor();
         SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
-        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
 
         player.addArmorToInventory(tome);
         player.equipOffhand(tome);
@@ -418,7 +418,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void doesNotEquipOffhandIfNotInWeaponInventory() {
         Dagger dagger = new Dagger();
-        Player player = new Player("Sven", new Point());
+        Player player = new Player("Sven", new Point2D());
 
         player.equipOffhand(dagger);
         assertFalse(player.getEquippedOffhand() == dagger);
@@ -429,7 +429,7 @@ public class PlayerEquipmentInteractionTest {
         Shield shield = new Shield();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Sven", dwarf, knight, new Point());
+        Player player = new Player("Sven", dwarf, knight, new Point2D());
 
         Equipment expected = null;
         player.equipOffhand(shield);
@@ -441,7 +441,7 @@ public class PlayerEquipmentInteractionTest {
         Dagger dagger = new Dagger();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Sven", dwarf, knight, new Point());
+        Player player = new Player("Sven", dwarf, knight, new Point2D());
 
         player.addWeaponToInventory(dagger);
         player.equipOffhand(dagger);
@@ -453,7 +453,7 @@ public class PlayerEquipmentInteractionTest {
         Shield shield = new Shield();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
-        Player player = new Player("Sven", dwarf, knight, new Point());
+        Player player = new Player("Sven", dwarf, knight, new Point2D());
 
         Equipment expected = shield;
         player.addArmorToInventory(shield);
@@ -465,7 +465,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void equipsSwordIfCorrectRoleAndInInventory() {
         FireSword fireSword = new FireSword();
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         Weapon expected = fireSword;
         player.addWeaponToInventory(fireSword);
         player.equipWeapon(fireSword);
@@ -475,7 +475,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void equipsWandIfCorrectRoleAndInInventory() {
         SuperiorAirWand superiorAirWand = new SuperiorAirWand();
-        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
         Weapon expected = superiorAirWand;
         player.addWeaponToInventory(superiorAirWand);
         player.equipWeapon(superiorAirWand);
@@ -485,7 +485,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void equipsDaggerIfCorrectRoleAndInInvetory() {
         WaterDagger waterDagger = new WaterDagger();
-        Player player = new Player("Sven", new Elf(), new Thief(), new Point());
+        Player player = new Player("Sven", new Elf(), new Thief(), new Point2D());
         Weapon expected = waterDagger;
         player.addWeaponToInventory(waterDagger);
         player.equipWeapon(waterDagger);
@@ -495,7 +495,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void doesNotEquipWeaponIfWrongRole() {
         FireSword fireSword = new FireSword();
-        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
         Weapon expected = player.getEquippedWeapon();
         player.addWeaponToInventory(fireSword);
         player.equipWeapon(fireSword);
@@ -505,14 +505,14 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void doesNotEquipWeaponIfNotInWeaponInventory() {
         FireSword fireSword = new FireSword();
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         player.equipWeapon(fireSword);
         assertFalse(player.getEquippedWeapon() == fireSword);
     }
 
     @Test
-    void equippingWeaponIncreasesPlayerStats() {
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+    public void equippingWeaponIncreasesPlayerStats() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         FireSword fireSword = new FireSword();
         double nothingEquippedStats = player.getStrength();
         player.addWeaponToInventory(fireSword);
@@ -524,7 +524,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void equippingWeaponIncreasesStatsByCorrectAmount_Dwarf_Knight() {
         Knight knight = new Knight();
-        Player player = new Player("Sven", new Dwarf(), knight, new Point());
+        Player player = new Player("Sven", new Dwarf(), knight, new Point2D());
         FireSword fireSword = new FireSword();
         double expected = (player.getStrength() + (fireSword.getStrength() * knight.getStrengthMultiplier()));
         player.addWeaponToInventory(fireSword);
@@ -535,7 +535,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void equippingWeaponIncreasesStatsByCorrectAmount_Human_Mage() {
         Mage mage = new Mage();
-        Player player = new Player("Bengt", new Human(), mage, new Point());
+        Player player = new Player("Bengt", new Human(), mage, new Point2D());
         SuperiorAirWand superiorAirWand = new SuperiorAirWand();
         double expected = (player.getIntelligence()
                 + (superiorAirWand.getIntelligence() * mage.getIntelligenceMultiplier()));
@@ -547,7 +547,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void equippingWeaponIncreasesStatsByCorrectAmount_Elf_Thief() {
         Thief thief = new Thief();
-        Player player = new Player("Tor", new Elf(), thief, new Point());
+        Player player = new Player("Tor", new Elf(), thief, new Point2D());
         WaterDagger waterDagger = new WaterDagger();
         double expected = (player.getDexterity() + (waterDagger.getDexterity() * thief.getDexterityMultiplier()));
         player.addWeaponToInventory(waterDagger);
@@ -556,8 +556,8 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    void canUnequipWeapon() {
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+    public void canUnequipWeapon() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         Torch torch = new Torch();
         player.addWeaponToInventory(torch);
         player.equipWeapon(torch);
@@ -566,8 +566,8 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    void unequippingWeaponReducesStats() {
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+    public void unequippingWeaponReducesStats() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         Torch torch = new Torch();
         player.addWeaponToInventory(torch);
         player.equipWeapon(torch);
@@ -580,7 +580,7 @@ public class PlayerEquipmentInteractionTest {
     void unequippingWeaponReducesStatsByCorrectAmount() {
         Knight knight = new Knight();
         Dwarf dwarf = new Dwarf();
-        Player player = new Player("Sven", dwarf, knight, new Point());
+        Player player = new Player("Sven", dwarf, knight, new Point2D());
         Torch torch = new Torch();
         double expected = dwarf.getStartingStrength() * knight.getStrengthMultiplier();
         player.addWeaponToInventory(torch);
@@ -592,7 +592,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void canNotEquipArmorIfNotInInventory() {
         HeavyArmor heavyArmor = new HeavyArmor();
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         player.equipArmor(heavyArmor);
         assertFalse(player.getEquippedArmor() == heavyArmor);
     }
@@ -600,7 +600,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void canEquipArmorIfCorrectRole_Knight() {
         HeavyArmor heavyArmor = new HeavyArmor();
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         player.addArmorToInventory(heavyArmor);
         player.equipArmor(heavyArmor);
         assertTrue(player.getEquippedArmor() == heavyArmor);
@@ -609,7 +609,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void canEquipArmorIfCorrectRole_Mage() {
         LightArmor lightArmor = new LightArmor();
-        Player player = new Player("Sven", new Elf(), new Mage(), new Point());
+        Player player = new Player("Sven", new Elf(), new Mage(), new Point2D());
         player.addArmorToInventory(lightArmor);
         player.equipArmor(lightArmor);
         assertTrue(player.getEquippedArmor() == lightArmor);
@@ -618,7 +618,7 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void canEquipArmorIfCorrectRole_Thief() {
         MediumArmor mediumArmor = new MediumArmor();
-        Player player = new Player("Sven", new Human(), new Thief(), new Point());
+        Player player = new Player("Sven", new Human(), new Thief(), new Point2D());
         player.addArmorToInventory(mediumArmor);
         player.equipArmor(mediumArmor);
         assertTrue(player.getEquippedArmor() == mediumArmor);
@@ -627,15 +627,15 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void canNotEquipArmorIfWrongRole() {
         HeavyArmor heavyArmor = new HeavyArmor();
-        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
         player.addArmorToInventory(heavyArmor);
         player.equipArmor(heavyArmor);
         assertFalse(player.getEquippedArmor() == heavyArmor);
     }
 
     @Test
-    void canUnequipArmor() {
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
+    public void canUnequipArmor() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         HeavyArmor heavyArmor = new HeavyArmor();
         player.addArmorToInventory(heavyArmor);
         player.equipArmor(heavyArmor);
@@ -647,7 +647,7 @@ public class PlayerEquipmentInteractionTest {
     void equippingArmorIncreasesStatsByCorrectAmount() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Knight knight = new Knight();
-        Player player = new Player("Sven", new Dwarf(), knight, new Point());
+        Player player = new Player("Sven", new Dwarf(), knight, new Point2D());
         double[] expected = { player.getStrength() + (heavyArmor.getStrength() * knight.getStrengthMultiplier()),
                 player.getDexterity() + (heavyArmor.getDexterity() * knight.getDexterityMultiplier()),
                 player.getIntelligence() + (heavyArmor.getIntelligence() * knight.getIntelligenceMultiplier()),
@@ -664,7 +664,7 @@ public class PlayerEquipmentInteractionTest {
     void unequippingArmorDecreasesStatsByCorrectAmount() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Knight knight = new Knight();
-        Player player = new Player("Sven", new Dwarf(), knight, new Point());
+        Player player = new Player("Sven", new Dwarf(), knight, new Point2D());
         player.addArmorToInventory(heavyArmor);
         player.equipArmor(heavyArmor);
         double[] expected = { player.getStrength() - (heavyArmor.getStrength() * knight.getStrengthMultiplier()),

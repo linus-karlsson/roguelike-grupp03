@@ -62,8 +62,8 @@ public class DungeonGenerator {
         for (Room currentRoom : rooms) {
             // TILE_SIZE är med här för att inte ha med griddens border i platseringen,
             // alltså kan man inte platsera ett rum på the bordern
-            Point min = new Point(TILE_SIZE, TILE_SIZE);
-            Point max = new Point(gridd.getWidth() - TILE_SIZE - (currentRoom.getWidth() + 1.0),
+            Point2D min = new Point2D(TILE_SIZE, TILE_SIZE);
+            Point2D max = new Point2D(gridd.getWidth() - TILE_SIZE - (currentRoom.getWidth() + 1.0),
                     gridd.getHeight() - TILE_SIZE - (currentRoom.getHeight() + 1.0));
 
             for (int i = 0; i < numberOfTriesBeforeDiscard; i++) {
@@ -106,18 +106,6 @@ public class DungeonGenerator {
         griddParser.placeRoomInGridd();
     }
 
-    private Room getNextNonConnectedRoom(ArrayList<Room> rooms, int index) {
-        int count = 1;
-        Room endRoom = null;
-        do {
-            endRoom = rooms.get(index++ % rooms.size());
-            if (count++ == rooms.size()) {
-                return null;
-            }
-        } while (endRoom.isConnected());
-        return endRoom;
-    }
-
     public void connectRooms(ArrayList<Room> rooms) {
         int endRoomIndex = 1;
         for (int i = 0; i < rooms.size() - 1; i++) {
@@ -145,6 +133,15 @@ public class DungeonGenerator {
             startRoom.setConnected(true);
             endRoom.setConnected(true);
         }
+    }
+
+    private Room getNextNonConnectedRoom(ArrayList<Room> rooms, int index) {
+        int count = 0;
+        Room endRoom = null;
+        do {
+            endRoom = rooms.get(index++ % rooms.size());
+        } while (endRoom.isConnected() && count++ < rooms.size());
+        return endRoom;
     }
 
     private int abs(int value) {

@@ -61,7 +61,7 @@ public class Gridd {
         public void setRoom(Room room) {
             double xSpand = room.getPosition().getX() + room.getWidth();
             double ySpand = room.getPosition().getY() + room.getHeight();
-            Point lastPoistion = new Point(xSpand, ySpand);
+            Point2D lastPoistion = new Point2D(xSpand, ySpand);
 
             startIndex = getGriddIndexBasedOnPosition(room.getPosition());
             endIndex = getGriddIndexBasedOnPosition(lastPoistion);
@@ -251,15 +251,15 @@ public class Gridd {
         return getRowCount() * getTileSize();
     }
 
-    public Index getGriddIndexBasedOnPosition(Point position) {
+    public Index getGriddIndexBasedOnPosition(Point2D position) {
         return new Index(getPositionTileCountInY(position), getPositionTileCountInX(position));
     }
 
-    private int getPositionTileCountInY(Point position) {
+    private int getPositionTileCountInY(Point2D position) {
         return (int) (position.getY() / tileSize);
     }
 
-    private int getPositionTileCountInX(Point position) {
+    private int getPositionTileCountInX(Point2D position) {
         return (int) (position.getX() / tileSize);
     }
 }
