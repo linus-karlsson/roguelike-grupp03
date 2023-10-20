@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.instrument.UnmodifiableClassException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -151,17 +153,17 @@ public class DungeonGeneratorTest {
                 dungeonGenerator.getCopyOfGridd());
     }
 
-    private ArrayList<Room> getDefaultPlacedRooms(ArrayList<Room> rooms) {
+    private List<Room> getDefaultPlacedRooms(ArrayList<Room> rooms) {
         return dungeonGenerator.placeRoomsInArea(rooms,
                 DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
                 DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
     }
 
-    private void checkIfRoomsHaveCorrectId(ArrayList<Room> rooms, Gridd gridd) {
+    private void checkIfRoomsHaveCorrectId(List<Room> rooms, Grid grid) {
         for (int i = 0; i < rooms.size(); i++) {
             Room room = rooms.get(i);
-            gridd.getRoomParser().setRoom(room);
-            ArrayList<Integer> roomTileList = gridd.getRoomParser().roomAreaToList();
+            grid.getRoomParser().setRoom(room);
+            ArrayList<Integer> roomTileList = grid.getRoomParser().roomAreaToList();
             for (int tile : roomTileList) {
                 assertEquals(i, tile, roomTileList.toString());
             }
@@ -196,7 +198,7 @@ public class DungeonGeneratorTest {
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
         dungeonGenerator.setRandom(new RandomInternal(randomMultipliersForAreaIsFilled(roomCount, roomsInX, roomsInY)));
 
-        ArrayList<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 1, rows, columns);
+        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 1, rows, columns);
         int expectedSize = roomCount;
         assertEquals(expectedSize, placedRooms.size());
     }
@@ -212,6 +214,14 @@ public class DungeonGeneratorTest {
             }
         }
         return randomMultipliers;
+    }
+
+    @Test
+    public void testPlaceRoomsInAreaReturnsUnModifiedList() {
+        List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
+        assertThrows(UnsupportedOperationException.class, () -> {
+            placedRooms.set(0, placedRooms.get(1));
+        });
     }
 
     @Test
@@ -250,45 +260,45 @@ public class DungeonGeneratorTest {
 
     @Test
     public void testPlaceRoomsInAreaEmptyTilesAroundRoom() {
-        ArrayList<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
-        Gridd gridd = dungeonGenerator.getCopyOfGridd();
+        List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
+        Grid grid = dungeonGenerator.getCopyOfGridd();
         for (Room room : placedRooms) {
-            gridd.getRoomParser().setRoom(room);
-            Gridd.Index startIndex = gridd.getRoomParser().getRoomStartIndex();
-            Gridd.Index endIndex = gridd.getRoomParser().getRoomEndIndex();
-            checkTilesAboveRoom(gridd, startIndex, endIndex.column);
-            checkTilesBelowRoom(gridd, endIndex, startIndex.column);
-            checkTilesToLeftOfRoom(gridd, startIndex, endIndex.row);
-            checkTilesToRightOfRoom(gridd, endIndex, startIndex.row);
+            grid.getRoomParser().setRoom(room);
+            Grid.Index startIndex = grid.getRoomParser().getRoomStartIndex();
+            Grid.Index endIndex = grid.getRoomParser().getRoomEndIndex();
+            checkTilesAboveRoom(grid, startIndex, endIndex.column);
+            checkTilesBelowRoom(grid, endIndex, startIndex.column);
+            checkTilesToLeftOfRoom(grid, startIndex, endIndex.row);
+            checkTilesToRightOfRoom(grid, endIndex, startIndex.row);
         }
 
     }
 
-    private void checkTilesAboveRoom(Gridd gridd, Gridd.Index startIndex, int endColumn) {
-        Gridd.Index i = gridd.new Index(startIndex);
+    private void checkTilesAboveRoom(Grid grid, Grid.Index startIndex, int endColumn) {
+        Grid.Index i = grid.new Index(startIndex);
         for (i.row -= 1, i.column -= 1; i.column <= endColumn; i.column++) {
-            assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
+            assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
         }
     }
 
-    private void checkTilesBelowRoom(Gridd gridd, Gridd.Index endIndex, int startColumn) {
-        Gridd.Index i = gridd.new Index(endIndex);
+    private void checkTilesBelowRoom(Grid grid, Grid.Index endIndex, int startColumn) {
+        Grid.Index i = grid.new Index(endIndex);
         for (i.row += 1, i.column += 1; i.column >= startColumn; i.column--) {
-            assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
+            assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
         }
     }
 
-    private void checkTilesToLeftOfRoom(Gridd gridd, Gridd.Index startIndex, int endRow) {
-        Gridd.Index i = gridd.new Index(startIndex);
+    private void checkTilesToLeftOfRoom(Grid grid, Grid.Index startIndex, int endRow) {
+        Grid.Index i = grid.new Index(startIndex);
         for (i.column -= 1; i.row <= endRow + 1; i.row++) {
-            assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
+            assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
         }
     }
 
-    private void checkTilesToRightOfRoom(Gridd gridd, Gridd.Index endIndex, int startRow) {
-        Gridd.Index i = gridd.new Index(endIndex);
+    private void checkTilesToRightOfRoom(Grid grid, Grid.Index endIndex, int startRow) {
+        Grid.Index i = grid.new Index(endIndex);
         for (i.column += 1; i.row >= startRow + 1; i.row--) {
-            assertEquals(Gridd.BORDER_VALUE, gridd.getTile(i));
+            assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
         }
     }
 
@@ -304,11 +314,11 @@ public class DungeonGeneratorTest {
 
     @Test
     public void testPlaceRoomsInAreaOutOfBounds() {
-        ArrayList<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
-        Gridd gridd = dungeonGenerator.getCopyOfGridd();
+        List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
+        Grid grid = dungeonGenerator.getCopyOfGridd();
         for (Room room : placedRooms) {
-            boolean expected = (room.getPosition().getX() + room.getWidth()) < gridd.getWidth() &&
-                    (room.getPosition().getY() + room.getHeight()) < gridd.getHeight();
+            boolean expected = (room.getPosition().getX() + room.getWidth()) < grid.getWidth() &&
+                    (room.getPosition().getY() + room.getHeight()) < grid.getHeight();
 
             assertTrue(expected);
         }
@@ -317,7 +327,7 @@ public class DungeonGeneratorTest {
 
     @Test
     public void testConnectRoomsAllConnected() {
-        ArrayList<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
+        List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
         dungeonGenerator.connectRooms(placedRooms);
         for (Room room : placedRooms) {
             assertTrue(room.isConnected());
@@ -330,7 +340,7 @@ public class DungeonGeneratorTest {
     public void testConnectRoomsDepthFirst() {
         int columns = 160;
         int rows = 160;
-        ArrayList<Room> placedRooms = dungeonGenerator.placeRoomsInArea(getDefaultRooms(),
+        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(getDefaultRooms(),
                 DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD, rows, columns);
         dungeonGenerator.connectRooms(placedRooms);
 
@@ -351,32 +361,32 @@ public class DungeonGeneratorTest {
 
         double[] randomMultipliers = { 0.0, 0.0, 0.5, 0.0, 0.0, 0.5 };
         dungeonGenerator.setRandom(new RandomInternal(randomMultipliers));
-        ArrayList<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
                 DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);
         dungeonGenerator.connectRooms(placedRooms);
-        Gridd gridd = dungeonGenerator.getCopyOfGridd();
+        Grid grid = dungeonGenerator.getCopyOfGridd();
 
-        Gridd.Index firstRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(placedRooms.get(0).getPosition());
-        Gridd.Index secondRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(placedRooms.get(1).getPosition());
-        Gridd.Index thirdRoomGriddIndex = gridd.getGriddIndexBasedOnPosition(placedRooms.get(2).getPosition());
+        Grid.Index firstRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(0).getPosition());
+        Grid.Index secondRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(1).getPosition());
+        Grid.Index thirdRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(2).getPosition());
 
         for (; firstRoomGriddIndex.column <= secondRoomGriddIndex.column; firstRoomGriddIndex.column++) {
-            assertTrue(gridd.getTile(firstRoomGriddIndex) >= 0);
+            assertTrue(grid.getTile(firstRoomGriddIndex) >= 0);
         }
         for (; secondRoomGriddIndex.row <= thirdRoomGriddIndex.row; secondRoomGriddIndex.row++) {
-            assertTrue(gridd.getTile(secondRoomGriddIndex) >= 0);
+            assertTrue(grid.getTile(secondRoomGriddIndex) >= 0);
         }
         for (secondRoomGriddIndex.row--; secondRoomGriddIndex.column >= thirdRoomGriddIndex.column; secondRoomGriddIndex.column--) {
-            assertTrue(gridd.getTile(secondRoomGriddIndex) >= 0);
+            assertTrue(grid.getTile(secondRoomGriddIndex) >= 0);
         }
     }
 
     @Test
     public void testConnectRoomsAllRoomsStillHaveId() {
-        ArrayList<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
+        List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
         dungeonGenerator.connectRooms(placedRooms);
-        Gridd gridd = dungeonGenerator.getCopyOfGridd();
-        checkIfRoomsHaveCorrectId(placedRooms, gridd);
+        Grid grid = dungeonGenerator.getCopyOfGridd();
+        checkIfRoomsHaveCorrectId(placedRooms, grid);
     }
 
     // Platserar ett rum för varje tile i gridden och ser att getConnectedRooms
@@ -388,19 +398,19 @@ public class DungeonGeneratorTest {
         int columnCount = DEFAULT_COLUMN_COUNT - 1;
         ArrayList<Room> placedRooms = new ArrayList<>(rowCount * columnCount);
         double tileSize = 1.0;
-        Gridd gridd = new Gridd(DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT, tileSize);
-        gridd.setBorder();
-        Gridd.Index i = gridd.new Index();
+        Grid grid = new Grid(DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT, tileSize);
+        grid.setBorder();
+        Grid.Index i = grid.new Index();
         // = 1 för bordern också
         for (i.row = 1; i.row < rowCount; i.row++) {
             for (i.column = 1; i.column < columnCount; i.column++) {
-                gridd.setTile(i, placedRooms.size());
+                grid.setTile(i, placedRooms.size());
                 Room room = new Room(tileSize, tileSize);
                 room.setPosition((double) i.column * tileSize, (double) i.row * tileSize);
                 placedRooms.add(room);
             }
         }
-        int[] connectedRooms = dungeonGenerator.getConnectedRooms(placedRooms, gridd);
+        int[] connectedRooms = dungeonGenerator.getConnectedRooms(placedRooms, grid);
         for (int expected = 0; expected < placedRooms.size(); expected++) {
             assertEquals(expected, connectedRooms[expected]);
         }
@@ -410,7 +420,7 @@ public class DungeonGeneratorTest {
     public void testGetConnectedRoomsThrowsWithBorderlessGridd() {
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.getConnectedRooms(new ArrayList<Room>(),
-                    new Gridd(DEFAULT_ROOM_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.TILE_SIZE));
+                    new Grid(DEFAULT_ROOM_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.TILE_SIZE));
         });
     }
 

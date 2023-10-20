@@ -104,9 +104,9 @@ public class Player {
         velocity.clone(newVelocity);
     }
 
-    public void updateMovement(Gridd gridd, double deltaTime) {
+    public void updateMovement(Grid gridd, double deltaTime) {
         Point2D newPostion = position.plus(velocity.scalarMulti(deltaTime));
-        Gridd.Index index = gridd.getGriddIndexBasedOnPosition(newPostion);
+        Grid.Index index = gridd.getGriddIndexBasedOnPosition(newPostion);
         if (gridd.getTile(index) >= 0) {
             position = newPostion;
         }

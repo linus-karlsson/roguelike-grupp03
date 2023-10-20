@@ -36,7 +36,7 @@ public class PlayerTest {
         int rowCount = 10;
         int columnCount = 10;
         double tileSize = 5.0;
-        Gridd gridd = new Gridd(rowCount, columnCount, tileSize);
+        Grid gridd = new Grid(rowCount, columnCount, tileSize);
         gridd.fillWithValue(-1);
         Room room = new Room(10.0, 10.0);
         room.setPosition(10.0, 10.0);

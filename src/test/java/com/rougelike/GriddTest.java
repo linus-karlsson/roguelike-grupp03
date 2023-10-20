@@ -7,7 +7,7 @@ import java.util.*;
 
 public class GriddTest {
     double tileSize = 5.0;
-    Gridd gridd = new Gridd(10, 10, tileSize);
+    Grid gridd = new Grid(10, 10, tileSize);
     Room room = new Room(10.0, 10.0); // 3 x 3 room
 
     @Test
@@ -33,7 +33,7 @@ public class GriddTest {
         gridd.getRoomParser().setRoom(room);
         for (int row = 0; row < tilesInY; row++) {
             for (int column = 0; column < tilesInX; column++) {
-                Gridd.Index index = gridd.getRoomParser().nextIndex();
+                Grid.Index index = gridd.getRoomParser().nextIndex();
                 assertEquals(index.row, row);
                 assertEquals(index.column, column);
             }
@@ -66,8 +66,8 @@ public class GriddTest {
         int cellsInX = 3;
         int cellsInY = 2;
         Point2D point = new Point2D(tileSize * cellsInX, tileSize * cellsInY);
-        Gridd.Index expected = gridd.new Index(cellsInY, cellsInX);
-        Gridd.Index griddIndex = gridd.getGriddIndexBasedOnPosition(point);
+        Grid.Index expected = gridd.new Index(cellsInY, cellsInX);
+        Grid.Index griddIndex = gridd.getGriddIndexBasedOnPosition(point);
         assertTrue(expected.equals(griddIndex));
     }
 
@@ -91,7 +91,7 @@ public class GriddTest {
     @Test
     public void testSetBorder() {
         gridd.setBorder();
-        int expected = Gridd.BORDER_VALUE;
+        int expected = Grid.BORDER_VALUE;
         int lastRow = gridd.getRowCount() - 1;
         for (int column = 0; column < gridd.getColumnCount(); column++) {
             assertEquals(expected, gridd.getTile(0, column));

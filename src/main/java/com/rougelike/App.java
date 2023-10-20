@@ -1,6 +1,8 @@
 package com.rougelike;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import javafx.application.Application;
@@ -17,7 +19,7 @@ public class App extends Application {
 
     Rectangle player;
     Vector2D playerVelocity = new Vector2D(0, 0);
-    Gridd gridd;
+    Grid gridd;
     boolean running = false;
 
     @Override
@@ -36,7 +38,8 @@ public class App extends Application {
 
         int rows = 60;
         int columns = 60;
-        ArrayList<Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
+        List<Room> placedRooms = map.placeRoomsInArea(rooms, 30, rows, columns);
+
         map.connectRooms(placedRooms);
         gridd = map.getCopyOfGridd();
 
@@ -60,7 +63,7 @@ public class App extends Application {
                     } else {
                         rect.setFill(Color.WHITE);
                     }
-                } else if (tileValue == Gridd.BORDER_VALUE) {
+                } else if (tileValue == Grid.BORDER_VALUE) {
                     rect.setFill(Color.BLUE);
                 }
                 rect.setStroke(Color.RED);
@@ -90,8 +93,8 @@ public class App extends Application {
             }
             Point2D point = new Point2D(player.getX(), player.getY());
             point = point.plus(playerVelocity);
-            Gridd.Index index = gridd.getGriddIndexBasedOnPosition(point);
-            Gridd.Index index2 = gridd.getGriddIndexBasedOnPosition(
+            Grid.Index index = gridd.getGriddIndexBasedOnPosition(point);
+            Grid.Index index2 = gridd.getGriddIndexBasedOnPosition(
                     new Point2D(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
             if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
                 player.setX(point.getX());

@@ -2,7 +2,7 @@ package com.rougelike;
 
 import java.util.ArrayList;
 
-public class Gridd {
+public class Grid {
 
     public static final int BORDER_VALUE = -2;
 
@@ -164,7 +164,7 @@ public class Gridd {
     private double tileSize;
     private RoomParser roomParser;
 
-    public Gridd(int rowCount, int columnCount, double tileSize) {
+    public Grid(int rowCount, int columnCount, double tileSize) {
         tiles = new int[rowCount][columnCount];
         this.tileSize = tileSize;
         roomParser = new RoomParser();
@@ -209,29 +209,29 @@ public class Gridd {
     public void setBorder() {
         int lastRow = getRowCount() - 1;
         for (int column = 0; column < getColumnCount(); column++) {
-            setTile(0, column, Gridd.BORDER_VALUE);
-            setTile(lastRow, column, Gridd.BORDER_VALUE);
+            setTile(0, column, Grid.BORDER_VALUE);
+            setTile(lastRow, column, Grid.BORDER_VALUE);
         }
         int lastColumn = getColumnCount() - 1;
         for (int row = 0; row < getRowCount(); row++) {
-            setTile(row, 0, Gridd.BORDER_VALUE);
-            setTile(row, lastColumn, Gridd.BORDER_VALUE);
+            setTile(row, 0, Grid.BORDER_VALUE);
+            setTile(row, lastColumn, Grid.BORDER_VALUE);
         }
     }
 
     public boolean hasBorder() {
         int lastRow = getRowCount() - 1;
         for (int column = 0; column < getColumnCount(); column++) {
-            if (getTile(0, column) != Gridd.BORDER_VALUE
-                    || getTile(lastRow, column) != Gridd.BORDER_VALUE) {
+            if (getTile(0, column) != Grid.BORDER_VALUE
+                    || getTile(lastRow, column) != Grid.BORDER_VALUE) {
                 return false;
             }
 
         }
         int lastColumn = getColumnCount() - 1;
         for (int row = 0; row < getRowCount(); row++) {
-            if (getTile(row, 0) != Gridd.BORDER_VALUE
-                    || getTile(row, lastColumn) != Gridd.BORDER_VALUE) {
+            if (getTile(row, 0) != Grid.BORDER_VALUE
+                    || getTile(row, lastColumn) != Grid.BORDER_VALUE) {
                 return false;
             }
 
