@@ -23,6 +23,6 @@ public class Knight extends Role {
 
 
     public void shieldBash(Entity enemy) {
-        enemy.getStunned();
+        enemy.setStunned();
     }
 }

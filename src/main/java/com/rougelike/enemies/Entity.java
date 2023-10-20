@@ -47,11 +47,11 @@ public abstract class Entity {
         return element;
     }
 
-    public void getStunned(){
+    public void setStunned(){
         stunned = true;
     }
 
-    public void getUnStunned(){
+    public void setUnStunned(){
         stunned = false;
     }
 
