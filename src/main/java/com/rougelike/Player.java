@@ -151,7 +151,6 @@ public class Player {
         health -= damageTaken;
         if (health <= 0) {
             isDead = true;
-            reset();
         }
     }
 
@@ -489,7 +488,6 @@ public class Player {
             throw new IllegalArgumentException("Magic must be of type MagicAttack");
         }
         enemy.takeDamage(magicToUse.getType().throwMagic(magicToUse, this));
-
     }
 
     public void debuff(Entity enemy) {
