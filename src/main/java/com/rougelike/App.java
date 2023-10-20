@@ -12,121 +12,136 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class App extends Application {
+public class App {
     public static void main(String[] args) {
-        launch(args);
-    }
-
-    Rectangle player;
-    Vector2D playerVelocity = new Vector2D(0, 0);
-    Grid gridd;
-    boolean running = false;
-
-    @Override
-    public void start(Stage primaryStage) {
-
         double minWidth = 30.0;
         double maxWidth = 60.0;
         double minHeight = 30.0;
         double maxHeight = 60.0;
+        int columnCount = 1000;
+        int rowCount = 1000;
 
         DungeonGenerator dungeonGenerator = new DungeonGenerator();
-        double randomMultiplier = 1.0;
-        dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
-
-        int roomCount = 3;
+        int roomCount = 1000;
         List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, minWidth, maxWidth,
                 minHeight, maxHeight);
 
-        double[] randomMultipliers = { 0.5, 0.0, 0.5, 1.0, 0.45, 0.5 };
-        dungeonGenerator.setRandom(new RandomInternal(randomMultipliers));
         List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 10,
-                80, 80);
+                rowCount, columnCount);
         dungeonGenerator.connectRooms(placedRooms);
-        gridd = dungeonGenerator.getCopyOfGridd();
 
-        Random rand = new Random();
-        rand.nextInt(roomCount);
-
-        Color[] roomColors = new Color[placedRooms.size()];
-        for (int i = 0; i < placedRooms.size(); i++) {
-            roomColors[i] = Color.color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
-        }
-
-        Pane center = new Pane();
-        double tileSize = DungeonGenerator.TILE_SIZE;
-        for (int row = 0; row < gridd.getRowCount(); row++) {
-            for (int column = 0; column < gridd.getColumnCount(); column++) {
-                Rectangle rect = new Rectangle(column * tileSize, row * tileSize, tileSize, tileSize);
-                int tileValue = gridd.getTile(gridd.new Index(row, column));
-                if (tileValue >= 0) {
-                    if (tileValue < placedRooms.size()) {
-                        rect.setFill(roomColors[tileValue]);
-                    } else {
-                        rect.setFill(Color.WHITE);
-                    }
-                } else if (tileValue == Grid.BORDER_VALUE) {
-                    rect.setFill(Color.BLUE);
-                }
-                rect.setStroke(Color.RED);
-                center.getChildren().add(rect);
-            }
-        }
-        Point2D pos = placedRooms.get(0).getPosition();
-        player = new Rectangle(pos.getX(), pos.getY(), 6.0, 6.0);
-        player.setFill(Color.RED);
-        player.setStroke(Color.BLACK);
-        center.getChildren().add(player);
-        Scene scene = new Scene(center);
-
-        scene.setOnKeyPressed(event -> {
-            String codeString = event.getCode().getChar();
-            if (codeString.equals("A")) {
-                playerVelocity.setX(-2.0);
-            }
-            if (codeString.equals("W")) {
-                playerVelocity.setY(-2.0);
-            }
-            if (codeString.equals("D")) {
-                playerVelocity.setX(2.0);
-            }
-            if (codeString.equals("S")) {
-                playerVelocity.setY(2.0);
-            }
-            Point2D point = new Point2D(player.getX(), player.getY());
-            point = point.plus(playerVelocity);
-            Grid.Index index = gridd.getGriddIndexBasedOnPosition(point);
-            Grid.Index index2 = gridd.getGriddIndexBasedOnPosition(
-                    new Point2D(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
-            if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
-                player.setX(point.getX());
-                player.setY(point.getY());
-            }
-        });
-        scene.setOnKeyReleased(event -> {
-            String codeString = event.getCode().getChar();
-            if (codeString.equals("A")) {
-                if (playerVelocity.getX() < 0.0) {
-                    playerVelocity.setX(0.0);
-                }
-            }
-            if (codeString.equals("W")) {
-                if (playerVelocity.getY() < 0.0) {
-                    playerVelocity.setY(0.0);
-                }
-            }
-            if (codeString.equals("D")) {
-                if (playerVelocity.getX() > 0.0) {
-                    playerVelocity.setX(0.0);
-                }
-            }
-            if (codeString.equals("S")) {
-                if (playerVelocity.getY() > 0.0) {
-                    playerVelocity.setY(0.0);
-                }
-            }
-        });
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        // launch(args);
     }
+    /*
+     * Rectangle player;
+     * Vector2D playerVelocity = new Vector2D(0, 0);
+     * Grid gridd;
+     * boolean running = false;
+     * 
+     * public void start(Stage primaryStage) {
+     * 
+     * double minWidth = 30.0;
+     * double maxWidth = 60.0;
+     * double minHeight = 30.0;
+     * double maxHeight = 60.0;
+     * 
+     * DungeonGenerator dungeonGenerator = new DungeonGenerator();
+     * int roomCount = 40;
+     * List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, minWidth,
+     * maxWidth,
+     * minHeight, maxHeight);
+     * 
+     * List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 10,
+     * 80, 80);
+     * dungeonGenerator.connectRooms(placedRooms);
+     * gridd = dungeonGenerator.getCopyOfGridd();
+     * 
+     * Random rand = new Random();
+     * rand.nextInt(roomCount);
+     * 
+     * Color[] roomColors = new Color[placedRooms.size()];
+     * for (int i = 0; i < placedRooms.size(); i++) {
+     * roomColors[i] = Color.color(rand.nextDouble(), rand.nextDouble(),
+     * rand.nextDouble());
+     * }
+     * 
+     * Pane center = new Pane();
+     * double tileSize = DungeonGenerator.TILE_SIZE;
+     * for (int row = 0; row < gridd.getRowCount(); row++) {
+     * for (int column = 0; column < gridd.getColumnCount(); column++) {
+     * Rectangle rect = new Rectangle(column * tileSize, row * tileSize, tileSize,
+     * tileSize);
+     * int tileValue = gridd.getTile(gridd.new Index(row, column));
+     * if (tileValue >= 0) {
+     * if (tileValue < placedRooms.size()) {
+     * rect.setFill(roomColors[tileValue]);
+     * } else {
+     * rect.setFill(Color.WHITE);
+     * }
+     * } else if (tileValue == Grid.BORDER_VALUE) {
+     * rect.setFill(Color.BLUE);
+     * }
+     * rect.setStroke(Color.RED);
+     * center.getChildren().add(rect);
+     * }
+     * }
+     * Point2D pos = placedRooms.get(0).getPosition();
+     * player = new Rectangle(pos.getX(), pos.getY(), 6.0, 6.0);
+     * player.setFill(Color.RED);
+     * player.setStroke(Color.BLACK);
+     * center.getChildren().add(player);
+     * Scene scene = new Scene(center);
+     * 
+     * scene.setOnKeyPressed(event -> {
+     * String codeString = event.getCode().getChar();
+     * if (codeString.equals("A")) {
+     * playerVelocity.setX(-2.0);
+     * }
+     * if (codeString.equals("W")) {
+     * playerVelocity.setY(-2.0);
+     * }
+     * if (codeString.equals("D")) {
+     * playerVelocity.setX(2.0);
+     * }
+     * if (codeString.equals("S")) {
+     * playerVelocity.setY(2.0);
+     * }
+     * Point2D point = new Point2D(player.getX(), player.getY());
+     * point = point.plus(playerVelocity);
+     * Grid.Index index = gridd.getGriddIndexBasedOnPosition(point);
+     * Grid.Index index2 = gridd.getGriddIndexBasedOnPosition(
+     * new Point2D(point.getX() + player.getWidth(), point.getY() +
+     * player.getHeight()));
+     * if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
+     * player.setX(point.getX());
+     * player.setY(point.getY());
+     * }
+     * });
+     * scene.setOnKeyReleased(event -> {
+     * String codeString = event.getCode().getChar();
+     * if (codeString.equals("A")) {
+     * if (playerVelocity.getX() < 0.0) {
+     * playerVelocity.setX(0.0);
+     * }
+     * }
+     * if (codeString.equals("W")) {
+     * if (playerVelocity.getY() < 0.0) {
+     * playerVelocity.setY(0.0);
+     * }
+     * }
+     * if (codeString.equals("D")) {
+     * if (playerVelocity.getX() > 0.0) {
+     * playerVelocity.setX(0.0);
+     * }
+     * }
+     * if (codeString.equals("S")) {
+     * if (playerVelocity.getY() > 0.0) {
+     * playerVelocity.setY(0.0);
+     * }
+     * }
+     * });
+     * primaryStage.setScene(scene);
+     * primaryStage.show();
+     * }
+     */
 }
