@@ -16,7 +16,7 @@ public class App extends Application {
     }
 
     Rectangle player;
-    Vector playerVelocity = new Vector(0, 0);
+    Vector2D playerVelocity = new Vector2D(0, 0);
     Gridd gridd;
     boolean running = false;
 
@@ -67,7 +67,7 @@ public class App extends Application {
                 center.getChildren().add(rect);
             }
         }
-        Point pos = placedRooms.get(0).getPosition();
+        Point2D pos = placedRooms.get(0).getPosition();
         player = new Rectangle(pos.getX(), pos.getY(), 6.0, 6.0);
         player.setFill(Color.RED);
         player.setStroke(Color.BLACK);
@@ -88,11 +88,11 @@ public class App extends Application {
             if (codeString.equals("S")) {
                 playerVelocity.setY(2.0);
             }
-            Point point = new Point(player.getX(), player.getY());
+            Point2D point = new Point2D(player.getX(), player.getY());
             point = point.plus(playerVelocity);
             Gridd.Index index = gridd.getGriddIndexBasedOnPosition(point);
             Gridd.Index index2 = gridd.getGriddIndexBasedOnPosition(
-                    new Point(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
+                    new Point2D(point.getX() + player.getWidth(), point.getY() + player.getHeight()));
             if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
                 player.setX(point.getX());
                 player.setY(point.getY());

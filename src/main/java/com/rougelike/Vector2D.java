@@ -1,16 +1,16 @@
 package com.rougelike;
 
-public class Vector {
+public class Vector2D {
 
     private double x;
     private double y;
 
-    public Vector() {
+    public Vector2D() {
         x = 0;
         y = 0;
     }
 
-    public Vector(double x, double y) {
+    public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -31,13 +31,13 @@ public class Vector {
         y = newY;
     }
 
-    public void clone(Vector vector) {
+    public void clone(Vector2D vector) {
         x = vector.getX();
         y = vector.getY();
     }
 
-    public Vector scalarMulti(double scalar) {
-        return new Vector(x * scalar, y * scalar);
+    public Vector2D scalarMulti(double scalar) {
+        return new Vector2D(x * scalar, y * scalar);
     }
 
 }

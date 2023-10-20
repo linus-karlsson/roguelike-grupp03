@@ -14,7 +14,7 @@ public class MagicInvokerTest {
     void testSpellValueReturnsCorrectValueWhenPlayerStartLevel() {
         Magic magic = new Magic(Spell.TORNADO);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test", new Human(), new Thief(), new Point());
+        Player player = new Player("Test", new Human(), new Thief(), new Point2D());
         double expectedValue = 10.0;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
@@ -23,7 +23,7 @@ public class MagicInvokerTest {
     void testSpellValueReturnsCorrectValueWhenPlayerLevelTwo() {
         Magic magic = new Magic(Spell.FREEZE);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test", new Human(), new Thief(), new Point());
+        Player player = new Player("Test", new Human(), new Thief(), new Point2D());
         player.setLevel(2);
         double expectedValue = 14.4;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
@@ -33,7 +33,7 @@ public class MagicInvokerTest {
     void testIfPlayerRoleMageMagicValueShouldReturnTenPercentHigher() {
         Magic magic = new Magic(Spell.POISON);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test", new Human(), new Mage(), new Point());
+        Player player = new Player("Test", new Human(), new Mage(), new Point2D());
         double expectedValue = 11.0;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
@@ -42,7 +42,7 @@ public class MagicInvokerTest {
     void testIfPlayerRoleKnightMagicValueShouldReturnTenPercentLower() {
         Magic magic = new Magic(Spell.FIREBALL);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test", new Human(), new Knight(), new Point());
+        Player player = new Player("Test", new Human(), new Knight(), new Point2D());
         double expectedValue = 9.0;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
@@ -51,7 +51,7 @@ public class MagicInvokerTest {
     void testIfNeutralElementTypeNotImpactInMagicValue() {
         Magic magic = new Magic(Spell.HEAL);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test", new Human(), new Thief(), new Point());
+        Player player = new Player("Test", new Human(), new Thief(), new Point2D());
         double expectedValue = 10.0;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
@@ -60,7 +60,7 @@ public class MagicInvokerTest {
     void testIfElementAirThrownByElfIncreaseMagicValueByFivePercent() {
         Magic magic = new Magic(Spell.TORNADO);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test", new Elf(), new Thief(), new Point());
+        Player player = new Player("Test", new Elf(), new Thief(), new Point2D());
         double expectedValue = 10.5;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
@@ -69,7 +69,7 @@ public class MagicInvokerTest {
     void testIfElementAirThrownByOrchDecreaseValue() {
         Magic magic = new Magic(Spell.TORNADO);
         MagicInvoker magicInvoker = magic.getType();
-        Player player = new Player("Test", new Orc(), new Thief(), new Point());
+        Player player = new Player("Test", new Orc(), new Thief(), new Point2D());
         double expectedValue = 9.5;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
