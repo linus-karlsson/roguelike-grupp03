@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PlayerEquipmentInteractionTest {
 
     @Test
-    public void canAddWeaponToInventory() {
+    void canAddWeaponToInventory() {
         Stick stick = new Stick();
         Player player = new Player("Sven", new Point());
 
@@ -25,7 +25,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canAddArmorToInventory() {
+    void canAddArmorToInventory() {
         LightArmor lightArmor = new LightArmor();
         Player player = new Player("Sven", new Point());
         player.addArmorToInventory(lightArmor);
@@ -33,7 +33,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     // @Test
-    // public void onlyWeaponsCanBeAddedToWeaponInventory() {
+    // void onlyWeaponsCanBeAddedToWeaponInventory() {
     // HeavyArmor heavyArmor = new HeavyArmor();
     // Player player = new Player("Sven");
 
@@ -44,7 +44,7 @@ public class PlayerEquipmentInteractionTest {
     // }
 
     @Test
-    public void canNotHaveMoreThanFiveWeaponsInWeaponInventory() {
+    void canNotHaveMoreThanFiveWeaponsInWeaponInventory() {
         Stick stick = new Stick();
         Dagger dagger = new Dagger();
         FireSword fireSword = new FireSword();
@@ -64,7 +64,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canNotHaveMoreThanFiveArmorsInArmorInventory() {
+    void canNotHaveMoreThanFiveArmorsInArmorInventory() {
         Tome tome = new Tome();
         Shield shield = new Shield();
         LightArmor lightArmor = new LightArmor();
@@ -82,7 +82,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canRemoveWeaponFromWeaponInventory() {
+    void canRemoveWeaponFromWeaponInventory() {
         Stick stick = new Stick();
         Dagger dagger = new Dagger();
         Player player = new Player("Sven", new Point());
@@ -95,7 +95,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void correctValueStartingMoney() {
+    void correctValueStartingMoney() {
         Player player = new Player("Sven", new Point());
 
         int expected = 100;
@@ -104,7 +104,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void inventoryAtCapacityMinusOne_AddsWeapon() {
+    void inventoryAtCapacityMinusOne_AddsWeapon() {
         // Måste skrivas om ifall max inventory capacity ändras
 
         Dagger dagger = new Dagger();
@@ -127,7 +127,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void inventoryAtCapacityMinusOne_AddsArmor() {
+    void inventoryAtCapacityMinusOne_AddsArmor() {
         Tome tome = new Tome();
         Shield shield = new Shield();
         LightArmor lightArmor = new LightArmor();
@@ -147,7 +147,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void ifAtMaxCapacity_RemoveEarliestAddedWeapon() {
+    void ifAtMaxCapacity_RemoveEarliestAddedWeapon() {
 
         Stick stick = new Stick();
         Dagger dagger = new Dagger();
@@ -168,7 +168,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void ifAtMaxCapacity_RemoveEarliestAddedArmor() {
+    void ifAtMaxCapacity_RemoveEarliestAddedArmor() {
         Tome tome = new Tome();
         Shield shield = new Shield();
         LightArmor lightArmor = new LightArmor();
@@ -188,7 +188,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void removingWeaponDueToCapacityReturnsWeaponsCost() {
+    void removingWeaponDueToCapacityReturnsWeaponsCost() {
 
         Stick stick = new Stick();
         Dagger dagger = new Dagger();
@@ -211,7 +211,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void removingArmorDueToCapacityReturnsArmorCost() {
+    void removingArmorDueToCapacityReturnsArmorCost() {
         Tome tome = new Tome();
         Shield shield = new Shield();
         LightArmor lightArmor = new LightArmor();
@@ -233,7 +233,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void weaponInventoryContainsNoDuplicates() {
+    void weaponInventoryContainsNoDuplicates() {
 
         Stick stick = new Stick();
         Player player = new Player("Sven", new Point());
@@ -247,7 +247,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void cantRemoveEquippedArmor() {
+    void cantRemoveEquippedArmor() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         player.addArmorToInventory(heavyArmor);
@@ -257,7 +257,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void cantRemoveEquippedWeapon() {
+    void cantRemoveEquippedWeapon() {
         Stick stick = new Stick();
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         player.addWeaponToInventory(stick);
@@ -267,7 +267,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void addingNullToWeaponInventoryThrowsException() {
+    void addingNullToWeaponInventoryThrowsException() {
         Player player = new Player("Sven", new Point());
         assertThrows(IllegalArgumentException.class, () -> {
             player.addWeaponToInventory(null);
@@ -275,7 +275,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void addingNullToArmorInventoryThrowsException() {
+    void addingNullToArmorInventoryThrowsException() {
         Player player = new Player("Sven", new Point());
         assertThrows(IllegalArgumentException.class, () -> {
             player.addArmorToInventory(null);
@@ -283,7 +283,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void removingNullFromWeaponInventoryThrowsException() {
+    void removingNullFromWeaponInventoryThrowsException() {
         Player player = new Player("Sven", new Point());
         assertThrows(IllegalArgumentException.class, () -> {
             player.removeWeaponFromInventory(null);
@@ -291,7 +291,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void removingNullFromArmorInventoryThrowsException() {
+    void removingNullFromArmorInventoryThrowsException() {
         Player player = new Player("Sven", new Point());
         assertThrows(IllegalArgumentException.class, () -> {
             player.removeArmorFromInventory(null);
@@ -299,7 +299,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void armorInventoryContainsNoDuplicates() {
+    void armorInventoryContainsNoDuplicates() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Player player = new Player("Sven", new Point());
         int expected = 1;
@@ -310,7 +310,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void cantRemoveEquippedWeaponWhenRemovingDueToCapacityAndRemovesNextIndexedWeaponInstead() {
+    void cantRemoveEquippedWeaponWhenRemovingDueToCapacityAndRemovesNextIndexedWeaponInstead() {
         Stick stick = new Stick();
         Dagger dagger = new Dagger();
         FireSword fireSword = new FireSword();
@@ -333,7 +333,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void removesThirdItemWhenTheFirstAndSecondWeaponAreUneligibleForRemoval() {
+    void removesThirdItemWhenTheFirstAndSecondWeaponAreUneligibleForRemoval() {
         WaterDagger waterDagger = new WaterDagger();
         Dagger dagger = new Dagger();
         FireSword fireSword = new FireSword();
@@ -358,7 +358,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void cantRemoveEquippedArmorWhenRemovingDueToCapacityAndRemovesNextIndexedArmorInstead() {
+    void cantRemoveEquippedArmorWhenRemovingDueToCapacityAndRemovesNextIndexedArmorInstead() {
         Tome tome = new Tome();
         Shield shield = new Shield();
         LightArmor lightArmor = new LightArmor();
@@ -380,7 +380,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void removesThirdItemWhenTheFirstAndSecondArmorAreUneligibleForRemoval() {
+    void removesThirdItemWhenTheFirstAndSecondArmorAreUneligibleForRemoval() {
         Tome tome = new Tome();
         LightArmor lightArmor = new LightArmor();
         Shield shield = new Shield();
@@ -406,7 +406,7 @@ public class PlayerEquipmentInteractionTest {
 
     // Fungerar inte längre då metoden kräver en klass.
     // @Test
-    // public void canEquipInOffhand() {
+    // void canEquipInOffhand() {
     // Dagger dagger = new Dagger();
     // Player player = new Player("Sven");
 
@@ -416,7 +416,7 @@ public class PlayerEquipmentInteractionTest {
     // }
 
     @Test
-    public void doesNotEquipOffhandIfNotInWeaponInventory() {
+    void doesNotEquipOffhandIfNotInWeaponInventory() {
         Dagger dagger = new Dagger();
         Player player = new Player("Sven", new Point());
 
@@ -425,7 +425,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void doesNotEquipOffhandIfNotInArmorInventory() {
+    void doesNotEquipOffhandIfNotInArmorInventory() {
         Shield shield = new Shield();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
@@ -437,7 +437,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void doesNotEquipOffhandIfWrongRole() {
+    void doesNotEquipOffhandIfWrongRole() {
         Dagger dagger = new Dagger();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
@@ -449,7 +449,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equipsOffhandIfCorrectRoleAndInInventory() {
+    void equipsOffhandIfCorrectRoleAndInInventory() {
         Shield shield = new Shield();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
@@ -463,7 +463,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equipsSwordIfCorrectRoleAndInInventory() {
+    void equipsSwordIfCorrectRoleAndInInventory() {
         FireSword fireSword = new FireSword();
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         Weapon expected = fireSword;
@@ -473,7 +473,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equipsWandIfCorrectRoleAndInInventory() {
+    void equipsWandIfCorrectRoleAndInInventory() {
         SuperiorAirWand superiorAirWand = new SuperiorAirWand();
         Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
         Weapon expected = superiorAirWand;
@@ -483,7 +483,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equipsDaggerIfCorrectRoleAndInInvetory() {
+    void equipsDaggerIfCorrectRoleAndInInvetory() {
         WaterDagger waterDagger = new WaterDagger();
         Player player = new Player("Sven", new Elf(), new Thief(), new Point());
         Weapon expected = waterDagger;
@@ -493,7 +493,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void doesNotEquipWeaponIfWrongRole() {
+    void doesNotEquipWeaponIfWrongRole() {
         FireSword fireSword = new FireSword();
         Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
         Weapon expected = player.getEquippedWeapon();
@@ -503,7 +503,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void doesNotEquipWeaponIfNotInWeaponInventory() {
+    void doesNotEquipWeaponIfNotInWeaponInventory() {
         FireSword fireSword = new FireSword();
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         player.equipWeapon(fireSword);
@@ -511,7 +511,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equippingWeaponIncreasesPlayerStats() {
+    void equippingWeaponIncreasesPlayerStats() {
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         FireSword fireSword = new FireSword();
         double nothingEquippedStats = player.getStrength();
@@ -522,7 +522,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equippingWeaponIncreasesStatsByCorrectAmount_Dwarf_Knight() {
+    void equippingWeaponIncreasesStatsByCorrectAmount_Dwarf_Knight() {
         Knight knight = new Knight();
         Player player = new Player("Sven", new Dwarf(), knight, new Point());
         FireSword fireSword = new FireSword();
@@ -533,7 +533,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equippingWeaponIncreasesStatsByCorrectAmount_Human_Mage() {
+    void equippingWeaponIncreasesStatsByCorrectAmount_Human_Mage() {
         Mage mage = new Mage();
         Player player = new Player("Bengt", new Human(), mage, new Point());
         SuperiorAirWand superiorAirWand = new SuperiorAirWand();
@@ -545,7 +545,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equippingWeaponIncreasesStatsByCorrectAmount_Elf_Thief() {
+    void equippingWeaponIncreasesStatsByCorrectAmount_Elf_Thief() {
         Thief thief = new Thief();
         Player player = new Player("Tor", new Elf(), thief, new Point());
         WaterDagger waterDagger = new WaterDagger();
@@ -556,7 +556,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canUnequipWeapon() {
+    void canUnequipWeapon() {
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         Torch torch = new Torch();
         player.addWeaponToInventory(torch);
@@ -566,7 +566,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void unequippingWeaponReducesStats() {
+    void unequippingWeaponReducesStats() {
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         Torch torch = new Torch();
         player.addWeaponToInventory(torch);
@@ -577,7 +577,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void unequippingWeaponReducesStatsByCorrectAmount() {
+    void unequippingWeaponReducesStatsByCorrectAmount() {
         Knight knight = new Knight();
         Dwarf dwarf = new Dwarf();
         Player player = new Player("Sven", dwarf, knight, new Point());
@@ -590,7 +590,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canNotEquipArmorIfNotInInventory() {
+    void canNotEquipArmorIfNotInInventory() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         player.equipArmor(heavyArmor);
@@ -598,7 +598,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canEquipArmorIfCorrectRole_Knight() {
+    void canEquipArmorIfCorrectRole_Knight() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         player.addArmorToInventory(heavyArmor);
@@ -607,7 +607,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canEquipArmorIfCorrectRole_Mage() {
+    void canEquipArmorIfCorrectRole_Mage() {
         LightArmor lightArmor = new LightArmor();
         Player player = new Player("Sven", new Elf(), new Mage(), new Point());
         player.addArmorToInventory(lightArmor);
@@ -616,7 +616,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canEquipArmorIfCorrectRole_Thief() {
+    void canEquipArmorIfCorrectRole_Thief() {
         MediumArmor mediumArmor = new MediumArmor();
         Player player = new Player("Sven", new Human(), new Thief(), new Point());
         player.addArmorToInventory(mediumArmor);
@@ -625,7 +625,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canNotEquipArmorIfWrongRole() {
+    void canNotEquipArmorIfWrongRole() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Player player = new Player("Sven", new Dwarf(), new Mage(), new Point());
         player.addArmorToInventory(heavyArmor);
@@ -634,7 +634,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void canUnequipArmor() {
+    void canUnequipArmor() {
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point());
         HeavyArmor heavyArmor = new HeavyArmor();
         player.addArmorToInventory(heavyArmor);
@@ -644,7 +644,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void equippingArmorIncreasesStatsByCorrectAmount() {
+    void equippingArmorIncreasesStatsByCorrectAmount() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Knight knight = new Knight();
         Player player = new Player("Sven", new Dwarf(), knight, new Point());
@@ -661,7 +661,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    public void unequippingArmorDecreasesStatsByCorrectAmount() {
+    void unequippingArmorDecreasesStatsByCorrectAmount() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Knight knight = new Knight();
         Player player = new Player("Sven", new Dwarf(), knight, new Point());
@@ -678,6 +678,4 @@ public class PlayerEquipmentInteractionTest {
         assertArrayEquals(expected, actual);
     }
 
-    // Skapa fler tester för att kolla resten av kombinationerna.
-    // Skapa tester för att sätta på sig vapen.
 }

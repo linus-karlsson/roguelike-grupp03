@@ -6,28 +6,28 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EquipmentTest {
 
     @Test
-    public void getDamageReturnsCorrectValue() {
+    void getDamageReturnsCorrectValue() {
         Stick stick = new Stick();
         int expectedDamage = 3;
         assertEquals(expectedDamage, stick.getDamage());
     }
 
     @Test
-    public void getElementalDamageReturnsCorrectValue() {
+    void getElementalDamageReturnsCorrectValue() {
         WaterDagger waterDagger = new WaterDagger();
         int expectedDamage = 6;
         assertEquals(expectedDamage, waterDagger.getElementalDamage());
     }
 
     @Test
-    public void getDamageAndGetElementalDamageAddsCorrectly() {
+    void getDamageAndGetElementalDamageAddsCorrectly() {
         Torch torch = new Torch();
         int sumExpectedDamage = 5;
         assertEquals(sumExpectedDamage, torch.getDamage() + torch.getElementalDamage());
     }
 
     @Test
-    public void isSubclassOfWeapon() {
+    void isSubclassOfWeapon() {
         Class<?> subClass = FireSword.class;
         Class<?> superClass = Weapon.class;
 
@@ -37,21 +37,21 @@ public class EquipmentTest {
     }
 
     @Test
-    public void getNameReturnsCorrectName() {
+    void getNameReturnsCorrectName() {
         FireSword fireSword = new FireSword();
         String expected = "Fire Sword";
         assertEquals(expected, fireSword.getName());
     }
 
     @Test
-    public void fireSwordHasAnEquipmentType() {
+    void fireSwordHasAnEquipmentType() {
         FireSword fireSword = new FireSword();
 
         assertTrue(fireSword.getType() != null);
     }
 
     @Test
-    public void fireSwordHasCorrectEquipmentType() {
+    void fireSwordHasCorrectEquipmentType() {
         FireSword fireSword = new FireSword();
         EquipmentType expected = EquipmentType.SWORD;
 
@@ -59,14 +59,14 @@ public class EquipmentTest {
     }
 
     @Test
-    public void fireSwordHasAnElement() {
+    void fireSwordHasAnElement() {
         FireSword fireSword = new FireSword();
 
         assertTrue(fireSword.getWeaponElementType() != null);
     }
 
     @Test
-    public void fireSwordHasCorrectElement() {
+    void fireSwordHasCorrectElement() {
         FireSword fireSword = new FireSword();
         ElementType expected = ElementType.FIRE;
 
@@ -74,25 +74,25 @@ public class EquipmentTest {
     }
 
     @Test
-    public void fireSwordHasCorrectStrength() {
+    void fireSwordHasCorrectStrength() {
         FireSword fireSword = new FireSword();
         assertEquals(8, fireSword.getStrength());
     }
 
     @Test
-    public void daggerHasCorrectDexterity() {
+    void daggerHasCorrectDexterity() {
         Dagger dagger = new Dagger();
         assertEquals(9, dagger.getDexterity());
     }
 
     @Test
-    public void airWandHasCorrectIntelligence() {
+    void airWandHasCorrectIntelligence() {
         AirWand airWand = new AirWand();
         assertEquals(15, airWand.getIntelligence());
     }
 
     @Test
-    public void earthHammerHasCorrectPrice() {
+    void earthHammerHasCorrectPrice() {
         EarthHammer earthHammer = new EarthHammer();
         assertEquals(90, earthHammer.getPrice());
     }
