@@ -2,6 +2,9 @@ package com.rougelike;
 
 import com.rougelike.enemies.Troll;
 import com.rougelike.enemies.Witch;
+import com.rougelike.equipment.EarthHammer;
+import com.rougelike.equipment.ElementType;
+import com.rougelike.equipment.WaterDagger;
 import com.rougelike.races.Dwarf;
 import com.rougelike.races.Elf;
 import com.rougelike.races.Human;
@@ -173,6 +176,18 @@ public class PlayerTest {
         double expectedTrollHealth = troll.getHealth() * 0.8;
         player.debuff(troll);
         assertEquals(expectedTrollHealth, troll.getHealth());
+    }
+
+    @Test
+    public void TestPlayerWeaponIsEffective() {
+        Elf elf = new Elf();
+        Thief thief = new Thief();
+        Player player = new Player("Legolas", elf, thief, new Point2D());
+        WaterDagger waterDagger = new WaterDagger();
+        player.addWeaponToInventory(waterDagger);
+        player.equipWeapon(waterDagger);
+        boolean result = player.weaponIsEffective(ElementType.FIRE);
+        assertTrue(result);
     }
 
 }

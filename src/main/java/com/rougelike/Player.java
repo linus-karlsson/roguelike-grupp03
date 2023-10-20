@@ -6,10 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.rougelike.enemies.Entity;
-import com.rougelike.equipment.EquipmentType;
-import com.rougelike.equipment.Weapon;
-import com.rougelike.equipment.Armor;
-import com.rougelike.equipment.Equipment;
+import com.rougelike.equipment.*;
 import com.rougelike.races.Race;
 import com.rougelike.roles.Knight;
 import com.rougelike.roles.Mage;
@@ -138,6 +135,9 @@ public class Player {
             if (((Thief) role).isInvisible()) {
                 return;
             }
+            if (weaponIsEffective(enemy.getElement())) {
+                enemy.takeDamage(equippedWeapon.getElementalDamage());
+            }
             enemy.takeDamage(totalWeaponDamage);
         }
     }
@@ -152,6 +152,20 @@ public class Player {
         if (health <= 0) {
             isDead = true;
         }
+    }
+
+    public boolean weaponIsEffective(ElementType enemyElement) {
+        ElementType weaponElement = equippedWeapon.getWeaponElementType();
+        if (weaponElement == ElementType.WATER && enemyElement == ElementType.FIRE) {
+            return true;
+        }
+        if (weaponElement == ElementType.EARTH && enemyElement == ElementType.FIRE) {
+            return true;
+        }
+        if (weaponElement == ElementType.AIR && enemyElement == ElementType.EARTH) {
+            return true;
+        }
+        return false;
     }
 
     public String getName() {
