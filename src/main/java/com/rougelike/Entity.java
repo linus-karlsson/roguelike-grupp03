@@ -7,6 +7,8 @@ public abstract class Entity {
     private double health;
     private double damage;
     private final ElementType element;
+    private int level;
+
     private boolean dead = false;
     private boolean stunned = false;
 
@@ -70,4 +72,11 @@ public abstract class Entity {
         this.damage = damage;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public int setLevel(int level) {
+        return this.level = level;
+    }
 }

@@ -31,7 +31,6 @@ public class Player extends Entity {
     private double armorValue;
 
     private double totalWeaponDamage;
-    private int level;
     private double xp;
     private double xpToNextLevel;
     private int wallet = STARTING_MONEY;
@@ -56,7 +55,7 @@ public class Player extends Entity {
 
     public Player(String name, Race race, Role role, Point2D position) {
         this(name, position);
-        this.level = 1;
+        setLevel(1);
         this.race = race;
         this.role = role;
         setHealth(race.getStartingHealth() * role.getHealthMultiplier());
@@ -76,12 +75,12 @@ public class Player extends Entity {
     }
 
     public void increaseXp(double gainedXp) {
-        if (level == MAX_LEVEL) {
+        if (getLevel() == MAX_LEVEL) {
             return;
         }
         double xpOverspill = (xp + gainedXp) - xpToNextLevel;
         if (xpOverspill >= 0) {
-            level += 1;
+            setLevel(getLevel() + 1);
             nextLevel();
         }
         xp += gainedXp;
@@ -183,10 +182,6 @@ public class Player extends Entity {
         return intelligence;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
     }
@@ -237,10 +232,6 @@ public class Player extends Entity {
 
     public Armor getEquippedArmor() {
         return equippedArmor;
-    }
-
-    public int setLevel(int level) {
-        return this.level = level;
     }
 
     public void equipNextWeapon() {
@@ -487,7 +478,7 @@ public class Player extends Entity {
         if (!(role instanceof Mage)) {
             return;
         }
-        ((Mage) role).debuff(enemy, level);
+        ((Mage) role).debuff(enemy, getLevel());
     }
 
     public void shieldBash(Entity enemy) {

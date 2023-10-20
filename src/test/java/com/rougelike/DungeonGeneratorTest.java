@@ -398,7 +398,7 @@ public class DungeonGeneratorTest {
         List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        double[] randomMultipliers = { 0.5, 0.0, 0.5, 1.0, 0.5, 0.5 };
+        double[] randomMultipliers = { 0.5, 0.0, 0.5, 1.0, 0.45, 0.5 };
         dungeonGenerator.setRandom(new RandomInternal(randomMultipliers));
         List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
                 DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT);

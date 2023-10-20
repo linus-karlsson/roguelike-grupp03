@@ -6,8 +6,15 @@ import com.rougelike.Player;
 import com.rougelike.roles.*;
 
 public class MagicAttack extends MagicInvoker {
+    private Random random = new Random();
+
     public MagicAttack() {
         super("Attack");
+    }
+
+    public MagicAttack(Random random) {
+        this();
+        this.random = random;
     }
 
     public String getName() {
@@ -15,7 +22,6 @@ public class MagicAttack extends MagicInvoker {
     }
 
     private boolean succeedToInvokeSpell(Player player) {
-        Random random = new Random();
         if (player.getRole() instanceof Mage) {
             return (random.nextInt(100) + 1) < 98;
         } else
