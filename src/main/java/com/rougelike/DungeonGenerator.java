@@ -7,15 +7,16 @@ import java.util.Random;
 import java.util.Stack;
 
 public class DungeonGenerator {
-    public static final double TILE_SIZE = 10.0;
-    private static final double MIN_ROOM_WIDTH_OR_HEIGHT = TILE_SIZE;
-    private static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
+    public static final double MIN_TILE_SIZE = 10.0;
+    public static final double MIN_ROOM_WIDTH_OR_HEIGHT = MIN_TILE_SIZE;
+    public static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
 
     private Random random;
     private Grid grid;
 
     public DungeonGenerator() {
         random = new Random();
+
     }
 
     public DungeonGenerator(Random random) {
@@ -57,16 +58,16 @@ public class DungeonGenerator {
     }
 
     public List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
-            int columnCount) {
-        checkArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount);
-        grid = setUpGridd(rowCount, columnCount);
+            int columnCount, double tileSize) {
+        checkArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
+        grid = setUpGridd(rowCount, columnCount, tileSize);
         List<Room> roomsPlaced = new ArrayList<>();
         for (Room currentRoom : rooms) {
             // TILE_SIZE är med här för att inte ha med griddens border i platseringen,
             // alltså kan man inte platsera ett rum på the bordern
-            Point2D min = new Point2D(TILE_SIZE, TILE_SIZE);
-            Point2D max = new Point2D(grid.getWidth() - TILE_SIZE - (currentRoom.getWidth() + 1.0),
-                    grid.getHeight() - TILE_SIZE - (currentRoom.getHeight() + 1.0));
+            Point2D min = new Point2D(tileSize, tileSize);
+            Point2D max = new Point2D(grid.getWidth() - tileSize - (currentRoom.getWidth() + 1.0),
+                    grid.getHeight() - tileSize - (currentRoom.getHeight() + 1.0));
 
             for (int i = 0; i < numberOfTriesBeforeDiscard; i++) {
                 currentRoom.setPosition(randomDoubleInBounds(min.getX(), max.getX()),
@@ -85,7 +86,7 @@ public class DungeonGenerator {
     }
 
     private void checkArgumentsInPlaceRooomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
-            int columnCount) {
+            int columnCount, double tileSize) {
         if (rooms == null) {
             throw new IllegalArgumentException("rooms can't be null");
         }
@@ -95,10 +96,14 @@ public class DungeonGenerator {
         if (rowCount <= 0 || columnCount <= 0) {
             throw new IllegalArgumentException("rowCount or columnCount can't be less than or equal 0");
         }
+        if (tileSize < MIN_TILE_SIZE) {
+            throw new IllegalArgumentException(
+                    String.format("tileSize is: %f, but the minimum tileSize is: %f", tileSize, MIN_TILE_SIZE));
+        }
     }
 
-    private Grid setUpGridd(int rowCount, int columnCount) {
-        Grid grid = new Grid(rowCount, columnCount, TILE_SIZE);
+    private Grid setUpGridd(int rowCount, int columnCount, double tileSize) {
+        Grid grid = new Grid(rowCount, columnCount, tileSize);
         grid.fillWithValue(-1);
         grid.setBorder();
         return grid;
