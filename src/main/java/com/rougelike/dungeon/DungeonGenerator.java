@@ -24,7 +24,7 @@ public class DungeonGenerator {
         this.random = random;
     }
 
-    void setRandom(Random random) {
+    public void setRandom(Random random) {
         this.random = random;
     }
 
@@ -50,6 +50,17 @@ public class DungeonGenerator {
         }
     }
 
+    public Grid getCopyOfGrid() {
+        Grid copy = new Grid(grid.getRowCount(), grid.getColumnCount(),
+                grid.getTileSize());
+        for (int row = 0; row < grid.getRowCount(); row++) {
+            for (int column = 0; column < grid.getColumnCount(); column++) {
+                copy.setTile(row, column, grid.getTile(row, column));
+            }
+        }
+        return copy;
+    }
+
     Room generateRoom(double minWidth, double maxWidth, double minHeight, double maxHeight) {
         if (minWidth < MIN_ROOM_WIDTH_OR_HEIGHT || minHeight < MIN_ROOM_WIDTH_OR_HEIGHT) {
             throw new IllegalArgumentException(
@@ -66,7 +77,7 @@ public class DungeonGenerator {
         return (random.nextDouble() * (high - low)) + low;
     }
 
-    List<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
+    public List<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
             double maxHeight) {
         if (roomCount <= 0) {
             throw new IllegalArgumentException("roomCount can't be less or equals to 0");
@@ -79,7 +90,7 @@ public class DungeonGenerator {
         return result;
     }
 
-    List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
+    public List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
             int columnCount, double tileSize) {
         checkArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
         grid = setUpGrid(rowCount, columnCount, tileSize);
@@ -282,17 +293,6 @@ public class DungeonGenerator {
         for (int i = -1; i < 2; i += 2) {
             stack.add(new GridIndex(index.row, index.column + i));
         }
-    }
-
-    public Grid getCopyOfGrid() {
-        Grid copy = new Grid(grid.getRowCount(), grid.getColumnCount(),
-                grid.getTileSize());
-        for (int row = 0; row < grid.getRowCount(); row++) {
-            for (int column = 0; column < grid.getColumnCount(); column++) {
-                copy.setTile(row, column, grid.getTile(row, column));
-            }
-        }
-        return copy;
     }
 
 }

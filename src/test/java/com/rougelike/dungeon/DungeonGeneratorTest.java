@@ -49,7 +49,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    void testGenerateRoomWithinBoundsThrowsOnMinWidth() {
+    void testGenerateRoomThrowsOnMinWidth() {
         double minWidth = DungeonGenerator.MIN_ROOM_WIDTH_OR_HEIGHT - 1.0;
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.generateRoom(minWidth, DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
@@ -57,7 +57,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    void testGenerateRoomWithinBoundsThrowsOnMaxWidth() {
+    void testGenerateRoomThrowsOnMaxWidth() {
         double maxWidth = DungeonGenerator.MAX_ROOM_WIDTH_OR_HEIGHT + 1.0;
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.generateRoom(DEFAULT_MIN_WIDTH, maxWidth, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
@@ -65,7 +65,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    void testGenerateRoomWithinBoundsThrowsOnMinHeight() {
+    void testGenerateRoomThrowsOnMinHeight() {
         double minHeight = DungeonGenerator.MIN_ROOM_WIDTH_OR_HEIGHT - 1.0;
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.generateRoom(DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH, minHeight, DEFAULT_MAX_HEIGHT);
@@ -73,7 +73,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    void testGenerateRoomWithinBoundsThrowsOnMaxHeight() {
+    void testGenerateRoomThrowsOnMaxHeight() {
         double maxHeight = DungeonGenerator.MAX_ROOM_WIDTH_OR_HEIGHT + 1.0;
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.generateRoom(DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, maxHeight);
@@ -87,8 +87,7 @@ public class DungeonGeneratorTest {
     @Test
     void testGenerateRoomDependencyInjection() {
         double[] randomMultiplier = { 0.3, 0.6 };
-        RandomInternal randomInternal = new RandomInternal(randomMultiplier);
-        dungeonGenerator.setRandom(randomInternal);
+        dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
         Room room = dungeonGenerator.generateRoom(DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT,
                 DEFAULT_MAX_HEIGHT);
 
@@ -105,29 +104,23 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    void testGenerateMultipleRoomsDependencyInjection() {
-        double[] randomMultiplier = { 0.3, 0.4, 0.2, 0.1, 0.99,
-                0.6, 0.33, 0.22, 0.25, 0.78 };
-        RandomInternal randomInternal = new RandomInternal(randomMultiplier);
-        dungeonGenerator.setRandom(randomInternal);
-
-        int roomCount = 5;
-        List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
-                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
-
-        int index = 0;
-        for (Room room : rooms) {
-            boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier[index++], DEFAULT_MIN_WIDTH,
-                    DEFAULT_MAX_WIDTH) &&
-                    room.getHeight() == randomDoubleInBounds(randomMultiplier[index++], DEFAULT_MIN_HEIGHT,
-                            DEFAULT_MAX_HEIGHT);
-            assertTrue(expected);
-        }
-
+    void testGenerateListOfRoomsSize() {
+        assertEquals(DEFAULT_ROOM_COUNT, getDefaultRooms().size());
     }
 
     @Test
-    void testGenerateMultipleRoomsVariablitiy() {
+    void testGenerateListOfRoomsWithinBounds() {
+        List<Room> rooms = getDefaultRooms();
+        for (Room room : rooms) {
+            boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), DEFAULT_MIN_WIDTH,
+                    DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+
+            assertTrue(expected);
+        }
+    }
+
+    @Test
+    void testGenerateListOfRoomsVariablitiy() {
         List<Room> rooms = getDefaultRooms();
 
         boolean variablitiyInWidth = false;
@@ -142,25 +135,29 @@ public class DungeonGeneratorTest {
         assertTrue(variablitiyInWidth && variabilityInHeight);
     }
 
-    private List<Room> getDefaultRooms() {
-        return dungeonGenerator.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH,
-                DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
-    }
-
     @Test
-    void testGenerateMultipleRoomsWithinBounds() {
-        List<Room> rooms = getDefaultRooms();
-        for (Room room : rooms) {
-            boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), DEFAULT_MIN_WIDTH,
-                    DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+    void testGenerateListOfRoomsDependencyInjection() {
+        double[] randomMultiplier = { 0.3, 0.4, 0.2, 0.1, 0.99,
+                0.6, 0.33, 0.22, 0.25, 0.78 };
+        RandomInternal randomInternal = new RandomInternal(randomMultiplier);
+        dungeonGenerator.setRandom(randomInternal);
 
-            assertTrue(expected);
+        List<Room> rooms = getDefaultRooms();
+        int index = 0;
+        for (Room room : rooms) {
+            double expectedWidth = randomDoubleInBounds(randomMultiplier[index++ % randomMultiplier.length],
+                    DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH);
+            double expectedHeight = randomDoubleInBounds(randomMultiplier[index++ % randomMultiplier.length],
+                    DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+
+            assertEquals(expectedWidth, room.getWidth());
+            assertEquals(expectedHeight, room.getHeight());
         }
     }
 
-    @Test
-    void testGenerateMultipleRoomsSize() {
-        assertEquals(DEFAULT_ROOM_COUNT, getDefaultRooms().size());
+    private List<Room> getDefaultRooms() {
+        return dungeonGenerator.generateListOfRooms(DEFAULT_ROOM_COUNT, DEFAULT_MIN_WIDTH,
+                DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
     }
 
     @ParameterizedTest
@@ -222,16 +219,16 @@ public class DungeonGeneratorTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = { "32, 32", "62, 62" })
-    void testPlaceRoomsInAreaIfAreaIsFilled(int rows, int columns) {
+    @CsvSource(value = { "31, 31", "61, 61" })
+    void testPlaceRoomsInAreaIfAreaIsFilled(int rowCount, int columnCount) {
         // Rooms kommer vara 10 X 10
         // De tar alltså upp 3 X 3 tiles
-        // 2 extra rows och colummer för border
+        // 1 extra rad och column för border
         // Det får då plats 10 X 10 rum i utrymmet som har 32 X 32 tiles med storlek
         // 10.0(Map.TILE_SIZE)
         int extraForBorder = 2;
-        int roomsInX = rows / ((int) (DEFAULT_MIN_WIDTH / DungeonGenerator.MIN_TILE_SIZE) + extraForBorder);
-        int roomsInY = columns / ((int) (DEFAULT_MIN_HEIGHT / DungeonGenerator.MIN_TILE_SIZE) + extraForBorder);
+        int roomsInX = rowCount / ((int) (DEFAULT_MIN_WIDTH / DungeonGenerator.MIN_TILE_SIZE) + extraForBorder);
+        int roomsInY = columnCount / ((int) (DEFAULT_MIN_HEIGHT / DungeonGenerator.MIN_TILE_SIZE) + extraForBorder);
 
         double randomMultiplier = 0.0;
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
@@ -240,7 +237,7 @@ public class DungeonGeneratorTest {
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
         dungeonGenerator.setRandom(new RandomInternal(randomMultipliersForAreaIsFilled(roomCount, roomsInX, roomsInY)));
 
-        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 1, rows, columns,
+        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 1, rowCount, columnCount,
                 DungeonGenerator.MIN_TILE_SIZE);
         int expectedSize = roomCount;
         assertEquals(expectedSize, placedRooms.size());
