@@ -13,6 +13,8 @@ public class DungeonGenerator {
     public static final double MIN_ROOM_WIDTH_OR_HEIGHT = DungeonGenerator.MIN_TILE_SIZE;
     public static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
 
+    private static final int NON_OCCUPIED_TILE_VALUE = -1;
+
     private Random random;
     private Grid grid;
 
@@ -24,7 +26,7 @@ public class DungeonGenerator {
         this.random = random;
     }
 
-    public void setRandom(Random random) {
+    void setRandom(Random random) {
         this.random = random;
     }
 
@@ -77,7 +79,7 @@ public class DungeonGenerator {
         return (random.nextDouble() * (high - low)) + low;
     }
 
-    public List<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
+    List<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
             double maxHeight) {
         if (roomCount <= 0) {
             throw new IllegalArgumentException("roomCount can't be less or equals to 0");
@@ -90,7 +92,7 @@ public class DungeonGenerator {
         return result;
     }
 
-    public List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
+    List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
             int columnCount, double tileSize) {
         checkArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
         grid = setUpGrid(rowCount, columnCount, tileSize);
@@ -107,8 +109,7 @@ public class DungeonGenerator {
                 currentRoom.setPosition(randomDoubleInBounds(min.getX(), max.getX()),
                         randomDoubleInBounds(min.getY(), max.getY()));
 
-                roomParser.setRoom(currentRoom);
-                if (checkIfRoomCanBePlaced(roomParser)) {
+                if (checkIfRoomCanBePlaced(roomParser, currentRoom)) {
                     currentRoom.setId(roomsPlaced.size());
                     placeRoomInGridd(roomParser);
                     roomsPlaced.add(new Room(currentRoom));
@@ -138,19 +139,18 @@ public class DungeonGenerator {
 
     private Grid setUpGrid(int rowCount, int columnCount, double tileSize) {
         Grid grid = new Grid(rowCount, columnCount, tileSize);
-        grid.fillWithValue(-1);
+        grid.fillWithValue(NON_OCCUPIED_TILE_VALUE);
         grid.setBorder();
         return grid;
     }
 
-    private boolean checkIfRoomCanBePlaced(RoomParser roomParser) {
+    private boolean checkIfRoomCanBePlaced(RoomParser roomParser, Room currentRoom) {
+        roomParser.setRoom(currentRoom);
         boolean result = true;
         while (result && roomParser.hasNextIndex()) {
             GridIndex index = roomParser.nextIndex();
             int currentTileValue = grid.getTile(index);
-            // Kollar att tileValue är ett rum eller en korridor hence >= 0
-            if (currentTileValue >= 0
-                    || currentTileValue == Grid.BORDER_VALUE) {
+            if (currentTileValue != NON_OCCUPIED_TILE_VALUE) {
                 result = false;
             }
         }

@@ -39,29 +39,18 @@ public class App extends Application {
 
     public void start(Stage primaryStage) {
 
-        double minWidth = 10.0;
+        double minWidth = 30.0;
         double maxWidth = 60.0;
-        double minHeight = 10.0;
+        double minHeight = 30.0;
         double maxHeight = 60.0;
-        int columnCount = 61;
-        int rowCount = 61;
+        int columnCount = 80;
+        int rowCount = 80;
         double tileSize = DungeonGenerator.MIN_TILE_SIZE;
 
         DungeonGenerator dungeonGenerator = new DungeonGenerator();
-        int extraForBorder = 2;
-        int roomsInX = rowCount / ((int) (minWidth / DungeonGenerator.MIN_TILE_SIZE) + extraForBorder);
-        int roomsInY = columnCount / ((int) (minHeight / DungeonGenerator.MIN_TILE_SIZE) + extraForBorder);
-
-        double randomMultiplier = 0.0;
-        dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
-        int roomCount = roomsInX * roomsInY;
-        List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
-        dungeonGenerator.setRandom(new RandomInternal(randomMultipliersForAreaIsFilled(roomCount, roomsInX, roomsInY)));
-
-        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 1, rowCount, columnCount,
-                DungeonGenerator.MIN_TILE_SIZE);
-
+        int roomCount = 200;
+        List<Room> placedRooms = dungeonGenerator.generateDungeon(roomCount, minWidth, maxWidth, minHeight, maxHeight,
+                30, rowCount, columnCount, tileSize);
         grid = dungeonGenerator.getCopyOfGrid();
 
         Random rand = new Random();
@@ -88,16 +77,15 @@ public class App extends Application {
                 } else if (tileValue == Grid.BORDER_VALUE) {
                     // rect.setFill(Color.BLUE);
                 }
-                rect.setStroke(Color.RED);
+                // rect.setStroke(Color.RED);
                 center.getChildren().add(rect);
             }
         }
-        Point2D pos = placedRooms.get(0)
-                .getPosition();
+        Point2D pos = placedRooms.get(0).getPosition();
         player = new Rectangle(pos.getX(), pos.getY(), 6.0, 6.0);
         player.setFill(Color.RED);
         player.setStroke(Color.BLACK);
-        // center.getChildren().add(player);
+        center.getChildren().add(player);
         Scene scene = new Scene(center);
 
         scene.setOnKeyPressed(event -> {
@@ -150,18 +138,5 @@ public class App extends Application {
         });
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    private double[] randomMultipliersForAreaIsFilled(int roomCount, int roomsInX, int roomsInY) {
-        double[] randomMultipliers = new double[roomCount * 2]; // (x, y) till varje rum därför * 2
-        int index = 0;
-        for (int y = 0; y < roomsInY; y++) {
-            for (int x = 0; x < roomsInX; x++) {
-                // roomsIn* - 1.0 så det går från 0.0 till 1.0 inclusive
-                randomMultipliers[index++] = (double) x / ((double) roomsInX - 1.0);
-                randomMultipliers[index++] = (double) y / ((double) roomsInY - 1.0);
-            }
-        }
-        return randomMultipliers;
     }
 }
