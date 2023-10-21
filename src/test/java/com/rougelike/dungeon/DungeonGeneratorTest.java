@@ -202,8 +202,8 @@ public class DungeonGeneratorTest {
     private void checkIfRoomsHaveCorrectId(List<Room> rooms, Grid grid) {
         for (int i = 0; i < rooms.size(); i++) {
             Room room = rooms.get(i);
-            grid.getRoomParser().setRoom(room);
-            ArrayList<Integer> roomTileList = grid.getRoomParser().roomAreaToList();
+            RoomParser roomParser = new RoomParser(grid, room);
+            List<Integer> roomTileList = roomParser.roomAreaToList();
             for (int tile : roomTileList) {
                 assertEquals(i, tile, roomTileList.toString());
             }
@@ -303,10 +303,11 @@ public class DungeonGeneratorTest {
     void testPlaceRoomsInAreaEmptyTilesAroundRoom() {
         List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
         Grid grid = dungeonGenerator.getCopyOfGridd();
+        RoomParser roomParser = new RoomParser(grid);
         for (Room room : placedRooms) {
-            grid.getRoomParser().setRoom(room);
-            Grid.Index startIndex = grid.getRoomParser().getRoomStartIndex();
-            Grid.Index endIndex = grid.getRoomParser().getRoomEndIndex();
+            roomParser.setRoom(room);
+            Grid.Index startIndex = roomParser.getRoomStartIndex();
+            Grid.Index endIndex = roomParser.getRoomEndIndex();
             checkTilesAboveRoom(grid, startIndex, endIndex.column);
             checkTilesBelowRoom(grid, endIndex, startIndex.column);
             checkTilesToLeftOfRoom(grid, startIndex, endIndex.row);

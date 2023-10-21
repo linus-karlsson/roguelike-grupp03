@@ -71,6 +71,7 @@ public class DungeonGenerator {
         checkArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
         grid = setUpGridd(rowCount, columnCount, tileSize);
         List<Room> roomsPlaced = new ArrayList<>();
+        RoomParser roomParser = new RoomParser(grid);
         for (Room currentRoom : rooms) {
             // TILE_SIZE är med här för att inte ha med griddens border i platseringen,
             // alltså kan man inte platsera ett rum på the bordern
@@ -82,10 +83,10 @@ public class DungeonGenerator {
                 currentRoom.setPosition(randomDoubleInBounds(min.getX(), max.getX()),
                         randomDoubleInBounds(min.getY(), max.getY()));
 
-                grid.getRoomParser().setRoom(currentRoom);
-                if (checkIfRoomCanBePlaced(grid)) {
+                roomParser.setRoom(currentRoom);
+                if (checkIfRoomCanBePlaced(roomParser)) {
                     currentRoom.setId(roomsPlaced.size());
-                    placeRoomInGridd(grid.getRoomParser());
+                    placeRoomInGridd(roomParser);
                     roomsPlaced.add(new Room(currentRoom));
                     break;
                 }
@@ -118,22 +119,24 @@ public class DungeonGenerator {
         return grid;
     }
 
-    private boolean checkIfRoomCanBePlaced(Grid grid) {
-        while (grid.getRoomParser().hasNextIndex()) {
-            Grid.Index index = grid.getRoomParser().nextIndex();
+    private boolean checkIfRoomCanBePlaced(RoomParser roomParser) {
+        boolean result = true;
+        while (result && roomParser.hasNextIndex()) {
+            Grid.Index index = roomParser.nextIndex();
             int currentTileValue = grid.getTile(index);
             // Kollar att tileValue är ett rum eller en korridor hence >= 0
             if (currentTileValue >= 0
                     || currentTileValue == Grid.BORDER_VALUE) {
-                return false;
+                result = false;
             }
         }
-        return true;
+        roomParser.resetRoom();
+        return result;
     }
 
-    private void placeRoomInGridd(Grid.RoomParser griddParser) {
-        griddParser.setRoomBorder();
-        griddParser.placeRoomInGridd();
+    private void placeRoomInGridd(RoomParser roomParser) {
+        roomParser.setRoomBorder();
+        roomParser.placeRoomInGridd();
     }
 
     int connectRooms(List<Room> rooms) {

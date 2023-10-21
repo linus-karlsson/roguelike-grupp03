@@ -2,6 +2,7 @@ package com.rougelike;
 
 import com.rougelike.dungeon.Grid;
 import com.rougelike.dungeon.Room;
+import com.rougelike.dungeon.RoomParser;
 import com.rougelike.enemies.Troll;
 import com.rougelike.enemies.Witch;
 import com.rougelike.equipment.EarthHammer;
@@ -41,17 +42,18 @@ public class PlayerTest {
         int rowCount = 10;
         int columnCount = 10;
         double tileSize = 5.0;
-        Grid gridd = new Grid(rowCount, columnCount, tileSize);
-        gridd.fillWithValue(-1);
+        Grid grid = new Grid(rowCount, columnCount, tileSize);
+        grid.fillWithValue(-1);
         Room room = new Room(10.0, 10.0);
         room.setPosition(10.0, 10.0);
-        gridd.getRoomParser().setRoom(room);
-        gridd.getRoomParser().placeRoomInGridd();
+        RoomParser roomParser = new RoomParser(grid);
+        roomParser.setRoom(room);
+        roomParser.placeRoomInGridd();
 
         Player player = new Player("Test", room.getPosition());
         double deltaTime = 1.0;
         player.setVelocity(velocity);
-        player.updateMovement(gridd, deltaTime);
+        player.updateMovement(grid, deltaTime);
 
         roomPosition.clone(room.getPosition());
         playerPosition.clone(player.getPosition());
