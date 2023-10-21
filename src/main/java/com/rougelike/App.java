@@ -52,7 +52,7 @@ public class App extends Application {
         int roomCount = 40;
         List<Room> placedRooms = dungeonGenerator.generateDungeon(roomCount, minWidth, maxWidth, minHeight, maxHeight,
                 20, rowCount, columnCount, tileSize);
-        grid = dungeonGenerator.getCopyOfGridd();
+        grid = dungeonGenerator.getCopyOfGrid();
 
         Random rand = new Random();
         rand.nextInt(roomCount);

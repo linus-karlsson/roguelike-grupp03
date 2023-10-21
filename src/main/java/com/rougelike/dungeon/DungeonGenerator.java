@@ -21,11 +21,11 @@ public class DungeonGenerator {
 
     }
 
-    public DungeonGenerator(Random random) {
+    DungeonGenerator(Random random) {
         this.random = random;
     }
 
-    public void setRandom(Random random) {
+    void setRandom(Random random) {
         this.random = random;
     }
 
@@ -34,7 +34,21 @@ public class DungeonGenerator {
         List<Room> rooms = generateListOfRooms(roomCount, minRoomWidth, maxRoomWidth, minRoomHeight, maxRoomHeight);
         List<Room> placedRooms = placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
         connectRooms(placedRooms);
-        return placedRooms;
+        setPlacedRoomsToCorrectGridPositionAndDimensions(placedRooms);
+        return Collections.unmodifiableList(placedRooms);
+    }
+
+    private void setPlacedRoomsToCorrectGridPositionAndDimensions(List<Room> placedRooms) {
+        RoomParser roomParser = new RoomParser(grid);
+        for (Room room : placedRooms) {
+            roomParser.setRoom(room);
+            Point2D position = room.getPosition();
+            double xDifference = position.getX() % grid.getTileSize();
+            double yDifference = position.getY() % grid.getTileSize();
+            room.setPosition(position.getX() - xDifference, position.getY() - yDifference);
+            room.setWidth(roomParser.getRoomTileCountInX() * grid.getTileSize());
+            room.setHeight(roomParser.getRoomTileCountInY() * grid.getTileSize());
+        }
     }
 
     Room generateRoom(double minWidth, double maxWidth, double minHeight, double maxHeight) {
@@ -69,7 +83,7 @@ public class DungeonGenerator {
     List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
             int columnCount, double tileSize) {
         checkArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
-        grid = setUpGridd(rowCount, columnCount, tileSize);
+        grid = setUpGrid(rowCount, columnCount, tileSize);
         List<Room> roomsPlaced = new ArrayList<>();
         RoomParser roomParser = new RoomParser(grid);
         for (Room currentRoom : rooms) {
@@ -92,7 +106,7 @@ public class DungeonGenerator {
                 }
             }
         }
-        return Collections.unmodifiableList(roomsPlaced);
+        return roomsPlaced;
     }
 
     private void checkArgumentsInPlaceRooomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
@@ -112,7 +126,7 @@ public class DungeonGenerator {
         }
     }
 
-    private Grid setUpGridd(int rowCount, int columnCount, double tileSize) {
+    private Grid setUpGrid(int rowCount, int columnCount, double tileSize) {
         Grid grid = new Grid(rowCount, columnCount, tileSize);
         grid.fillWithValue(-1);
         grid.setBorder();
@@ -271,7 +285,7 @@ public class DungeonGenerator {
         }
     }
 
-    public Grid getCopyOfGridd() {
+    public Grid getCopyOfGrid() {
         Grid copy = new Grid(grid.getRowCount(), grid.getColumnCount(),
                 grid.getTileSize());
         for (int row = 0; row < grid.getRowCount(); row++) {
