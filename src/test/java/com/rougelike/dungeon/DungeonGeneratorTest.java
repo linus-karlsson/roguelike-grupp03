@@ -300,8 +300,8 @@ public class DungeonGeneratorTest {
         RoomParser roomParser = new RoomParser(grid);
         for (Room room : placedRooms) {
             roomParser.setRoom(room);
-            Grid.Index startIndex = roomParser.getRoomStartIndex();
-            Grid.Index endIndex = roomParser.getRoomEndIndex();
+            GridIndex startIndex = roomParser.getRoomStartIndex();
+            GridIndex endIndex = roomParser.getRoomEndIndex();
             checkTilesAboveRoom(grid, startIndex, endIndex.column);
             checkTilesBelowRoom(grid, endIndex, startIndex.column);
             checkTilesToLeftOfRoom(grid, startIndex, endIndex.row);
@@ -310,36 +310,36 @@ public class DungeonGeneratorTest {
 
     }
 
-    private void checkTilesAboveRoom(Grid grid, Grid.Index startIndex, int endColumn) {
-        Grid.Index i = grid.new Index(startIndex);
+    private void checkTilesAboveRoom(Grid grid, GridIndex startIndex, int endColumn) {
+        GridIndex i = new GridIndex(startIndex);
         for (i.row -= 1, i.column -= 1; i.column <= endColumn; i.column++) {
             assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
         }
     }
 
-    private void checkTilesBelowRoom(Grid grid, Grid.Index endIndex, int startColumn) {
-        Grid.Index i = grid.new Index(endIndex);
+    private void checkTilesBelowRoom(Grid grid, GridIndex endIndex, int startColumn) {
+        GridIndex i = new GridIndex(endIndex);
         for (i.row += 1, i.column += 1; i.column >= startColumn; i.column--) {
             assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
         }
     }
 
-    private void checkTilesToLeftOfRoom(Grid grid, Grid.Index startIndex, int endRow) {
-        Grid.Index i = grid.new Index(startIndex);
+    private void checkTilesToLeftOfRoom(Grid grid, GridIndex startIndex, int endRow) {
+        GridIndex i = new GridIndex(startIndex);
         for (i.column -= 1; i.row <= endRow + 1; i.row++) {
             assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
         }
     }
 
-    private void checkTilesToRightOfRoom(Grid grid, Grid.Index endIndex, int startRow) {
-        Grid.Index i = grid.new Index(endIndex);
+    private void checkTilesToRightOfRoom(Grid grid, GridIndex endIndex, int startRow) {
+        GridIndex i = new GridIndex(endIndex);
         for (i.column += 1; i.row >= startRow + 1; i.row--) {
             assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
         }
     }
 
     @Test
-    void testGriddHasBorder() {
+    void testGridHasBorder() {
         int roomCount = 1;
         List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
@@ -437,9 +437,9 @@ public class DungeonGeneratorTest {
         dungeonGenerator.connectRooms(placedRooms);
         Grid grid = dungeonGenerator.getCopyOfGrid();
 
-        Grid.Index firstRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(0).getPosition());
-        Grid.Index secondRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(1).getPosition());
-        Grid.Index thirdRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(2).getPosition());
+        GridIndex firstRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(0).getPosition());
+        GridIndex secondRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(1).getPosition());
+        GridIndex thirdRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(2).getPosition());
 
         for (; firstRoomGriddIndex.column <= secondRoomGriddIndex.column; firstRoomGriddIndex.column++) {
             assertTrue(grid.getTile(firstRoomGriddIndex) >= 0);
@@ -487,7 +487,7 @@ public class DungeonGeneratorTest {
         ArrayList<Room> placedRooms = new ArrayList<>(rowCount * columnCount);
         Grid grid = new Grid(DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
         grid.setBorder();
-        Grid.Index i = grid.new Index();
+        GridIndex i = new GridIndex();
         // = 1 för bordern också
         for (i.row = 1; i.row < rowCount; i.row++) {
             for (i.column = 1; i.column < columnCount; i.column++) {

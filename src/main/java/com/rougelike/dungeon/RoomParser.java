@@ -8,17 +8,17 @@ import com.rougelike.Point2D;
 public class RoomParser {
 
     private Room currentRoom;
-    private Grid.Index index;
-    private Grid.Index startIndex;
-    private Grid.Index endIndex;
+    private GridIndex index;
+    private GridIndex startIndex;
+    private GridIndex endIndex;
     private Grid grid;
 
     public RoomParser(Grid grid) {
         this.grid = grid;
         currentRoom = new Room(0.0, 0.0);
-        index = grid.new Index();
-        startIndex = grid.new Index();
-        endIndex = grid.new Index();
+        index = new GridIndex();
+        startIndex = new GridIndex();
+        endIndex = new GridIndex();
     }
 
     public RoomParser(Grid grid, Room room) {
@@ -27,6 +27,9 @@ public class RoomParser {
     }
 
     public void setRoom(Room room) {
+        if (room == null) {
+            throw new IllegalArgumentException("room can't be null");
+        }
         double xSpan = room.getPosition().getX() + room.getWidth();
         double ySpan = room.getPosition().getY() + room.getHeight();
         Point2D lastPosition = new Point2D(xSpan, ySpan);
@@ -38,15 +41,15 @@ public class RoomParser {
     }
 
     public void resetRoom() {
-        index = grid.new Index(startIndex);
+        index = new GridIndex(startIndex);
     }
 
-    public Grid.Index getRoomStartIndex() {
-        return grid.new Index(startIndex);
+    public GridIndex getRoomStartIndex() {
+        return new GridIndex(startIndex);
     }
 
-    public Grid.Index getRoomEndIndex() {
-        return grid.new Index(endIndex);
+    public GridIndex getRoomEndIndex() {
+        return new GridIndex(endIndex);
     }
 
     public int getRoomTileCountInX() {
@@ -61,11 +64,11 @@ public class RoomParser {
         return index.compareTo(endIndex) <= 0;
     }
 
-    public Grid.Index nextIndex() {
+    public GridIndex nextIndex() {
         if (!hasNextIndex()) {
             throw new IllegalAccessError("nextIndex is out of bounds");
         }
-        Grid.Index result = grid.new Index(index);
+        GridIndex result = new GridIndex(index);
         if (index.column == endIndex.column) {
             index.column = startIndex.column;
             index.row += 1;
@@ -101,28 +104,28 @@ public class RoomParser {
     }
 
     private void setTilesAboveRoom() {
-        Grid.Index i = grid.new Index(startIndex.row - 1, startIndex.column - 1);
+        GridIndex i = new GridIndex(startIndex.row - 1, startIndex.column - 1);
         for (; i.column <= endIndex.column; i.column++) {
             grid.setTile(i, Grid.BORDER_VALUE);
         }
     }
 
     private void setTilesBelowRoom() {
-        Grid.Index i = grid.new Index(endIndex.row + 1, endIndex.column + 1);
+        GridIndex i = new GridIndex(endIndex.row + 1, endIndex.column + 1);
         for (; i.column >= startIndex.column; i.column--) {
             grid.setTile(i, Grid.BORDER_VALUE);
         }
     }
 
     private void setTilesToLeftOfRoom() {
-        Grid.Index i = grid.new Index(startIndex.row, startIndex.column - 1);
+        GridIndex i = new GridIndex(startIndex.row, startIndex.column - 1);
         for (; i.row <= endIndex.row + 1; i.row++) {
             grid.setTile(i, Grid.BORDER_VALUE);
         }
     }
 
     private void setTilesToRightOfRoom() {
-        Grid.Index i = grid.new Index(endIndex.row, endIndex.column + 1);
+        GridIndex i = new GridIndex(endIndex.row, endIndex.column + 1);
         for (; i.row >= startIndex.row - 1; i.row--) {
             grid.setTile(i, Grid.BORDER_VALUE);
         }

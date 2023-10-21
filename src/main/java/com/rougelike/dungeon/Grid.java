@@ -6,44 +6,6 @@ public class Grid {
 
     public static final int BORDER_VALUE = -2;
 
-    public class Index implements Comparable<Index> {
-        public int row;
-        public int column;
-
-        public Index() {
-            row = 0;
-            column = 0;
-        }
-
-        public Index(int row, int column) {
-            this.row = row;
-            this.column = column;
-        }
-
-        public Index(Index otherIndex) {
-            row = otherIndex.row;
-            column = otherIndex.column;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj instanceof Index) {
-                Index other = (Index) obj;
-                return row == other.row && column == other.column;
-            }
-            return false;
-        }
-
-        @Override
-        public int compareTo(Index other) {
-            int result = row - other.row;
-            if (result == 0) {
-                result = column - other.column;
-            }
-            return result;
-        }
-    }
-
     private int[][] tiles;
     private double tileSize;
 
@@ -64,7 +26,7 @@ public class Grid {
         return tiles[row][column];
     }
 
-    public int getTile(Index index) {
+    public int getTile(GridIndex index) {
         return getTile(index.row, index.column);
     }
 
@@ -72,7 +34,7 @@ public class Grid {
         tiles[row][column] = value;
     }
 
-    public void setTile(Index index, int value) {
+    public void setTile(GridIndex index, int value) {
         setTile(index.row, index.column, value);
     }
 
@@ -129,8 +91,8 @@ public class Grid {
         return getRowCount() * getTileSize();
     }
 
-    public Index getGriddIndexBasedOnPosition(Point2D position) {
-        return new Index(getPositionTileCountInY(position), getPositionTileCountInX(position));
+    public GridIndex getGriddIndexBasedOnPosition(Point2D position) {
+        return new GridIndex(getPositionTileCountInY(position), getPositionTileCountInX(position));
     }
 
     private int getPositionTileCountInY(Point2D position) {

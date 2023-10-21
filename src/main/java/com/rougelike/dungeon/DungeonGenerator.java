@@ -18,7 +18,6 @@ public class DungeonGenerator {
 
     public DungeonGenerator() {
         random = new Random();
-
     }
 
     DungeonGenerator(Random random) {
@@ -136,7 +135,7 @@ public class DungeonGenerator {
     private boolean checkIfRoomCanBePlaced(RoomParser roomParser) {
         boolean result = true;
         while (result && roomParser.hasNextIndex()) {
-            Grid.Index index = roomParser.nextIndex();
+            GridIndex index = roomParser.nextIndex();
             int currentTileValue = grid.getTile(index);
             // Kollar att tileValue är ett rum eller en korridor hence >= 0
             if (currentTileValue >= 0
@@ -163,13 +162,13 @@ public class DungeonGenerator {
             }
             endRoomIndex = endRoom.getId();
 
-            Grid.Index startRoomGriddIndex = grid.getGriddIndexBasedOnPosition(startRoom.getPosition());
-            Grid.Index endRoomGriddIndex = grid.getGriddIndexBasedOnPosition(endRoom.getPosition());
+            GridIndex startRoomGriddIndex = grid.getGriddIndexBasedOnPosition(startRoom.getPosition());
+            GridIndex endRoomGriddIndex = grid.getGriddIndexBasedOnPosition(endRoom.getPosition());
 
-            Grid.Index indexForRowTraversal = startRoomGriddIndex.row <= endRoomGriddIndex.row
+            GridIndex indexForRowTraversal = startRoomGriddIndex.row <= endRoomGriddIndex.row
                     ? startRoomGriddIndex
                     : endRoomGriddIndex;
-            Grid.Index indexForColumnTraversal = startRoomGriddIndex.column <= endRoomGriddIndex.column
+            GridIndex indexForColumnTraversal = startRoomGriddIndex.column <= endRoomGriddIndex.column
                     ? startRoomGriddIndex
                     : endRoomGriddIndex;
 
@@ -197,7 +196,7 @@ public class DungeonGenerator {
         return value < 0 ? value * -1 : value;
     }
 
-    private void iterateRowTilesToNextRoom(int rowDifference, Grid.Index indexForRowTraversal, List<Room> rooms) {
+    private void iterateRowTilesToNextRoom(int rowDifference, GridIndex indexForRowTraversal, List<Room> rooms) {
         for (int j = 0; j <= rowDifference; j++, indexForRowTraversal.row++) {
             int currentTileValue = grid.getTile(indexForRowTraversal);
             grid.setTile(indexForRowTraversal, currentTileValue >= 0 ? currentTileValue : rooms.size());
@@ -206,7 +205,7 @@ public class DungeonGenerator {
         indexForRowTraversal.row--; // Reset the last addition
     }
 
-    private void iterateColumnTilesToNextRoom(int columnDifference, Grid.Index indexForColumnTraversal,
+    private void iterateColumnTilesToNextRoom(int columnDifference, GridIndex indexForColumnTraversal,
             List<Room> rooms) {
         for (int j = 0; j <= columnDifference; j++, indexForColumnTraversal.column++) {
             int currentTileValue = grid.getTile(indexForColumnTraversal);
@@ -216,15 +215,15 @@ public class DungeonGenerator {
         indexForColumnTraversal.column--;
     }
 
-    private void checkAdjacentTiles(Grid grid, Grid.Index index, List<Room> rooms) {
+    private void checkAdjacentTiles(Grid grid, GridIndex index, List<Room> rooms) {
         for (int i = -1; i < 2; i += 2) {
-            int tileValue = grid.getTile(grid.new Index(index.row + i, index.column));
+            int tileValue = grid.getTile(new GridIndex(index.row + i, index.column));
             if (tileValue >= 0 && tileValue < rooms.size()) {
                 rooms.get(tileValue).setConnected(true);
             }
         }
         for (int i = -1; i < 2; i += 2) {
-            int tileValue = grid.getTile(grid.new Index(index.row, index.column + i));
+            int tileValue = grid.getTile(new GridIndex(index.row, index.column + i));
             if (tileValue >= 0 && tileValue < rooms.size()) {
                 rooms.get(tileValue).setConnected(true);
             }
@@ -235,26 +234,26 @@ public class DungeonGenerator {
         if (!grid.hasBorder()) {
             throw new IllegalArgumentException("Gridd must have a border");
         }
-        Stack<Grid.Index> stack = new Stack<>();
+        Stack<GridIndex> stack = new Stack<>();
         stack.add(grid.getGriddIndexBasedOnPosition(placedRooms.get(0).getPosition()));
 
-        int[] roomsFound = getArrayOfNegtiveOnes(placedRooms.size());
+        int[] roomsFound = getArrayOfNegativeOnes(placedRooms.size());
         int[][] visited = getGriddOfZeros(grid.getRowCount(), grid.getColumnCount());
         while (!stack.isEmpty()) {
-            Grid.Index currentIndex = stack.pop();
+            GridIndex currentIndex = stack.pop();
             int tileValue = grid.getTile(currentIndex);
             if (isValid(tileValue, visited, currentIndex)) {
                 visited[currentIndex.row][currentIndex.column] = 1;
                 if (tileValue < placedRooms.size()) {
                     roomsFound[tileValue] = tileValue;
                 }
-                addAdjacentTiles(stack, grid, currentIndex);
+                addAdjacentTiles(stack, currentIndex);
             }
         }
         return roomsFound;
     }
 
-    private int[] getArrayOfNegtiveOnes(int size) {
+    private int[] getArrayOfNegativeOnes(int size) {
         int[] result = new int[size];
         for (int i = 0; i < size; i++) {
             result[i] = -1;
@@ -272,16 +271,16 @@ public class DungeonGenerator {
         return grid;
     }
 
-    private boolean isValid(int tileValue, int[][] visited, Grid.Index currentIndex) {
+    private boolean isValid(int tileValue, int[][] visited, GridIndex currentIndex) {
         return tileValue >= 0 && visited[currentIndex.row][currentIndex.column] != 1;
     }
 
-    private void addAdjacentTiles(Stack<Grid.Index> stack, Grid grid, Grid.Index index) {
+    private void addAdjacentTiles(Stack<GridIndex> stack, GridIndex index) {
         for (int i = -1; i < 2; i += 2) {
-            stack.add(grid.new Index(index.row + i, index.column));
+            stack.add(new GridIndex(index.row + i, index.column));
         }
         for (int i = -1; i < 2; i += 2) {
-            stack.add(grid.new Index(index.row, index.column + i));
+            stack.add(new GridIndex(index.row, index.column + i));
         }
     }
 

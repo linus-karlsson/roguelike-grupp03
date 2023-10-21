@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.rougelike.dungeon.Grid;
+import com.rougelike.dungeon.GridIndex;
 import com.rougelike.equipment.*;
 import com.rougelike.races.Race;
 import com.rougelike.roles.Knight;
@@ -97,7 +98,7 @@ public class Player extends Entity {
 
     public void updateMovement(Grid gridd, double deltaTime) {
         Point2D newPostion = position.plus(velocity.scalarMulti(deltaTime));
-        Grid.Index index = gridd.getGriddIndexBasedOnPosition(newPostion);
+        GridIndex index = gridd.getGriddIndexBasedOnPosition(newPostion);
         if (gridd.getTile(index) >= 0) {
             position = newPostion;
         }

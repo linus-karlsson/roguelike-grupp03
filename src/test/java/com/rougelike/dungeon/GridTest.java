@@ -14,8 +14,8 @@ public class GridTest {
         int cellsInX = 3;
         int cellsInY = 2;
         Point2D point = new Point2D(tileSize * cellsInX, tileSize * cellsInY);
-        Grid.Index expected = grid.new Index(cellsInY, cellsInX);
-        Grid.Index griddIndex = grid.getGriddIndexBasedOnPosition(point);
+        GridIndex expected = new GridIndex(cellsInY, cellsInX);
+        GridIndex griddIndex = grid.getGriddIndexBasedOnPosition(point);
         assertTrue(expected.equals(griddIndex));
     }
 

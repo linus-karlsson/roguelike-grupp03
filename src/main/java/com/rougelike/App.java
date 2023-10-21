@@ -1,12 +1,11 @@
 package com.rougelike;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import com.rougelike.dungeon.DungeonGenerator;
 import com.rougelike.dungeon.Grid;
+import com.rougelike.dungeon.GridIndex;
 import com.rougelike.dungeon.Room;
 
 import javafx.application.Application;
@@ -49,9 +48,9 @@ public class App extends Application {
         double tileSize = DungeonGenerator.MIN_TILE_SIZE;
 
         DungeonGenerator dungeonGenerator = new DungeonGenerator();
-        int roomCount = 40;
+        int roomCount = 200;
         List<Room> placedRooms = dungeonGenerator.generateDungeon(roomCount, minWidth, maxWidth, minHeight, maxHeight,
-                20, rowCount, columnCount, tileSize);
+                30, rowCount, columnCount, tileSize);
         grid = dungeonGenerator.getCopyOfGrid();
 
         Random rand = new Random();
@@ -68,7 +67,7 @@ public class App extends Application {
             for (int column = 0; column < grid.getColumnCount(); column++) {
                 Rectangle rect = new Rectangle(column * tileSize, row * tileSize, tileSize,
                         tileSize);
-                int tileValue = grid.getTile(grid.new Index(row, column));
+                int tileValue = grid.getTile(new GridIndex(row, column));
                 if (tileValue >= 0) {
                     if (tileValue < placedRooms.size()) {
                         rect.setFill(roomColors[tileValue]);
@@ -76,7 +75,7 @@ public class App extends Application {
                         rect.setFill(Color.WHITE);
                     }
                 } else if (tileValue == Grid.BORDER_VALUE) {
-                    rect.setFill(Color.BLUE);
+                    // rect.setFill(Color.BLUE);
                 }
                 rect.setStroke(Color.RED);
                 center.getChildren().add(rect);
@@ -105,8 +104,8 @@ public class App extends Application {
             }
             Point2D point = new Point2D(player.getX(), player.getY());
             point = point.plus(playerVelocity);
-            Grid.Index index = grid.getGriddIndexBasedOnPosition(point);
-            Grid.Index index2 = grid.getGriddIndexBasedOnPosition(
+            GridIndex index = grid.getGriddIndexBasedOnPosition(point);
+            GridIndex index2 = grid.getGriddIndexBasedOnPosition(
                     new Point2D(point.getX() + player.getWidth(), point.getY() +
                             player.getHeight()));
             if (grid.getTile(index) >= 0 && grid.getTile(index2) >= 0) {
