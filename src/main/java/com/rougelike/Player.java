@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import com.rougelike.dungeon.Grid;
 import com.rougelike.equipment.*;
 import com.rougelike.races.Race;
 import com.rougelike.roles.Knight;

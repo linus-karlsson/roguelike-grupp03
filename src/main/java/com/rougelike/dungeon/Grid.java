@@ -1,6 +1,8 @@
-package com.rougelike;
+package com.rougelike.dungeon;
 
 import java.util.ArrayList;
+
+import com.rougelike.Point2D;
 
 public class Grid {
 

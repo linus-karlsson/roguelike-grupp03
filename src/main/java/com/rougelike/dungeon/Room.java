@@ -1,4 +1,6 @@
-package com.rougelike;
+package com.rougelike.dungeon;
+
+import com.rougelike.Point2D;
 
 public class Room {
     private int id;
@@ -13,6 +15,11 @@ public class Room {
         position = new Point2D();
         id = 0;
         connected = false;
+        if (width < 0) {
+            throw new IllegalArgumentException("width of room can't be less than 0");
+        } else if (height < 0) {
+            throw new IllegalArgumentException("height of room can't be less than 0");
+        }
     }
 
     public Room(Room otherRoom) {

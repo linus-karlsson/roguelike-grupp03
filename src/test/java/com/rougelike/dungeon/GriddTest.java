@@ -1,6 +1,9 @@
-package com.rougelike;
+package com.rougelike.dungeon;
 
 import org.junit.jupiter.api.*;
+
+import com.rougelike.Point2D;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
@@ -11,7 +14,7 @@ public class GriddTest {
     Room room = new Room(10.0, 10.0); // 3 x 3 room
 
     @Test
-    public void testHasNextIndex() {
+    void testHasNextIndex() {
         int tilesInX = 3;
         int tilesInY = 4;
         room = new Room(tileSize * (tilesInX - 1), tileSize * (tilesInY - 1));
@@ -26,7 +29,7 @@ public class GriddTest {
     }
 
     @Test
-    public void testNextIndex() {
+    void testNextIndex() {
         int tilesInX = 3;
         int tilesInY = 4;
         room = new Room(tileSize * (tilesInX - 1), tileSize * (tilesInY - 1));
@@ -41,7 +44,7 @@ public class GriddTest {
     }
 
     @Test
-    public void testRoomAreaToList() {
+    void testRoomAreaToList() {
         room.setId(3);
         gridd.getRoomParser().setRoom(room);
         gridd.getRoomParser().placeRoomInGridd();
@@ -51,7 +54,7 @@ public class GriddTest {
     }
 
     @Test
-    public void testRoomAreaToListSize() {
+    void testRoomAreaToListSize() {
         Room room = new Room(10.0, 10.0); // 3 x 3 room
         room.setId(3);
         gridd.getRoomParser().setRoom(room);
@@ -62,7 +65,7 @@ public class GriddTest {
     }
 
     @Test
-    public void testGetGriddIndexBasedOnPosition() {
+    void testGetGriddIndexBasedOnPosition() {
         int cellsInX = 3;
         int cellsInY = 2;
         Point2D point = new Point2D(tileSize * cellsInX, tileSize * cellsInY);
@@ -72,7 +75,7 @@ public class GriddTest {
     }
 
     @Test
-    public void testGriddParserGetRoomCellCountInX() {
+    void testGriddParserGetRoomCellCountInX() {
         Room room = new Room(10.0, 10.0);
         gridd.getRoomParser().setRoom(room);
         int cellCountInX = gridd.getRoomParser().getRoomTileCountInX();
@@ -80,7 +83,7 @@ public class GriddTest {
     }
 
     @Test
-    public void testGriddParserGetRoomCellCountInY() {
+    void testGriddParserGetRoomCellCountInY() {
         Room room = new Room(10.0, 10.0);
         gridd.getRoomParser().setRoom(room);
         int cellCountInY = gridd.getRoomParser().getRoomTileCountInY();
@@ -89,7 +92,7 @@ public class GriddTest {
     }
 
     @Test
-    public void testSetBorder() {
+    void testSetBorder() {
         gridd.setBorder();
         int expected = Grid.BORDER_VALUE;
         int lastRow = gridd.getRowCount() - 1;
@@ -105,13 +108,13 @@ public class GriddTest {
     }
 
     @Test
-    public void testHasBorder() {
+    void testHasBorder() {
         gridd.setBorder();
         assertTrue(gridd.hasBorder());
     }
 
     @Test
-    public void testHasNotBorder() {
+    void testHasNotBorder() {
         assertFalse(gridd.hasBorder());
     }
 }

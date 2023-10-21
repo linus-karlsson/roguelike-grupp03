@@ -1,5 +1,7 @@
 package com.rougelike;
 
+import com.rougelike.dungeon.Grid;
+import com.rougelike.dungeon.Room;
 import com.rougelike.enemies.Troll;
 import com.rougelike.enemies.Witch;
 import com.rougelike.equipment.EarthHammer;

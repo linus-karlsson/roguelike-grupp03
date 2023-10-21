@@ -1,11 +1,10 @@
 
-package com.rougelike;
+package com.rougelike.dungeon;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.instrument.UnmodifiableClassException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,8 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import com.rougelike.RandomInternal;
 
 public class DungeonGeneratorTest {
 
@@ -28,7 +29,7 @@ public class DungeonGeneratorTest {
     private DungeonGenerator dungeonGenerator = new DungeonGenerator();
 
     @Test
-    public void testGenerateRoomWithinBounds() {
+    void testGenerateRoomWithinBounds() {
         Room room = dungeonGenerator.generateRoom(DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT,
                 DEFAULT_MAX_HEIGHT);
 
@@ -46,7 +47,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGenerateRoomWithinBoundsThrowsOnMinWidth() {
+    void testGenerateRoomWithinBoundsThrowsOnMinWidth() {
         double minWidth = DungeonGenerator.MIN_ROOM_WIDTH_OR_HEIGHT - 1.0;
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.generateRoom(minWidth, DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
@@ -54,7 +55,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGenerateRoomWithinBoundsThrowsOnMaxWidth() {
+    void testGenerateRoomWithinBoundsThrowsOnMaxWidth() {
         double maxWidth = DungeonGenerator.MAX_ROOM_WIDTH_OR_HEIGHT + 1.0;
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.generateRoom(DEFAULT_MIN_WIDTH, maxWidth, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
@@ -62,7 +63,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGenerateRoomWithinBoundsThrowsOnMinHeight() {
+    void testGenerateRoomWithinBoundsThrowsOnMinHeight() {
         double minHeight = DungeonGenerator.MIN_ROOM_WIDTH_OR_HEIGHT - 1.0;
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.generateRoom(DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH, minHeight, DEFAULT_MAX_HEIGHT);
@@ -70,7 +71,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGenerateRoomWithinBoundsThrowsOnMaxHeight() {
+    void testGenerateRoomWithinBoundsThrowsOnMaxHeight() {
         double maxHeight = DungeonGenerator.MAX_ROOM_WIDTH_OR_HEIGHT + 1.0;
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.generateRoom(DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, maxHeight);
@@ -82,7 +83,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGenerateRoomDependencyInjection() {
+    void testGenerateRoomDependencyInjection() {
         double[] randomMultiplier = { 0.3, 0.6 };
         RandomInternal randomInternal = new RandomInternal(randomMultiplier);
         dungeonGenerator.setRandom(randomInternal);
@@ -102,7 +103,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGenerateMultipleRoomsDependencyInjection() {
+    void testGenerateMultipleRoomsDependencyInjection() {
         double[] randomMultiplier = { 0.3, 0.4, 0.2, 0.1, 0.99,
                 0.6, 0.33, 0.22, 0.25, 0.78 };
         RandomInternal randomInternal = new RandomInternal(randomMultiplier);
@@ -124,7 +125,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGenerateMultipleRoomsVariablitiy() {
+    void testGenerateMultipleRoomsVariablitiy() {
         List<Room> rooms = getDefaultRooms();
 
         boolean variablitiyInWidth = false;
@@ -145,7 +146,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGenerateMultipleRoomsWithinBounds() {
+    void testGenerateMultipleRoomsWithinBounds() {
         List<Room> rooms = getDefaultRooms();
         for (Room room : rooms) {
             boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), DEFAULT_MIN_WIDTH,
@@ -156,13 +157,13 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGenerateMultipleRoomsSize() {
+    void testGenerateMultipleRoomsSize() {
         assertEquals(DEFAULT_ROOM_COUNT, getDefaultRooms().size());
     }
 
     @ParameterizedTest
     @CsvSource(value = { "0,80,1", "80,0,1", "80,80,0" })
-    public void testPlaceRoomsInAreaThrows(int rowCount, int columnCount, int numberOfTriesBeforeDiscard) {
+    void testPlaceRoomsInAreaThrows(int rowCount, int columnCount, int numberOfTriesBeforeDiscard) {
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.placeRoomsInArea(getDefaultRooms(), numberOfTriesBeforeDiscard, rowCount, columnCount,
                     DungeonGenerator.MIN_TILE_SIZE);
@@ -170,7 +171,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testPlaceRoomsInAreaThrowsTileSize() {
+    void testPlaceRoomsInAreaThrowsTileSize() {
         double tileSize = DungeonGenerator.MIN_TILE_SIZE - 1.0;
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.placeRoomsInArea(getDefaultRooms(), DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
@@ -179,7 +180,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testPlaceRoomsInAreaThrowsRoomsNull() {
+    void testPlaceRoomsInAreaThrowsRoomsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.placeRoomsInArea(null, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
                     DEFAULT_ROOM_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
@@ -187,7 +188,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testPlaceRoomsInArea() {
+    void testPlaceRoomsInArea() {
         checkIfRoomsHaveCorrectId(getDefaultPlacedRooms(getDefaultRooms()),
                 dungeonGenerator.getCopyOfGridd());
     }
@@ -210,7 +211,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testPlaceRoomsInAreaDependencyInjection() {
+    void testPlaceRoomsInAreaDependencyInjection() {
         List<Room> rooms = getDefaultRooms();
         double randomMultiplier = 0.3;
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
@@ -220,7 +221,7 @@ public class DungeonGeneratorTest {
 
     @ParameterizedTest
     @CsvSource(value = { "32, 32", "62, 62" })
-    public void testPlaceRoomsInAreaIfAreaIsFilled(int rows, int columns) {
+    void testPlaceRoomsInAreaIfAreaIsFilled(int rows, int columns) {
         // Rooms kommer vara 10 X 10
         // De tar alltså upp 3 X 3 tiles
         // 2 extra rows och colummer för border
@@ -257,7 +258,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testPlaceRoomsInAreaReturnsUnModifiedList() {
+    void testPlaceRoomsInAreaReturnsUnModifiedList() {
         List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
         assertThrows(UnsupportedOperationException.class, () -> {
             placedRooms.set(0, placedRooms.get(1));
@@ -265,7 +266,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testPlaceRoomsInAreaMultipleTriesIfRoomNotFit() {
+    void testPlaceRoomsInAreaMultipleTriesIfRoomNotFit() {
         double randomMultiplier = 0.0;
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
         int roomCount = 2;
@@ -299,7 +300,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testPlaceRoomsInAreaEmptyTilesAroundRoom() {
+    void testPlaceRoomsInAreaEmptyTilesAroundRoom() {
         List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
         Grid grid = dungeonGenerator.getCopyOfGridd();
         for (Room room : placedRooms) {
@@ -343,7 +344,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGriddHasBorder() {
+    void testGriddHasBorder() {
         int roomCount = 1;
         List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
@@ -353,7 +354,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testPlaceRoomsInAreaOutOfBounds() {
+    void testPlaceRoomsInAreaOutOfBounds() {
         List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
         Grid grid = dungeonGenerator.getCopyOfGridd();
         for (Room room : placedRooms) {
@@ -366,7 +367,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testConnectRoomsAllConnected() {
+    void testConnectRoomsAllConnected() {
         List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
         dungeonGenerator.connectRooms(placedRooms);
         for (Room room : placedRooms) {
@@ -377,7 +378,7 @@ public class DungeonGeneratorTest {
     // För att minimera chansen att något rum kopplar samman något annat så görs
     // gridden större samt att testet körs flera gånger
     @RepeatedTest(value = 10)
-    public void testConnectRoomsDepthFirst() {
+    void testConnectRoomsDepthFirst() {
         int columns = 160;
         int rows = 160;
         List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(getDefaultRooms(),
@@ -391,7 +392,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testConnectRooms() {
+    void testConnectRooms() {
         double randomMultiplier = 0.0;
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
 
@@ -422,7 +423,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testConnectRoomsAllRoomsStillHaveId() {
+    void testConnectRoomsAllRoomsStillHaveId() {
         List<Room> placedRooms = getDefaultPlacedRooms(getDefaultRooms());
         dungeonGenerator.connectRooms(placedRooms);
         Grid grid = dungeonGenerator.getCopyOfGridd();
@@ -430,7 +431,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testConnectRoomsNoUnnessisaryCorridors() {
+    void testConnectRoomsNoUnnessisaryCorridors() {
         double randomMultiplier = 1.0;
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
 
@@ -449,7 +450,7 @@ public class DungeonGeneratorTest {
     // Platserar ett rum för varje tile i gridden och ser att getConnectedRooms
     // kan hitta alla rum
     @Test
-    public void testGetConnectedRooms() {
+    void testGetConnectedRooms() {
         // - 1 för att gridden ska ha en border
         int rowCount = DEFAULT_ROW_COUNT - 1;
         int columnCount = DEFAULT_COLUMN_COUNT - 1;
@@ -474,7 +475,7 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    public void testGetConnectedRoomsThrowsWithBorderlessGridd() {
+    void testGetConnectedRoomsThrowsWithBorderlessGridd() {
         assertThrows(IllegalArgumentException.class, () -> {
             dungeonGenerator.getConnectedRooms(new ArrayList<Room>(),
                     new Grid(DEFAULT_ROOM_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE));

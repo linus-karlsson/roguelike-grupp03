@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.rougelike.dungeon.DungeonGenerator;
+import com.rougelike.dungeon.Grid;
+import com.rougelike.dungeon.Room;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -24,19 +28,14 @@ public class App extends Application {
 
         DungeonGenerator dungeonGenerator = new DungeonGenerator();
         int roomCount = 1000;
-        List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, minWidth, maxWidth,
-                minHeight, maxHeight);
-
-        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 10,
+        dungeonGenerator.generateDungeon(roomCount, minWidth, maxWidth, minHeight, maxHeight, roomCount,
                 rowCount, columnCount, tileSize);
-        dungeonGenerator.connectRooms(placedRooms);
-
         launch(args);
     }
 
     Rectangle player;
     Vector2D playerVelocity = new Vector2D(0, 0);
-    Grid gridd;
+    Grid grid;
     boolean running = false;
 
     public void start(Stage primaryStage) {
@@ -45,17 +44,15 @@ public class App extends Application {
         double maxWidth = 60.0;
         double minHeight = 30.0;
         double maxHeight = 60.0;
+        int columnCount = 80;
+        int rowCount = 80;
+        double tileSize = DungeonGenerator.MIN_TILE_SIZE;
 
         DungeonGenerator dungeonGenerator = new DungeonGenerator();
         int roomCount = 40;
-        List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, minWidth,
-                maxWidth,
-                minHeight, maxHeight);
-
-        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 10,
-                80, 80, DungeonGenerator.MIN_TILE_SIZE);
-        dungeonGenerator.connectRooms(placedRooms);
-        gridd = dungeonGenerator.getCopyOfGridd();
+        List<Room> placedRooms = dungeonGenerator.generateDungeon(roomCount, minWidth, maxWidth, minHeight, maxHeight,
+                20, rowCount, columnCount, tileSize);
+        grid = dungeonGenerator.getCopyOfGridd();
 
         Random rand = new Random();
         rand.nextInt(roomCount);
@@ -67,12 +64,11 @@ public class App extends Application {
         }
 
         Pane center = new Pane();
-        double tileSize = DungeonGenerator.MIN_TILE_SIZE;
-        for (int row = 0; row < gridd.getRowCount(); row++) {
-            for (int column = 0; column < gridd.getColumnCount(); column++) {
+        for (int row = 0; row < grid.getRowCount(); row++) {
+            for (int column = 0; column < grid.getColumnCount(); column++) {
                 Rectangle rect = new Rectangle(column * tileSize, row * tileSize, tileSize,
                         tileSize);
-                int tileValue = gridd.getTile(gridd.new Index(row, column));
+                int tileValue = grid.getTile(grid.new Index(row, column));
                 if (tileValue >= 0) {
                     if (tileValue < placedRooms.size()) {
                         rect.setFill(roomColors[tileValue]);
@@ -109,11 +105,11 @@ public class App extends Application {
             }
             Point2D point = new Point2D(player.getX(), player.getY());
             point = point.plus(playerVelocity);
-            Grid.Index index = gridd.getGriddIndexBasedOnPosition(point);
-            Grid.Index index2 = gridd.getGriddIndexBasedOnPosition(
+            Grid.Index index = grid.getGriddIndexBasedOnPosition(point);
+            Grid.Index index2 = grid.getGriddIndexBasedOnPosition(
                     new Point2D(point.getX() + player.getWidth(), point.getY() +
                             player.getHeight()));
-            if (gridd.getTile(index) >= 0 && gridd.getTile(index2) >= 0) {
+            if (grid.getTile(index) >= 0 && grid.getTile(index2) >= 0) {
                 player.setX(point.getX());
                 player.setY(point.getY());
             }

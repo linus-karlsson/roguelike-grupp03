@@ -1,4 +1,4 @@
-package com.rougelike;
+package com.rougelike.dungeon;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
+import com.rougelike.Point2D;
+
 public class DungeonGenerator {
     public static final double MIN_TILE_SIZE = 10.0;
-    public static final double MIN_ROOM_WIDTH_OR_HEIGHT = MIN_TILE_SIZE;
+    public static final double MIN_ROOM_WIDTH_OR_HEIGHT = DungeonGenerator.MIN_TILE_SIZE;
     public static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
 
     private Random random;
@@ -27,8 +29,15 @@ public class DungeonGenerator {
         this.random = random;
     }
 
-    public Room generateRoom(double minWidth, double maxWidth, double minHeight, double maxHeight) {
+    public List<Room> generateDungeon(int roomCount, double minRoomWidth, double maxRoomWidth, double minRoomHeight,
+            double maxRoomHeight, int numberOfTriesBeforeDiscard, int rowCount, int columnCount, double tileSize) {
+        List<Room> rooms = generateListOfRooms(roomCount, minRoomWidth, maxRoomWidth, minRoomHeight, maxRoomHeight);
+        List<Room> placedRooms = placeRoomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
+        connectRooms(placedRooms);
+        return placedRooms;
+    }
 
+    Room generateRoom(double minWidth, double maxWidth, double minHeight, double maxHeight) {
         if (minWidth < MIN_ROOM_WIDTH_OR_HEIGHT || minHeight < MIN_ROOM_WIDTH_OR_HEIGHT) {
             throw new IllegalArgumentException(
                     String.format("Min width or height of rooms: %f", MIN_ROOM_WIDTH_OR_HEIGHT));
@@ -44,7 +53,7 @@ public class DungeonGenerator {
         return (random.nextDouble() * (high - low)) + low;
     }
 
-    public List<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
+    List<Room> generateListOfRooms(int roomCount, double minWidth, double maxWidth, double minHeight,
             double maxHeight) {
         if (roomCount <= 0) {
             throw new IllegalArgumentException("roomCount can't be less or equals to 0");
@@ -57,7 +66,7 @@ public class DungeonGenerator {
         return result;
     }
 
-    public List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
+    List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
             int columnCount, double tileSize) {
         checkArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
         grid = setUpGridd(rowCount, columnCount, tileSize);
@@ -127,7 +136,7 @@ public class DungeonGenerator {
         griddParser.placeRoomInGridd();
     }
 
-    public int connectRooms(List<Room> rooms) {
+    int connectRooms(List<Room> rooms) {
         int corridorCount = 0;
         for (int i = 0, endRoomIndex = 1; i < rooms.size() - 1; i++) {
             Room startRoom = rooms.get(i);
@@ -205,7 +214,7 @@ public class DungeonGenerator {
         }
     }
 
-    public int[] getConnectedRooms(List<Room> placedRooms, Grid grid) {
+    int[] getConnectedRooms(List<Room> placedRooms, Grid grid) {
         if (!grid.hasBorder()) {
             throw new IllegalArgumentException("Gridd must have a border");
         }
