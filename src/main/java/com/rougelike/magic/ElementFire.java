@@ -13,7 +13,7 @@ public class ElementFire extends MagicElementType   {
     }
 
     @Override
-    public final double getMultiplier(Player player) {
+    public double getMultiplier(Player player) {
         return BASE_MULTIPLIER;
     }
     
