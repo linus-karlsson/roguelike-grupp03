@@ -1,7 +1,7 @@
 package com.rougelike.magic;
 import com.rougelike.Player;
 
-abstract public class MagicInvoker {
+public abstract class MagicInvoker {
 
     private static final double MAGE_MAGIC_MULTIPLIER = 1.1;
     private static final double KNIGHT_MAGIC_MULTIPLIER = 0.9;
@@ -22,7 +22,8 @@ abstract public class MagicInvoker {
         if (isRoleNull(player)) {
             return value;
         }
-        switch (player.getRole().getClass().getSimpleName()) {
+        String role = player.getRole().getClass().getSimpleName();
+        switch (role) {
             case "Knight":
                 return calculateValueForKnight(value);
             case "Mage":
@@ -68,6 +69,6 @@ abstract public class MagicInvoker {
         return player.getLevel() == 1 ? 0 : player.getLevel();
     }
 
-    abstract public double throwMagic(Magic magic, Player player);
+    public abstract double throwMagic(Magic magic, Player player);
 
 }
