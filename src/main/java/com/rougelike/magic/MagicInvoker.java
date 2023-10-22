@@ -40,7 +40,7 @@ abstract public class MagicInvoker {
     }
 
     private boolean isElementTypeAir(MagicElementType elementType) {
-        return elementType.getName().equals("Air");
+        return ("Air".equals(elementType.getName()));
     }
 
     private Boolean isRoleNull(Player player) {
@@ -56,7 +56,8 @@ abstract public class MagicInvoker {
     }
 
     public double magicValue(Magic magic, Player player) {
-        double actualStrength = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, adjustPlayerLevel(player));
+        double playerLevel = adjustPlayerLevel(player);
+        double actualStrength = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, playerLevel);
         double roundedValue = Math.round(actualStrength * 100.0) / 100.0;
         roundedValue = checkImpactFromRace(roundedValue, player, magic.getElement());
         return checkImpactFromRole(roundedValue, player);
