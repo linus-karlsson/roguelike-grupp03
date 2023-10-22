@@ -1,4 +1,5 @@
 package com.rougelike.magic;
+
 import com.rougelike.Player;
 
 public abstract class MagicInvoker {
@@ -38,7 +39,7 @@ public abstract class MagicInvoker {
     private double impactFromRace(double value, Player player, MagicElementType elementType) {
         double valueToReturn = value;
         if (isElementTypeAir(elementType) && raceImpactChecker.isPlayerImpactByAir(player)) {
-           valueToReturn = value * elementType.getMultiplier(player);
+            valueToReturn = value * elementType.getMultiplier(player);
         }
         return valueToReturn;
     }
@@ -60,12 +61,20 @@ public abstract class MagicInvoker {
     }
 
     public double magicValue(Magic magic, Player player) {
-        double playerLevel = adjustPlayerLevel(player);
-        double actualStrength = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, playerLevel);
+        double playerMultipel = countMultipel(player);
+        double actualStrength = magic.getBaseStrength() * playerMultipel;
         double roundedValue = Math.round(actualStrength * 100.0) / 100.0;
         roundedValue = impactFromRace(roundedValue, player, magic.getElement());
         return impactFromRole(roundedValue, player);
+    }
 
+    private double countMultipel(Player player) {
+        double playerLevel = adjustPlayerLevel(player);
+        double playerMultipel = 1.0;
+        for (int i = 0; i < playerLevel; i++) {
+            playerMultipel *= LEVEL_MULTIPLIER;
+        }
+        return playerMultipel;
     }
 
     private int adjustPlayerLevel(Player player) {
