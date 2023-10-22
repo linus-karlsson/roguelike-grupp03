@@ -9,7 +9,7 @@ public class MagicDefence extends MagicInvoker {
     }
 
     public String getName() {
-        return super.name;
+        return name;
     }
 
     public double throwMagic(Magic magic, Player player) {

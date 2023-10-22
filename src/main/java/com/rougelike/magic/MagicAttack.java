@@ -18,7 +18,7 @@ public class MagicAttack extends MagicInvoker {
     }
 
     public String getName() {
-        return super.name;
+        return name;
     }
 
     private boolean succeedToInvokeSpell(Player player) {

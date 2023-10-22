@@ -7,11 +7,11 @@ public class MagicElementType {
     protected static final double BASE_MULTIPLIER = 1.0;
 
     public MagicElementType(String name) {
-        this.NAME = name;
+        NAME = name;
     }
 
     public MagicElementType() {
-        this.NAME = "Neutral";
+        NAME = "Neutral";
     }
 
     public String getName() {

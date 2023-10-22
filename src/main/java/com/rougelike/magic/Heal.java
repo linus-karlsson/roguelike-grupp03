@@ -10,10 +10,6 @@ public class Heal extends MagicInvoker {
         super("Heal");
     }
 
-    public String getName() {
-        return super.name;
-    }
-
     // Kod ska gås igenom
     public double throwMagic(Magic magic, Player player) {
         double healthBeforeControl = player.getHealth() + magicValue(magic, player);
