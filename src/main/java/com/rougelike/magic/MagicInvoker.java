@@ -77,7 +77,7 @@ public abstract class MagicInvoker {
     }
 
     private static int adjustPlayerLevel(Player player) {
-        return player.getLevel() == 1 ? 0 : player.getLevel();
+        return 1 == player.getLevel() ? 0 : player.getLevel();
     }
 
     public abstract double throwMagic(Magic magic, Player player);

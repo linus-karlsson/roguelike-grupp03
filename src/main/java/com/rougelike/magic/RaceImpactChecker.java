@@ -4,7 +4,7 @@ import com.rougelike.Player;
 import com.rougelike.races.*;
 import com.rougelike.races.Orc;
 
-public class RaceImpactChecker {
+public final class RaceImpactChecker {
 
     static boolean isPlayerImpactByAir(Player player) {
         return player.getRace() instanceof Elf || player.getRace() instanceof Orc;
