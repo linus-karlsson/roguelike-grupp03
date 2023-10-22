@@ -393,17 +393,7 @@ public class DungeonGeneratorTest {
 
     @Test
     void testConnectRooms() {
-        double randomMultiplier = 0.0;
-        dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
-
-        int roomCount = 3;
-        List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
-                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
-
-        double[] randomMultipliers = { 0.0, 0.0, 0.5, 0.0, 0.0, 0.5 };
-        dungeonGenerator.setRandom(new RandomInternal(randomMultipliers));
-        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
-                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
+        List<Room> placedRooms = setupThreePreKnownRooms();
         dungeonGenerator.connectRooms(placedRooms);
         Grid grid = dungeonGenerator.getCopyOfGrid();
 
@@ -420,6 +410,21 @@ public class DungeonGeneratorTest {
         for (secondRoomGriddIndex.row--; secondRoomGriddIndex.column >= thirdRoomGriddIndex.column; secondRoomGriddIndex.column--) {
             assertTrue(grid.getTile(secondRoomGriddIndex) >= 0);
         }
+    }
+
+    private List<Room> setupThreePreKnownRooms() {
+        double randomMultiplier = 0.0;
+        dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
+
+        int roomCount = 3;
+        List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
+                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+
+        double[] randomMultipliers = { 0.0, 0.0, 0.5, 0.0, 0.0, 0.5 };
+        dungeonGenerator.setRandom(new RandomInternal(randomMultipliers));
+        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
+        return placedRooms;
     }
 
     @Test
@@ -451,12 +456,20 @@ public class DungeonGeneratorTest {
     // kan hitta alla rum
     @Test
     void testGetConnectedRooms() {
-        // - 1 för att gridden ska ha en border
+        Grid grid = new Grid(DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
+        grid.setBorder();
+        List<Room> placedRooms = fillGridWithRooms(grid);
+        int[] connectedRooms = dungeonGenerator.getConnectedRooms(placedRooms, grid);
+        for (int expected = 0; expected < placedRooms.size(); expected++) {
+            assertEquals(expected, connectedRooms[expected]);
+        }
+    }
+
+    private List<Room> fillGridWithRooms(Grid grid) {
+        // - 1 för att gridden har en border
         int rowCount = DEFAULT_ROW_COUNT - 1;
         int columnCount = DEFAULT_COLUMN_COUNT - 1;
         ArrayList<Room> placedRooms = new ArrayList<>(rowCount * columnCount);
-        Grid grid = new Grid(DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
-        grid.setBorder();
         GridIndex i = new GridIndex();
         // = 1 för bordern också
         for (i.row = 1; i.row < rowCount; i.row++) {
@@ -468,9 +481,23 @@ public class DungeonGeneratorTest {
                 placedRooms.add(room);
             }
         }
+        return placedRooms;
+    }
+
+    @Test
+    void testGetConnectedRoomsFail() {
+        List<Room> placedRooms = setupThreePreKnownRooms();
+        Grid grid = dungeonGenerator.getCopyOfGrid();
+
+        GridIndex firstRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(0).getPosition());
+        GridIndex secondRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(1).getPosition());
+        for (; firstRoomGriddIndex.column <= secondRoomGriddIndex.column; firstRoomGriddIndex.column++) {
+            grid.setTile(firstRoomGriddIndex, placedRooms.size());
+        }
+        int[] expected = { 0, 1, -1 };
         int[] connectedRooms = dungeonGenerator.getConnectedRooms(placedRooms, grid);
-        for (int expected = 0; expected < placedRooms.size(); expected++) {
-            assertEquals(expected, connectedRooms[expected]);
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(expected[i], connectedRooms[i]);
         }
     }
 
