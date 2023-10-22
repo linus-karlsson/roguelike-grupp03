@@ -17,12 +17,13 @@ public class ElementEarth extends MagicElementType{
 
             @Override
             public double getMultiplier(Player player) {
+                double multiplierToRetrun = BASE_MULTIPLIER;
                 if (player.getRace() instanceof Dwarf) {
-                    return EARTH_MULTIPLIE_DWARF;
+                    multiplierToRetrun = EARTH_MULTIPLIE_DWARF;
                 }
-                if (player.getRace() instanceof Orc) {
-                    return EARTH_MULTIPLIE_ORCH;
+                else if (player.getRace() instanceof Orc) {
+                    multiplierToRetrun = EARTH_MULTIPLIE_ORCH;
                 }
-                return BASE_MULTIPLIER;
+                return multiplierToRetrun;
             }
 }

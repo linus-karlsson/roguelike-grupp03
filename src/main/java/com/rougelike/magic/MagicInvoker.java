@@ -36,10 +36,11 @@ public abstract class MagicInvoker {
     }
 
     private double checkImpactFromRace(double value, Player player, MagicElementType elementType) {
+        double valueToReturn = value;
         if (isElementTypeAir(elementType) && raceImpactChecker.isPlayerImpactByAir(player)) {
-            return value * elementType.getMultiplier(player);
+           valueToReturn = value * elementType.getMultiplier(player);
         }
-        return value;
+        return valueToReturn;
     }
 
     private boolean isElementTypeAir(MagicElementType elementType) {
