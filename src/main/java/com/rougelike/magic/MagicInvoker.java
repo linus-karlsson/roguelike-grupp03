@@ -44,7 +44,7 @@ abstract public class MagicInvoker {
     }
 
     private Boolean isRoleNull(Player player) {
-        return player.getRole() == null;
+        return null == player.getRole();
     }
 
     private double calculateValueForMage(double actualStrength) {
