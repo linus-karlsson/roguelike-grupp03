@@ -1,7 +1,8 @@
 package com.rougelike.magic;
 
-import com.rougelike.*;
-import com.rougelike.races.*;
+import com.rougelike.Player;
+import com.rougelike.races.Elf;
+import com.rougelike.races.Orc;
 
 //Alv starkare, orch svagare
 // Vind är starka mot jord (dvärg) och vatten (starkare vid kombination med eld)
