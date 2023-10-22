@@ -11,9 +11,10 @@ public class ElementAir extends MagicElementType {
 
     private static final double AIR_MULTIPLIER_ELF = 1.05;
     private static final double AIR_MULTIPLIER_ORC = 0.95;
+    private static final String ELEMENT_TYPE = "Air";
     
         public ElementAir() {
-            super("Air");
+            super(ELEMENT_TYPE);
         }
         @Override
         public double getMultiplier(Player player) {

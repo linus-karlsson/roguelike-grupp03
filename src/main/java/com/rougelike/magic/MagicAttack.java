@@ -7,9 +7,10 @@ import com.rougelike.roles.*;
 
 public class MagicAttack extends MagicInvoker {
     private Random random = new Random();
+    private static final String TYPE_OF_MAGIC = "Attack";  
 
     public MagicAttack() {
-        super("Attack");
+        super(TYPE_OF_MAGIC);
     }
 
     public MagicAttack(Random random) {

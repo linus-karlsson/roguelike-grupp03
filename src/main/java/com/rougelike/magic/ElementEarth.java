@@ -9,9 +9,10 @@ public class ElementEarth extends MagicElementType{
 
     private static final double EARTH_MULTIPLIE_DWARF = 1.05;
     private static final double EARTH_MULTIPLIE_ORCH = 0.95;
+    private static final String ELEMENT_TYPE = "Earth";
        
             public ElementEarth() {
-                super("Earth");
+                super(ELEMENT_TYPE);
             }
 
             @Override

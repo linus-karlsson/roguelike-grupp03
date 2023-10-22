@@ -6,8 +6,10 @@ import com.rougelike.*;
 // Eld påverkar orcher svagare och mot vatten
 public class ElementFire extends MagicElementType   {
 
+    private static final String ELEMENT_TYPE = "Fire";
+
     public ElementFire() {
-        super("Fire");
+        super(ELEMENT_TYPE);
     }
 
     @Override
