@@ -1,8 +1,5 @@
 package com.rougelike.magic;
-
 import com.rougelike.Player;
-import com.rougelike.roles.*;
-import com.rougelike.races.*;
 
 abstract public class MagicInvoker {
 

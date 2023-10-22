@@ -4,7 +4,7 @@ import com.rougelike.Player;
 
 public class Heal extends MagicInvoker {
 
-    private final double MAX_HEALTH = 100;
+    private static final double MAX_HEALTH = 100;
 
     public Heal() {
         super("Heal");
