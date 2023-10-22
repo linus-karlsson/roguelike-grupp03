@@ -22,10 +22,13 @@ public class MagicAttack extends MagicInvoker {
     }
 
     private boolean succeedToInvokeSpell(Player player) {
+        final int chanceForMage = 98;
+        final int chanceForAllOtherRoles = 95;
+        final int span = 100;
         if (player.getRole() instanceof Mage) {
-            return (random.nextInt(100) + 1) < 98;
+            return (random.nextInt(span) + 1) < chanceForMage;
         } else
-            return (random.nextInt(100) + 1) < 95;
+            return (random.nextInt(span) + 1) < chanceForAllOtherRoles;
     }
 
     public double throwMagic(Magic magic, Player player) {
