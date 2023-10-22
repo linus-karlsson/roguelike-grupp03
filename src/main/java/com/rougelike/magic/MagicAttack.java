@@ -18,7 +18,7 @@ public class MagicAttack extends MagicInvoker {
         this.random = random;
     }
 
-    private boolean succeedToInvokeSpell(Player player) {
+    private boolean isSpellInvoked(Player player) {
         final int chanceForMage = 98;
         final int chanceForAllOtherRoles = 95;
         final int span = 100;
@@ -29,7 +29,7 @@ public class MagicAttack extends MagicInvoker {
     }
 
     public double throwMagic(Magic magic, Player player) {
-        if (succeedToInvokeSpell(player)) {
+        if (isSpellInvoked(player)) {
             return magicValue(magic, player) < 0 ? 0 : magicValue(magic, player);
         }
         return 0;

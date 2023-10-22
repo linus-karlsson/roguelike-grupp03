@@ -18,7 +18,7 @@ public abstract class MagicInvoker {
         return name;
     }
 
-    private double checkImpactFromRole(double value, Player player) {
+    private double impactFromRole(double value, Player player) {
         if (isRoleNull(player)) {
             return value;
         }
@@ -35,7 +35,7 @@ public abstract class MagicInvoker {
         }
     }
 
-    private double checkImpactFromRace(double value, Player player, MagicElementType elementType) {
+    private double impactFromRace(double value, Player player, MagicElementType elementType) {
         double valueToReturn = value;
         if (isElementTypeAir(elementType) && raceImpactChecker.isPlayerImpactByAir(player)) {
            valueToReturn = value * elementType.getMultiplier(player);
@@ -47,7 +47,7 @@ public abstract class MagicInvoker {
         return ("Air".equals(elementType.getName()));
     }
 
-    private Boolean isRoleNull(Player player) {
+    private boolean isRoleNull(Player player) {
         return null == player.getRole();
     }
 
@@ -63,8 +63,8 @@ public abstract class MagicInvoker {
         double playerLevel = adjustPlayerLevel(player);
         double actualStrength = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, playerLevel);
         double roundedValue = Math.round(actualStrength * 100.0) / 100.0;
-        roundedValue = checkImpactFromRace(roundedValue, player, magic.getElement());
-        return checkImpactFromRole(roundedValue, player);
+        roundedValue = impactFromRace(roundedValue, player, magic.getElement());
+        return impactFromRole(roundedValue, player);
 
     }
 
