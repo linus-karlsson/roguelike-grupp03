@@ -7,7 +7,6 @@ public abstract class MagicInvoker {
     private static final double MAGE_MAGIC_MULTIPLIER = 1.1;
     private static final double KNIGHT_MAGIC_MULTIPLIER = 0.9;
     private static final double LEVEL_MULTIPLIER = 1.2;
-    private static final RaceImpactChecker raceImpactChecker = new RaceImpactChecker();
 
     protected String name;
 
@@ -38,7 +37,7 @@ public abstract class MagicInvoker {
 
     private double impactFromRace(double value, Player player, MagicElementType elementType) {
         double valueToReturn = value;
-        if (isElementTypeAir(elementType) && raceImpactChecker.isPlayerImpactByAir(player)) {
+        if (isElementTypeAir(elementType) && RaceImpactChecker.isPlayerImpactByAir(player)) {
             valueToReturn = value * elementType.getMultiplier(player);
         }
         return valueToReturn;
