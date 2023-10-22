@@ -21,10 +21,6 @@ public class DungeonGenerator {
         random = new Random();
     }
 
-    DungeonGenerator(Random random) {
-        this.random = random;
-    }
-
     void setRandom(Random random) {
         this.random = random;
     }

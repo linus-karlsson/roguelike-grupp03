@@ -28,7 +28,7 @@ public class DungeonGeneratorTest {
     private static final int DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD = 10;
     private static final double ERROR_ACCEPTANCE = 0.0001;
 
-    private DungeonGenerator dungeonGenerator = new DungeonGenerator();
+    private final DungeonGenerator dungeonGenerator = new DungeonGenerator();
 
     @Test
     void testGenerateRoomWithinBounds() {
@@ -101,6 +101,15 @@ public class DungeonGeneratorTest {
     // Tagen från java docs
     private double randomDoubleInBounds(double multiplier, double low, double high) {
         return (multiplier * (high - low)) + low;
+    }
+
+    @Test
+    void testGenerateListOfRoomsThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            dungeonGenerator.generateListOfRooms(0, DEFAULT_MIN_WIDTH,
+                    DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+        });
+
     }
 
     @Test

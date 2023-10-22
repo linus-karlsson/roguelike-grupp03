@@ -15,7 +15,7 @@ public class RoomParser {
 
     public RoomParser(Grid grid) {
         this.grid = grid;
-        currentRoom = new Room(0.0, 0.0);
+        currentRoom = null;
         index = new GridIndex();
         startIndex = new GridIndex();
         endIndex = new GridIndex();
@@ -42,6 +42,10 @@ public class RoomParser {
 
     public void resetRoom() {
         index = new GridIndex(startIndex);
+    }
+
+    Room getCurrentRoom() {
+        return currentRoom;
     }
 
     public GridIndex getRoomStartIndex() {
