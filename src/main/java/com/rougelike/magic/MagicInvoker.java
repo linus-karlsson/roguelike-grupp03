@@ -8,7 +8,7 @@ public abstract class MagicInvoker {
     private static final double KNIGHT_MAGIC_MULTIPLIER = 0.9;
     private static final double LEVEL_MULTIPLIER = 1.2;
 
-    protected String name;
+    protected final String name;
 
     protected MagicInvoker(String name) {
         this.name = name;
