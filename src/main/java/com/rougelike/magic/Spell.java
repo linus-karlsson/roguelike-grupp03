@@ -10,10 +10,10 @@ public enum Spell {
     HEAL("Heal", 10.0, new Heal(), new MagicElementType());
     
 
-    private String name;
-    private double baseStrength;
-    private MagicInvoker type;
-    private MagicElementType element;
+    private final String name;
+    private final double baseStrength;
+    private final MagicInvoker type;
+    private final MagicElementType element;
 
     private Spell(String name, double baseStrength, MagicInvoker type, MagicElementType element) {
         this.name = name;
