@@ -17,10 +17,6 @@ public class MagicAttack extends MagicInvoker {
         this.random = random;
     }
 
-    public String getName() {
-        return name;
-    }
-
     private boolean succeedToInvokeSpell(Player player) {
         final int chanceForMage = 98;
         final int chanceForAllOtherRoles = 95;

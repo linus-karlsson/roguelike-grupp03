@@ -10,7 +10,7 @@ public abstract class MagicInvoker {
 
     protected String name;
 
-    public MagicInvoker(String name) {
+    protected MagicInvoker(String name) {
         this.name = name;
     }
 
