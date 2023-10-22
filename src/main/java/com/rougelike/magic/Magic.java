@@ -13,19 +13,19 @@ public class Magic {
         this.ELEMENT = spell.getElement();
     }
 
-    public String getName() {
+    public final String getName() {
         return NAME;
     }
 
-    public double getBaseStrength() {
+    public final double getBaseStrength() {
         return BASE_STRENGTH;
     }
 
-    public MagicInvoker getType() {
+    public final MagicInvoker getType() {
         return TYPE;
     }
 
-    public MagicElementType getElement() {
+    public final MagicElementType getElement() {
         return ELEMENT;
     }
 

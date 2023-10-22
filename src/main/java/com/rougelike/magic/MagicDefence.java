@@ -10,7 +10,7 @@ public class MagicDefence extends MagicInvoker {
         super(TYPE_OF_MAGIC);
     }
 
-    public double throwMagic(Magic magic, Player player) {
+    public final double throwMagic(Magic magic, Player player) {
         return magicValue(magic, player)/2;
         // för utveckling
     }

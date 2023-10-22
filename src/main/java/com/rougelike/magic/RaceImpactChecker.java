@@ -6,19 +6,19 @@ import com.rougelike.races.Orc;
 
 public class RaceImpactChecker {
 
-    boolean isPlayerImpactByAir(Player player) {
+    static boolean isPlayerImpactByAir(Player player) {
         return player.getRace() instanceof Elf || player.getRace() instanceof Orc;
     }
 
-    boolean isPlayerImpactByFire(Player player) {
+    static boolean isPlayerImpactByFire(Player player) {
         return player.getRace() instanceof Orc || player.getRace() instanceof Elf;
     }
 
-    boolean isPlayerImpactByWater(Player player) {
+    static boolean isPlayerImpactByWater(Player player) {
         return player.getRace() instanceof Dwarf || player.getRace() instanceof Orc;
     }
 
-    boolean isPlayerImpactByEarth(Player player) {
+    static boolean isPlayerImpactByEarth(Player player) {
         return player.getRace() instanceof Dwarf;
     }
 

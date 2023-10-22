@@ -44,19 +44,19 @@ public abstract class MagicInvoker {
         return valueToReturn;
     }
 
-    private boolean isElementTypeAir(MagicElementType elementType) {
+    private static boolean isElementTypeAir(MagicElementType elementType) {
         return ("Air".equals(elementType.getName()));
     }
 
-    private boolean isRoleNull(Player player) {
+    private static boolean isRoleNull(Player player) {
         return null == player.getRole();
     }
 
-    private double calculateValueForMage(double actualStrength) {
+    private static double calculateValueForMage(double actualStrength) {
         return actualStrength * MAGE_MAGIC_MULTIPLIER;
     }
 
-    private double calculateValueForKnight(double actualStrength) {
+    private static double calculateValueForKnight(double actualStrength) {
         return actualStrength * KNIGHT_MAGIC_MULTIPLIER;
     }
 
@@ -77,7 +77,7 @@ public abstract class MagicInvoker {
         return playerMultipel;
     }
 
-    private int adjustPlayerLevel(Player player) {
+    private static int adjustPlayerLevel(Player player) {
         return player.getLevel() == 1 ? 0 : player.getLevel();
     }
 

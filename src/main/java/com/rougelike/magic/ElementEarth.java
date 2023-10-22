@@ -16,7 +16,7 @@ public class ElementEarth extends MagicElementType{
             }
 
             @Override
-            public double getMultiplier(Player player) {
+            public final double getMultiplier(Player player) {
                 double multiplierToRetrun = BASE_MULTIPLIER;
                 if (player.getRace() instanceof Dwarf) {
                     multiplierToRetrun = EARTH_MULTIPLIE_DWARF;

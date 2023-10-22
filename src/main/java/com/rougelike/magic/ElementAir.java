@@ -17,7 +17,7 @@ public class ElementAir extends MagicElementType {
             super(ELEMENT_TYPE);
         }
         @Override
-        public double getMultiplier(Player player) {
+        public final double getMultiplier(Player player) {
             double multiplierToRetrun = BASE_MULTIPLIER;
             if (player.getRace() instanceof Elf) {
                multiplierToRetrun = AIR_MULTIPLIER_ELF;

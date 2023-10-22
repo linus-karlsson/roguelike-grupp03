@@ -14,7 +14,7 @@ public class ElementWater extends MagicElementType {
             }
 
             @Override
-            public double getMultiplier(Player player) {
+            public final double getMultiplier(Player player) {
                 return BASE_MULTIPLIER;
             }
 }
