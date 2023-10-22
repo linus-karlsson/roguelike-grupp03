@@ -3,6 +3,7 @@ package com.rougelike;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import com.rougelike.dungeon.Grid;
@@ -42,7 +43,7 @@ public class Player extends Entity {
     private Armor equippedArmor;
     private ArrayList<Weapon> weaponInventory = new ArrayList<>();
     private ArrayList<Armor> armorInventory = new ArrayList<>();
-    private HashMap<String, Magic> magicInventory = new HashMap<>();
+    private Map<String, Magic> magicInventory = new HashMap<>();
 
     private Point2D position;
     private Vector2D velocity;
@@ -436,8 +437,8 @@ public class Player extends Entity {
         return magicInventory.containsKey(magic);
     }
 
-    public HashMap<String, Magic> getMagicInventory() {
-        return magicInventory;
+    public Map<String, Magic> getMagicInventory() {
+        return  Collections.unmodifiableMap(magicInventory);
     }
 
     public void useMagic(String magic) {
