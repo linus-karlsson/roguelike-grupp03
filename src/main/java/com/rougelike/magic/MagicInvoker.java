@@ -22,11 +22,13 @@ public abstract class MagicInvoker {
         if (isRoleNull(player)) {
             return value;
         }
+        final String roleOne = "Knight";
+        final String roleTwo = "Mage";
         String role = player.getRole().getClass().getSimpleName();
         switch (role) {
-            case "Knight":
+            case roleOne:
                 return calculateValueForKnight(value);
-            case "Mage":
+            case roleTwo:
                 return calculateValueForMage(value);
             default:
                 return value;
