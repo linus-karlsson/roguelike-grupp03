@@ -3,6 +3,9 @@ package com.rougelike.dungeon;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,8 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.Description;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -208,7 +209,7 @@ public class DungeonGeneratorTest {
         double randomMultiplier = 0.3;
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
         int expected = 1;
-        assertThat(expected, is(equalTo(getDefaultPlacedRooms(rooms).size())));
+        assertThat(getDefaultPlacedRooms(rooms), hasSize(expected));
     }
 
     private List<Room> getDefaultPlacedRooms(List<Room> rooms) {
@@ -266,7 +267,7 @@ public class DungeonGeneratorTest {
         dungeonGenerator.setRandom(new RandomInternal(
                 randomMultipliersForMultipleTries(roomCount, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD)));
 
-        assertEquals(roomCount, getDefaultPlacedRooms(rooms).size());
+        assertThat(getDefaultPlacedRooms(rooms), hasSize(roomCount));
     }
 
     private double[] randomMultipliersForMultipleTries(int roomCount, int numberOfTriesBeforeDiscard) {
@@ -391,9 +392,15 @@ public class DungeonGeneratorTest {
         dungeonGenerator.connectRooms(placedRooms);
 
         int[] connectedRooms = dungeonGenerator.getConnectedRooms(placedRooms, dungeonGenerator.getCopyOfGrid());
-        for (int expected = 0; expected < placedRooms.size(); expected++) {
-            assertEquals(expected, connectedRooms[expected]);
+        assertThat(connectedRooms, is(equalTo(getArrayOfIncrementedIntegers(placedRooms.size()))));
+    }
+
+    private static int[] getArrayOfIncrementedIntegers(int size) {
+        int[] result = new int[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = i;
         }
+        return result;
     }
 
     @Test
@@ -408,13 +415,13 @@ public class DungeonGeneratorTest {
         GridIndex thirdRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(2).getPosition());
 
         for (; firstRoomGriddIndex.column <= secondRoomGriddIndex.column; firstRoomGriddIndex.column++) {
-            assertTrue(grid.getTile(firstRoomGriddIndex) >= 0);
+            assertThat(grid.getTile(firstRoomGriddIndex), greaterThanOrEqualTo(0));
         }
         for (; secondRoomGriddIndex.row <= thirdRoomGriddIndex.row; secondRoomGriddIndex.row++) {
-            assertTrue(grid.getTile(secondRoomGriddIndex) >= 0);
+            assertThat(grid.getTile(secondRoomGriddIndex), greaterThanOrEqualTo(0));
         }
         for (secondRoomGriddIndex.row--; secondRoomGriddIndex.column >= thirdRoomGriddIndex.column; secondRoomGriddIndex.column--) {
-            assertTrue(grid.getTile(secondRoomGriddIndex) >= 0);
+            assertThat(grid.getTile(secondRoomGriddIndex), greaterThanOrEqualTo(0));
         }
     }
 
@@ -444,8 +451,8 @@ public class DungeonGeneratorTest {
     void testConnectRoomsNoUnnessisaryCorridors() {
         double[] randomMultipliers = { 0.5, 0.0, 0.5, 1.0, 0.45, 0.5 };
         List<Room> placedRooms = setupThreePreKnownRooms(randomMultipliers);
-        int expected = 1;
-        assertEquals(expected, dungeonGenerator.connectRooms(placedRooms));
+        int expectedCorridorCount = 1;
+        assertEquals(expectedCorridorCount, dungeonGenerator.connectRooms(placedRooms));
     }
 
     // Platserar ett rum för varje tile i gridden och ser att getConnectedRooms
@@ -456,9 +463,7 @@ public class DungeonGeneratorTest {
         grid.setBorder();
         List<Room> placedRooms = fillGridWithRooms(grid);
         int[] connectedRooms = dungeonGenerator.getConnectedRooms(placedRooms, grid);
-        for (int expected = 0; expected < placedRooms.size(); expected++) {
-            assertEquals(expected, connectedRooms[expected]);
-        }
+        assertArrayEquals(getArrayOfIncrementedIntegers(placedRooms.size()), connectedRooms);
     }
 
     private List<Room> fillGridWithRooms(Grid grid) {
@@ -492,7 +497,7 @@ public class DungeonGeneratorTest {
             grid.setTile(firstRoomGriddIndex, placedRooms.size());
         }
         int[] expected = { 0, 1, -1 };
-        assertArrayEquals(expected, dungeonGenerator.getConnectedRooms(placedRooms, grid));
+        assertThat(dungeonGenerator.getConnectedRooms(placedRooms, grid), is(equalTo(expected)));
     }
 
     @Test
