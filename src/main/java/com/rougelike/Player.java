@@ -438,7 +438,7 @@ public class Player extends Entity {
     }
 
     public Map<String, Magic> getMagicInventory() {
-        return  Collections.unmodifiableMap(magicInventory);
+        return Collections.unmodifiableMap(magicInventory);
     }
 
     public void useMagic(String magic) {
