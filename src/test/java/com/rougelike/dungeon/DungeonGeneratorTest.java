@@ -3,6 +3,7 @@ package com.rougelike.dungeon;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -397,7 +398,8 @@ public class DungeonGeneratorTest {
 
     @Test
     void testConnectRooms() {
-        List<Room> placedRooms = setupThreePreKnownRooms();
+        double[] randomMultipliers = { 0.0, 0.0, 0.5, 0.0, 0.0, 0.5 };
+        List<Room> placedRooms = setupThreePreKnownRooms(randomMultipliers);
         dungeonGenerator.connectRooms(placedRooms);
         Grid grid = dungeonGenerator.getCopyOfGrid();
 
@@ -416,16 +418,15 @@ public class DungeonGeneratorTest {
         }
     }
 
-    private List<Room> setupThreePreKnownRooms() {
-        double randomMultiplier = 0.0;
+    private List<Room> setupThreePreKnownRooms(double[] randomRoomPlacementMultipliers) {
+        double randomMultiplier = 1.0;
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
 
         int roomCount = 3;
         List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
 
-        double[] randomMultipliers = { 0.0, 0.0, 0.5, 0.0, 0.0, 0.5 };
-        dungeonGenerator.setRandom(new RandomInternal(randomMultipliers));
+        dungeonGenerator.setRandom(new RandomInternal(randomRoomPlacementMultipliers));
         List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
                 DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
         return placedRooms;
@@ -441,17 +442,8 @@ public class DungeonGeneratorTest {
 
     @Test
     void testConnectRoomsNoUnnessisaryCorridors() {
-        double randomMultiplier = 1.0;
-        dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
-
-        int roomCount = 3;
-        List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
-                DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
-
         double[] randomMultipliers = { 0.5, 0.0, 0.5, 1.0, 0.45, 0.5 };
-        dungeonGenerator.setRandom(new RandomInternal(randomMultipliers));
-        List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
-                DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
+        List<Room> placedRooms = setupThreePreKnownRooms(randomMultipliers);
         int expected = 1;
         assertEquals(expected, dungeonGenerator.connectRooms(placedRooms));
     }
@@ -490,7 +482,8 @@ public class DungeonGeneratorTest {
 
     @Test
     void testGetConnectedRoomsFail() {
-        List<Room> placedRooms = setupThreePreKnownRooms();
+        double[] randomMultipliers = { 0.0, 0.0, 0.5, 0.0, 0.0, 0.5 };
+        List<Room> placedRooms = setupThreePreKnownRooms(randomMultipliers);
         Grid grid = dungeonGenerator.getCopyOfGrid();
 
         GridIndex firstRoomGriddIndex = grid.getGriddIndexBasedOnPosition(placedRooms.get(0).getPosition());
@@ -499,10 +492,7 @@ public class DungeonGeneratorTest {
             grid.setTile(firstRoomGriddIndex, placedRooms.size());
         }
         int[] expected = { 0, 1, -1 };
-        int[] connectedRooms = dungeonGenerator.getConnectedRooms(placedRooms, grid);
-        for (int i = 0; i < expected.length; i++) {
-            assertEquals(expected[i], connectedRooms[i]);
-        }
+        assertArrayEquals(expected, dungeonGenerator.getConnectedRooms(placedRooms, grid));
     }
 
     @Test
