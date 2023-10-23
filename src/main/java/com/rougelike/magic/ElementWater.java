@@ -6,9 +6,11 @@ import com.rougelike.*;
 //vatten påverkar vind(alv) starkare i kombination med jord
 //vatten påverkar eld(orch) svagare
 public class ElementWater extends MagicElementType {
+
+    private static final String ELEMENT_TYPE = "Water";
         
             public ElementWater() {
-                super("Water");
+                super(ELEMENT_TYPE);
             }
 
             @Override

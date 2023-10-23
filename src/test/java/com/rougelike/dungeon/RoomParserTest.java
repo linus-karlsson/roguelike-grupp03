@@ -13,11 +13,17 @@ public class RoomParserTest {
     double tileSize = 10.0;
     Grid grid = new Grid(10, 10, tileSize);
     Room room = new Room(10.0, 10.0); // 3 x 3 room
-    RoomParser roomParser = new RoomParser(grid);
+    RoomParser roomParser = new RoomParser(grid, room);
+
+    @Test
+    void testConstructorOnlyPassingGrid() {
+        RoomParser roomParser1 = new RoomParser(grid);
+        Room expected = null;
+        assertEquals(expected, roomParser1.getCurrentRoom());
+    }
 
     @Test
     void testResetRoom() {
-        roomParser.setRoom(room);
         roomParser.resetRoom();
         GridIndex expected = roomParser.getRoomStartIndex();
         GridIndex index = roomParser.nextIndex();
@@ -27,7 +33,6 @@ public class RoomParserTest {
 
     @Test
     void testSetRoomStartIndex() {
-        roomParser.setRoom(room);
         GridIndex startIndex = roomParser.getRoomStartIndex();
         GridIndex expected = new GridIndex(grid.getGriddIndexBasedOnPosition(room.getPosition()));
         assertEquals(expected.column, startIndex.column);
@@ -36,7 +41,6 @@ public class RoomParserTest {
 
     @Test
     void testSetRoomEndIndex() {
-        roomParser.setRoom(room);
         GridIndex endIndex = roomParser.getRoomEndIndex();
         Point2D endPosition = room.getPosition();
         endPosition.setX(endPosition.getX() + room.getWidth());
@@ -48,7 +52,6 @@ public class RoomParserTest {
 
     @Test
     void testSetRoomIndex() {
-        roomParser.setRoom(room);
         GridIndex index = roomParser.nextIndex();
         GridIndex expected = roomParser.getRoomStartIndex();
         assertEquals(expected.column, index.column);
@@ -64,7 +67,6 @@ public class RoomParserTest {
 
     @Test
     void testGriddParserGetRoomCellCountInX() {
-        roomParser.setRoom(room);
         int cellCountInX = roomParser.getRoomTileCountInX();
         int expected = (int) (room.getWidth() / tileSize) + 1;
         assertEquals(expected, cellCountInX);
@@ -72,7 +74,6 @@ public class RoomParserTest {
 
     @Test
     void testGriddParserGetRoomCellCountInY() {
-        roomParser.setRoom(room);
         int cellCountInY = roomParser.getRoomTileCountInY();
         int expected = (int) (room.getHeight() / tileSize) + 1;
         assertEquals(expected, cellCountInY);
@@ -113,6 +114,16 @@ public class RoomParserTest {
     }
 
     @Test
+    void testNextIndexThrows() {
+        while (roomParser.hasNextIndex()) {
+            roomParser.nextIndex();
+        }
+        assertThrows(IllegalAccessError.class, () -> {
+            roomParser.nextIndex();
+        });
+    }
+
+    @Test
     void testRoomAreaToList() {
         List<Integer> expected = setUpExpectedIntegerList();
         List<Integer> roomTileList = roomParser.roomAreaToList();
@@ -129,7 +140,6 @@ public class RoomParserTest {
     private List<Integer> setUpExpectedIntegerList() {
         int roomId = 3;
         room.setId(roomId);
-        roomParser.setRoom(room);
         roomParser.placeRoomInGridd();
         List<Integer> expected = new ArrayList<>(roomParser.getRoomTileCountInY() * roomParser.getRoomTileCountInX());
         for (int row = 0; row < roomParser.getRoomTileCountInY(); row++) {
@@ -138,5 +148,47 @@ public class RoomParserTest {
             }
         }
         return expected;
+    }
+
+    @Test
+    void testPlaceRoomsInAreaEmptyTilesAroundRoom() {
+        room.setPosition(tileSize, tileSize);
+        roomParser.setRoom(room);
+        roomParser.setRoomBorder();
+        GridIndex startIndex = roomParser.getRoomStartIndex();
+        GridIndex endIndex = roomParser.getRoomEndIndex();
+        checkTilesAboveRoom(grid, startIndex, endIndex.column);
+        checkTilesBelowRoom(grid, endIndex, startIndex.column);
+        checkTilesToLeftOfRoom(grid, startIndex, endIndex.row);
+        checkTilesToRightOfRoom(grid, endIndex, startIndex.row);
+
+    }
+
+    private void checkTilesAboveRoom(Grid grid, GridIndex startIndex, int endColumn) {
+        GridIndex i = new GridIndex(startIndex);
+        for (i.row -= 1, i.column -= 1; i.column <= endColumn; i.column++) {
+            assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
+        }
+    }
+
+    private void checkTilesBelowRoom(Grid grid, GridIndex endIndex, int startColumn) {
+        GridIndex i = new GridIndex(endIndex);
+        for (i.row += 1, i.column += 1; i.column >= startColumn; i.column--) {
+            assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
+        }
+    }
+
+    private void checkTilesToLeftOfRoom(Grid grid, GridIndex startIndex, int endRow) {
+        GridIndex i = new GridIndex(startIndex);
+        for (i.column -= 1; i.row <= endRow + 1; i.row++) {
+            assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
+        }
+    }
+
+    private void checkTilesToRightOfRoom(Grid grid, GridIndex endIndex, int startRow) {
+        GridIndex i = new GridIndex(endIndex);
+        for (i.column += 1; i.row >= startRow + 1; i.row--) {
+            assertEquals(Grid.BORDER_VALUE, grid.getTile(i));
+        }
     }
 }

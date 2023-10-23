@@ -38,6 +38,30 @@ public class Grid {
         setTile(index.row, index.column, value);
     }
 
+    public double getTileSize() {
+        return tileSize;
+    }
+
+    public double getWidth() {
+        return getColumnCount() * getTileSize();
+    }
+
+    public double getHeight() {
+        return getRowCount() * getTileSize();
+    }
+
+    public GridIndex getGriddIndexBasedOnPosition(Point2D position) {
+        return new GridIndex(getPositionTileCountInY(position), getPositionTileCountInX(position));
+    }
+
+    private int getPositionTileCountInY(Point2D position) {
+        return (int) (position.getY() / tileSize);
+    }
+
+    private int getPositionTileCountInX(Point2D position) {
+        return (int) (position.getX() / tileSize);
+    }
+
     public void fillWithValue(int value) {
         for (int row = 0; row < getRowCount(); row++) {
             for (int column = 0; column < getColumnCount(); column++) {
@@ -79,27 +103,4 @@ public class Grid {
         return true;
     }
 
-    public double getTileSize() {
-        return tileSize;
-    }
-
-    public double getWidth() {
-        return getColumnCount() * getTileSize();
-    }
-
-    public double getHeight() {
-        return getRowCount() * getTileSize();
-    }
-
-    public GridIndex getGriddIndexBasedOnPosition(Point2D position) {
-        return new GridIndex(getPositionTileCountInY(position), getPositionTileCountInX(position));
-    }
-
-    private int getPositionTileCountInY(Point2D position) {
-        return (int) (position.getY() / tileSize);
-    }
-
-    private int getPositionTileCountInX(Point2D position) {
-        return (int) (position.getX() / tileSize);
-    }
 }

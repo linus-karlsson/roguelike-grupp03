@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class MageTest {
 
     @Test
-    public void TestPlayerMageDebuffDebuffsEnemy(){
+    public void testPlayerMageDebuffDebuffsEnemy(){
         Mage mage = new Mage();
         Troll troll = new Troll();
         double trollStartingDamage = troll.getDamage();

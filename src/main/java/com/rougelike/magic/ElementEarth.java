@@ -9,19 +9,21 @@ public class ElementEarth extends MagicElementType{
 
     private static final double EARTH_MULTIPLIE_DWARF = 1.05;
     private static final double EARTH_MULTIPLIE_ORCH = 0.95;
+    private static final String ELEMENT_TYPE = "Earth";
        
             public ElementEarth() {
-                super("Earth");
+                super(ELEMENT_TYPE);
             }
 
             @Override
             public double getMultiplier(Player player) {
+                double multiplierToRetrun = BASE_MULTIPLIER;
                 if (player.getRace() instanceof Dwarf) {
-                    return EARTH_MULTIPLIE_DWARF;
+                    multiplierToRetrun = EARTH_MULTIPLIE_DWARF;
                 }
-                if (player.getRace() instanceof Orc) {
-                    return EARTH_MULTIPLIE_ORCH;
+                else if (player.getRace() instanceof Orc) {
+                    multiplierToRetrun = EARTH_MULTIPLIE_ORCH;
                 }
-                return BASE_MULTIPLIER;
+                return multiplierToRetrun;
             }
 }

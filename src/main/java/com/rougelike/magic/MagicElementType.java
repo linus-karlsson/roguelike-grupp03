@@ -4,14 +4,15 @@ import com.rougelike.*;
 
 public class MagicElementType {
     private final String NAME;
+    private static final String ELEMENT_TYPE = "Neutral";
     protected static final double BASE_MULTIPLIER = 1.0;
 
     public MagicElementType(String name) {
-        this.NAME = name;
+        NAME = name;
     }
 
     public MagicElementType() {
-        this.NAME = "Neutral";
+        NAME = ELEMENT_TYPE;
     }
 
     public String getName() {

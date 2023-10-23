@@ -7,9 +7,10 @@ import com.rougelike.roles.*;
 
 public class MagicAttack extends MagicInvoker {
     private Random random = new Random();
+    private static final String TYPE_OF_MAGIC = "Attack";  
 
     public MagicAttack() {
-        super("Attack");
+        super(TYPE_OF_MAGIC);
     }
 
     public MagicAttack(Random random) {
@@ -17,22 +18,21 @@ public class MagicAttack extends MagicInvoker {
         this.random = random;
     }
 
-    public String getName() {
-        return super.name;
-    }
-
-    private boolean succeedToInvokeSpell(Player player) {
+    private boolean isSpellInvoked(Player player) {
+        final int chanceForMage = 98;
+        final int chanceForAllOtherRoles = 95;
+        final int span = 100;
         if (player.getRole() instanceof Mage) {
-            return (random.nextInt(100) + 1) < 98;
+            return  chanceForMage > (random.nextInt(span) + 1) ;
         } else
-            return (random.nextInt(100) + 1) < 95;
+            return chanceForAllOtherRoles > (random.nextInt(span) + 1) ;
     }
 
     public double throwMagic(Magic magic, Player player) {
-        if (succeedToInvokeSpell(player)) {
-            return magicValue(magic, player) < 0 ? 0 : magicValue(magic, player);
+        if (isSpellInvoked(player)) {
+            return 0.0 > magicValue(magic, player) ? 0.0 : magicValue(magic, player);
         }
-        return 0;
+        return 0.0;
     }
 
 }

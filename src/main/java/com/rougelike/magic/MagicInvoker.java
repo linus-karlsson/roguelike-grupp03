@@ -1,19 +1,16 @@
 package com.rougelike.magic;
 
 import com.rougelike.Player;
-import com.rougelike.roles.*;
-import com.rougelike.races.*;
 
-abstract public class MagicInvoker {
+public abstract class MagicInvoker {
 
     private static final double MAGE_MAGIC_MULTIPLIER = 1.1;
     private static final double KNIGHT_MAGIC_MULTIPLIER = 0.9;
     private static final double LEVEL_MULTIPLIER = 1.2;
-    private static final RaceImpactChecker raceImpactChecker = new RaceImpactChecker();
 
-    protected String name;
+    protected final String name;
 
-    public MagicInvoker(String name) {
+    protected MagicInvoker(String name) {
         this.name = name;
     }
 
@@ -21,55 +18,68 @@ abstract public class MagicInvoker {
         return name;
     }
 
-    private double checkImpactFromRole(double value, Player player) {
+    private double impactFromRole(double value, Player player) {
         if (isRoleNull(player)) {
             return value;
         }
-        switch (player.getRole().getClass().getSimpleName()) {
-            case "Knight":
+        final String roleOne = "Knight";
+        final String roleTwo = "Mage";
+        String role = player.getRole().getClass().getSimpleName();
+        switch (role) {
+            case roleOne:
                 return calculateValueForKnight(value);
-            case "Mage":
+            case roleTwo:
                 return calculateValueForMage(value);
             default:
                 return value;
         }
     }
 
-    private double checkImpactFromRace(double value, Player player, MagicElementType elementType) {
-        if (isElementTypeAir(elementType) && raceImpactChecker.isPlayerImpactByAir(player)) {
-            return value * elementType.getMultiplier(player);
+    private double impactFromRace(double value, Player player, MagicElementType elementType) {
+        double valueToReturn = value;
+        if (isElementTypeAir(elementType) && RaceImpactChecker.isPlayerImpactByAir(player)) {
+            valueToReturn = value * elementType.getMultiplier(player);
         }
-        return value;
+        return valueToReturn;
     }
 
-    private boolean isElementTypeAir(MagicElementType elementType) {
-        return elementType.getName().equals("Air");
+    private static boolean isElementTypeAir(MagicElementType elementType) {
+        return ("Air".equals(elementType.getName()));
     }
 
-    private Boolean isRoleNull(Player player) {
-        return player.getRole() == null;
+    private static boolean isRoleNull(Player player) {
+        return null == player.getRole();
     }
 
-    private double calculateValueForMage(double actualStrength) {
+    private static double calculateValueForMage(double actualStrength) {
         return actualStrength * MAGE_MAGIC_MULTIPLIER;
     }
 
-    private double calculateValueForKnight(double actualStrength) {
+    private static double calculateValueForKnight(double actualStrength) {
         return actualStrength * KNIGHT_MAGIC_MULTIPLIER;
     }
 
     public double magicValue(Magic magic, Player player) {
-        double actualStrength = magic.getBaseStrength() * Math.pow(LEVEL_MULTIPLIER, adjustPlayerLevel(player));
+        double playerMultipel = countMultipel(player);
+        double actualStrength = magic.getBaseStrength() * playerMultipel;
         double roundedValue = Math.round(actualStrength * 100.0) / 100.0;
-        roundedValue = checkImpactFromRace(roundedValue, player, magic.getElement());
-        return checkImpactFromRole(roundedValue, player);
-
+        roundedValue = impactFromRace(roundedValue, player, magic.getElement());
+        return impactFromRole(roundedValue, player);
     }
 
-    private int adjustPlayerLevel(Player player) {
-        return player.getLevel() == 1 ? 0 : player.getLevel();
+    private double countMultipel(Player player) {
+        double playerLevel = adjustPlayerLevel(player);
+        double playerMultipel = 1.0;
+        for (int i = 0; i < playerLevel; i++) {
+            playerMultipel *= LEVEL_MULTIPLIER;
+        }
+        return playerMultipel;
     }
 
-    abstract public double throwMagic(Magic magic, Player player);
+    private static int adjustPlayerLevel(Player player) {
+        return 1 == player.getLevel() ? 0 : player.getLevel();
+    }
+
+    public abstract double throwMagic(Magic magic, Player player);
 
 }

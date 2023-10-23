@@ -12,7 +12,6 @@ public class DungeonGenerator {
     public static final double MIN_TILE_SIZE = 10.0;
     public static final double MIN_ROOM_WIDTH_OR_HEIGHT = DungeonGenerator.MIN_TILE_SIZE;
     public static final double MAX_ROOM_WIDTH_OR_HEIGHT = 400.0;
-
     private static final int NON_OCCUPIED_TILE_VALUE = -1;
 
     private Random random;
@@ -20,10 +19,6 @@ public class DungeonGenerator {
 
     public DungeonGenerator() {
         random = new Random();
-    }
-
-    DungeonGenerator(Random random) {
-        this.random = random;
     }
 
     void setRandom(Random random) {
@@ -99,15 +94,15 @@ public class DungeonGenerator {
         List<Room> roomsPlaced = new ArrayList<>();
         RoomParser roomParser = new RoomParser(grid);
         for (Room currentRoom : rooms) {
-            // TILE_SIZE är med här för att inte ha med griddens border i platseringen,
-            // alltså kan man inte platsera ett rum på the bordern
-            Point2D min = new Point2D(tileSize, tileSize);
-            Point2D max = new Point2D(grid.getWidth() - tileSize - (currentRoom.getWidth() + 1.0),
+            // tileSize är med här för att inte ha med griddens border i platseringen,
+            // alltså kan man inte platsera ett rum på bordern
+            Point2D minRoomPosition = new Point2D(tileSize, tileSize);
+            Point2D maxRoomPosition = new Point2D(grid.getWidth() - tileSize - (currentRoom.getWidth() + 1.0),
                     grid.getHeight() - tileSize - (currentRoom.getHeight() + 1.0));
 
             for (int i = 0; i < numberOfTriesBeforeDiscard; i++) {
-                currentRoom.setPosition(randomDoubleInBounds(min.getX(), max.getX()),
-                        randomDoubleInBounds(min.getY(), max.getY()));
+                currentRoom.setPosition(randomDoubleInBounds(minRoomPosition.getX(), maxRoomPosition.getX()),
+                        randomDoubleInBounds(minRoomPosition.getY(), maxRoomPosition.getY()));
 
                 if (checkIfRoomCanBePlaced(roomParser, currentRoom)) {
                     currentRoom.setId(roomsPlaced.size());
@@ -196,11 +191,11 @@ public class DungeonGenerator {
 
     private Room getNextNonConnectedRoom(List<Room> rooms, int index) {
         int count = 0;
-        Room endRoom = null;
+        Room room = null;
         do {
-            endRoom = rooms.get(index++ % rooms.size());
-        } while (endRoom.isConnected() && ++count < rooms.size());
-        return count != rooms.size() ? endRoom : null;
+            room = rooms.get(index++ % rooms.size());
+        } while (room.isConnected() && ++count < rooms.size());
+        return count != rooms.size() ? room : null;
     }
 
     private int abs(int value) {

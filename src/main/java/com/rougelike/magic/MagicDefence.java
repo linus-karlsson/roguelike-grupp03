@@ -4,12 +4,10 @@ import com.rougelike.Player;
 
 public class MagicDefence extends MagicInvoker {
 
-    public MagicDefence() {
-        super("Defence");
-    }
+    private static final String TYPE_OF_MAGIC = "Defence";
 
-    public String getName() {
-        return super.name;
+    public MagicDefence() {
+        super(TYPE_OF_MAGIC);
     }
 
     public double throwMagic(Magic magic, Player player) {

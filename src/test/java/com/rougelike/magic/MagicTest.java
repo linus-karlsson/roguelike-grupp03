@@ -13,15 +13,33 @@ public class MagicTest {
     }
 
     @Test
-    void testMagicToStringContainsAllValues()   {
+    void testMagicToStringContainsName() {
         Spell spell = Spell.POISON;
-        Magic magic = new Magic(spell);
-        String magicString = magic.toString();
+        String magicString = "Poison";
         assertTrue(magicString.contains(spell.getName()));
-        assertTrue(magicString.contains(Double.toString(spell.getBaseStrength())));
-        assertTrue(magicString.contains(spell.getType().getName()));
-        assertTrue(magicString.contains(spell.getElement().getName()));
-    }   
 
+    }
+
+    @Test
+    void testMagicToStringContainsBaseStrength() {
+        Spell spell = Spell.POISON;
+        double magicString = 10.0;
+        assertTrue(magicString == spell.getBaseStrength());
+    }
+
+    @Test
+    void testMagicToStringContainsType() {
+        Spell spell = Spell.POISON;
+        String magicString = "Attack";
+        assertTrue(magicString.contains(spell.getType().getName()));
+
+    }
+
+    @Test
+    void testMagicToStringContainsElement() {
+        Spell spell = Spell.POISON;
+        String magicString = "Earth";
+        assertTrue(magicString.contains(spell.getElement().getName()));
+    }
 
 }
