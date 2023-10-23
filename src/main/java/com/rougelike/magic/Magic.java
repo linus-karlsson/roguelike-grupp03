@@ -1,32 +1,32 @@
 package com.rougelike.magic;
 
 public class Magic {
-    private final String NAME;
-    private final double BASE_STRENGTH;
-    private final MagicInvoker TYPE;
-    private final MagicElementType ELEMENT;
+    private final String name;
+    private final double baseStrength;
+    private final MagicInvoker type;
+    private final MagicElementType element;
 
     public Magic(Spell spell) {
-        this.NAME = spell.getName();
-        this.BASE_STRENGTH = spell.getBaseStrength();
-        this.TYPE = spell.getType();
-        this.ELEMENT = spell.getElement();
+        this.name = spell.getName();
+        this.baseStrength = spell.getBaseStrength();
+        this.type = spell.getType();
+        this.element = spell.getElement();
     }
 
     public final String getName() {
-        return NAME;
+        return name;
     }
 
     public final double getBaseStrength() {
-        return BASE_STRENGTH;
+        return baseStrength;
     }
 
     public final MagicInvoker getType() {
-        return TYPE;
+        return type;
     }
 
     public final MagicElementType getElement() {
-        return ELEMENT;
+        return element;
     }
 
 }
