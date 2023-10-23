@@ -7,6 +7,10 @@ import com.rougelike.dungeon.DungeonGenerator;
 import com.rougelike.dungeon.Grid;
 import com.rougelike.dungeon.GridIndex;
 import com.rougelike.dungeon.Room;
+import com.rougelike.magic.Magic;
+import com.rougelike.magic.Spell;
+import com.rougelike.races.Elf;
+import com.rougelike.roles.Mage;
 
 /* 
 import javafx.application.Application;
@@ -34,9 +38,10 @@ public class App {
         final double duration = 30.0;
         while (sec <= duration) {
             long start = System.nanoTime();
-            dungeonGenerator.generateDungeon(roomCount, minWidth, maxWidth, minHeight, maxHeight,
-                    numberOfTriesBeforeDiscard,
-                    rowCount, columnCount, tileSize);
+            dungeonGenerator.generateDungeon(roomCount, minWidth, maxWidth, minHeight,
+             maxHeight,
+             numberOfTriesBeforeDiscard,
+             rowCount, columnCount, tileSize);
             long end = System.nanoTime() - start;
             sec += (double) end / 1_000_000_000.0;
         }

@@ -16,7 +16,7 @@ import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
 import com.rougelike.magic.*;
 
-public class Player extends Entity {
+public class Player extends Entity implements PlayerMock {
 
     private PlayerStartingValues startingValues;
 

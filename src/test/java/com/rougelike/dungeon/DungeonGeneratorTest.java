@@ -1,6 +1,7 @@
 
 package com.rougelike.dungeon;
 
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import static org.hamcrest.Matchers.*;
 
 import com.rougelike.Point2D;
 import com.rougelike.RandomInternal;
@@ -114,7 +116,7 @@ public class DungeonGeneratorTest {
 
     @Test
     void testGenerateListOfRoomsSize() {
-        assertEquals(DEFAULT_ROOM_COUNT, getDefaultRooms().size());
+        assertThat(getDefaultRooms().size(), is(DEFAULT_ROOM_COUNT));
     }
 
     @Test
