@@ -131,11 +131,11 @@ public class Player extends Entity implements PlayerMock {
             if (((Thief) role).isInvisible()) {
                 return;
             }
-            if (weaponIsEffective(enemy.getElement())) {
-                enemy.takeDamage(equippedWeapon.getElementalDamage());
-            }
-            enemy.takeDamage(totalWeaponDamage);
         }
+        if (weaponIsEffective(enemy.getElement())) {
+            enemy.takeDamage(equippedWeapon.getElementalDamage());
+        }
+        enemy.takeDamage(totalWeaponDamage);
     }
 
     public void takeDamage(double damageTaken) {

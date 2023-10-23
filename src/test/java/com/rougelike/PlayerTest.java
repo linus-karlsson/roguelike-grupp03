@@ -89,7 +89,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void TestTotalWeaponDamage() {
+    public void TestGetTotalWeaponDamage() {
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
         Player player = new Player("Gimli", dwarf, knight, new Point2D());
