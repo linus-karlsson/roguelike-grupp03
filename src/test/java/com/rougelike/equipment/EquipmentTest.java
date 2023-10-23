@@ -97,4 +97,33 @@ public class EquipmentTest {
         assertEquals(90, earthHammer.getPrice());
     }
 
+    @Test
+    void waterDagger_AllValuesAreCorrect() {
+        WaterDagger waterDagger = new WaterDagger();
+        assertEquals("Water Dagger", waterDagger.getName());
+        assertEquals(60, waterDagger.getPrice());
+        assertEquals(EquipmentType.DAGGER, waterDagger.getType());
+        assertEquals(0, waterDagger.getStrength());
+        assertEquals(13, waterDagger.getDexterity());
+        assertEquals(0, waterDagger.getIntelligence());
+        assertEquals(2, waterDagger.getDamage());
+        assertEquals(6, waterDagger.getElementalDamage());
+        assertEquals(ElementType.WATER, waterDagger.getWeaponElementType());
+    }
+
+    @Test
+    void heavyArmor_AllValuesAreCorrect() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        assertEquals("Heavy Armor", heavyArmor.getName());
+        assertEquals(60, heavyArmor.getPrice());
+        assertEquals(EquipmentType.HEAVY_ARMOR, heavyArmor.getType());
+        assertEquals(5, heavyArmor.getStrength());
+        assertEquals(0, heavyArmor.getDexterity());
+        assertEquals(0, heavyArmor.getIntelligence());
+        assertEquals(100, heavyArmor.getHealth());
+        assertEquals(20, heavyArmor.getMana());
+        assertEquals(10, heavyArmor.getArmorValue());
+        assertEquals(ElementType.EARTH, heavyArmor.getElementType());
+    }
+
 }
