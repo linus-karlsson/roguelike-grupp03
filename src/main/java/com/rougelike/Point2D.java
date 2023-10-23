@@ -47,4 +47,12 @@ public class Point2D {
         return new Point2D(x + vector.getX(), y + vector.getY());
     }
 
+    public boolean equals(Object obj) {
+        if (obj instanceof Point2D) {
+            Point2D other = (Point2D) obj;
+            return x == other.getX() && y == other.getY();
+        }
+        return false;
+    }
+
 }

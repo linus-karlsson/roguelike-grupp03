@@ -1,6 +1,8 @@
 
 package com.rougelike.dungeon;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,11 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import static org.hamcrest.Matchers.*;
+
+import static com.rougelike.OnlyOneElementMatcher.containsOnly;
 
 import com.rougelike.Point2D;
 import com.rougelike.RandomInternal;
@@ -92,12 +97,16 @@ public class DungeonGeneratorTest {
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
         Room room = dungeonGenerator.generateRoom(DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT,
                 DEFAULT_MAX_HEIGHT);
+        checkRoomWidthAndHeight(room, randomMultiplier[0], randomMultiplier[1]);
+    }
 
-        boolean expected = room.getWidth() == randomDoubleInBounds(randomMultiplier[0], DEFAULT_MIN_WIDTH,
-                DEFAULT_MAX_WIDTH) &&
-                room.getHeight() == randomDoubleInBounds(randomMultiplier[1], DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
+    private void checkRoomWidthAndHeight(Room room, double widthRandomMultiplier, double heightRandomMultiplier) {
+        double expectedRandomWidth = randomDoubleInBounds(widthRandomMultiplier, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH);
+        double expectedRandomHeight = randomDoubleInBounds(heightRandomMultiplier, DEFAULT_MIN_HEIGHT,
+                DEFAULT_MAX_HEIGHT);
 
-        assertTrue(expected);
+        assertThat(room.getWidth(), is(equalTo(expectedRandomWidth)));
+        assertThat(room.getHeight(), is(equalTo(expectedRandomHeight)));
     }
 
     // Tagen från java docs
@@ -156,13 +165,8 @@ public class DungeonGeneratorTest {
         List<Room> rooms = getDefaultRooms();
         int index = 0;
         for (Room room : rooms) {
-            double expectedWidth = randomDoubleInBounds(randomMultiplier[index++ % randomMultiplier.length],
-                    DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH);
-            double expectedHeight = randomDoubleInBounds(randomMultiplier[index++ % randomMultiplier.length],
-                    DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
-
-            assertEquals(expectedWidth, room.getWidth());
-            assertEquals(expectedHeight, room.getHeight());
+            checkRoomWidthAndHeight(room, randomMultiplier[index++ % randomMultiplier.length],
+                    randomMultiplier[index++ % randomMultiplier.length]);
         }
     }
 
@@ -203,7 +207,7 @@ public class DungeonGeneratorTest {
         double randomMultiplier = 0.3;
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
         int expected = 1;
-        assertEquals(expected, getDefaultPlacedRooms(rooms).size());
+        assertThat(expected, is(equalTo(getDefaultPlacedRooms(rooms).size())));
     }
 
     private List<Room> getDefaultPlacedRooms(List<Room> rooms) {
@@ -226,15 +230,15 @@ public class DungeonGeneratorTest {
 
         double randomMultiplier = 0.0;
         dungeonGenerator.setRandom(new RandomInternal(randomMultiplier));
-        int roomCount = roomsInX * roomsInY;
+        int roomCount = (roomsInX * roomsInY);
         List<Room> rooms = dungeonGenerator.generateListOfRooms(roomCount, DEFAULT_MIN_WIDTH, DEFAULT_MAX_WIDTH,
                 DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
         dungeonGenerator.setRandom(new RandomInternal(randomMultipliersForAreaIsFilled(roomCount, roomsInX, roomsInY)));
 
         List<Room> placedRooms = dungeonGenerator.placeRoomsInArea(rooms, 1, rowCount, columnCount,
                 DungeonGenerator.MIN_TILE_SIZE);
-        int expectedSize = roomCount;
-        assertEquals(expectedSize, placedRooms.size());
+
+        assertThat(rooms, is(equalTo(placedRooms)));
     }
 
     private double[] randomMultipliersForAreaIsFilled(int roomCount, int roomsInX, int roomsInY) {
@@ -290,13 +294,11 @@ public class DungeonGeneratorTest {
     }
 
     private void checkIfRoomsHaveCorrectId(List<Room> rooms, Grid grid) {
-        for (int i = 0; i < rooms.size(); i++) {
-            Room room = rooms.get(i);
+        for (int expected = 0; expected < rooms.size(); expected++) {
+            Room room = rooms.get(expected);
             RoomParser roomParser = new RoomParser(grid, room);
             List<Integer> roomTileList = roomParser.roomAreaToList();
-            for (int tile : roomTileList) {
-                assertEquals(i, tile, roomTileList.toString());
-            }
+            assertThat(roomTileList, containsOnly(expected));
         }
     }
 

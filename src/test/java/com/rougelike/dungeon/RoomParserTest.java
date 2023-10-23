@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 
 import com.rougelike.Point2D;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -127,14 +128,7 @@ public class RoomParserTest {
     void testRoomAreaToList() {
         List<Integer> expected = setUpExpectedIntegerList();
         List<Integer> roomTileList = roomParser.roomAreaToList();
-        assertTrue(roomTileList.equals(expected), roomTileList.toString());
-    }
-
-    @Test
-    void testRoomAreaToListSize() {
-        List<Integer> expected = setUpExpectedIntegerList();
-        List<Integer> roomTileList = roomParser.roomAreaToList();
-        assertTrue(roomTileList.size() == expected.size());
+        assertArrayEquals(expected.toArray(), roomTileList.toArray());
     }
 
     private List<Integer> setUpExpectedIntegerList() {

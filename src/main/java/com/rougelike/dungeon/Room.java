@@ -71,4 +71,13 @@ public class Room {
             throw new IllegalArgumentException("Dimensions of room can't be less than 0");
         }
     }
+
+    public boolean equals(Object obj) {
+        if (obj instanceof Room) {
+            Room other = (Room) obj;
+            return id == other.id && position.equals(other.position) && width == other.width && height == other.height
+                    && connected == other.connected;
+        }
+        return false;
+    }
 }
