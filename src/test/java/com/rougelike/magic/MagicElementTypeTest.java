@@ -11,67 +11,195 @@ import org.junit.jupiter.api.Test;
 
 public class MagicElementTypeTest {
 
+    // Test MagicElementTypeNeutral och abstrakt superklass
     @Test
-    @DisplayName("Test MagicElementType instance creation")
-    void testGetMultiplierReturnsCorrectValueWhenNeutral() {
-        Magic magic = new Magic(Spell.HARMONYHEAL);
+    void testMagicElementNeutralInstanceCreation() {
+        MagicElementType magicElementType = new ElementNeutral();
+        assertEquals("Neutral", magicElementType.getName());
+    }
+
+    @Test
+    void testMagicElementNeutralIsSubclassOfMagicElementType() {
+        MagicElementType magicElementType = new ElementNeutral();
+        assertEquals(MagicElementType.class, magicElementType.getClass().getSuperclass());
+    }
+
+    @Test
+    void testMagicElementNeutralIsNotSubclassOfMagicElementTypeAir() {
+        MagicElementType magicElementType = new ElementNeutral();
+        assertNotEquals(ElementAir.class, magicElementType.getClass().getSuperclass());
+    }
+
+    @Test
+    void testMagicElementNeutralGetNameReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementNeutral();
+        assertEquals("Neutral", magicElementType.getName());
+    }
+
+    @Test
+    void testMagicElementNeutralGetMultiplierThrowsExceptionIfPlayerIsNull() {
+        MagicElementType magicElementType = new ElementNeutral();
+        assertThrows(IllegalArgumentException.class, () -> magicElementType.getMultiplier(null));
+    }
+
+    @Test
+    void testMagicElementNeutralGetMultiplierReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementNeutral();
         Player player = new Player("Test", new Elf(), new Thief(), new Point2D());
         double expectedMultiplier = 1.0;
-        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+        assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
+    }
+
+    // Test MagicElementTypeAir
+
+    @Test
+    void testMagicElementAirInstanceCreation() {
+        MagicElementType magicElementType = new ElementAir();
+        assertEquals("Air", magicElementType.getName());
     }
 
     @Test
-    void testMagicTornadoInstanceOfElementtypeAir() {
-        Magic magic = new Magic(Spell.TORNADO);
-        MagicElementType expectedElement = new ElementAir();
-        assertEquals(expectedElement.getClass(), magic.getElement().getClass());
+    void testMagicElementAirIsSubclassOfMagicElementType() {
+        MagicElementType magicElementType = new ElementAir();
+        assertEquals(MagicElementType.class, magicElementType.getClass().getSuperclass());
     }
 
     @Test
-    void testgetMultiplerReturnsCorrectValueIfPlayerIsElfAndElementtypeAir() {
-        Magic magic = new Magic(Spell.TORNADO);
+    void testMagicElementAirIsNotSubclassOfMagicElementTypeNeutral() {
+        MagicElementType magicElementType = new ElementAir();
+        assertNotEquals(ElementNeutral.class, magicElementType.getClass().getSuperclass());
+    }
+
+    @Test
+    void testMagicElementTypeGetMultiplierThrowsExceptionIfPlayerIsNull() {
+        MagicElementType magicElementType = new ElementAir();
+        assertThrows(IllegalArgumentException.class, () -> magicElementType.getMultiplier(null));
+    }
+
+    @Test
+    void testMagicElementAirGetNameReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementAir();
+        assertEquals("Air", magicElementType.getName());
+    }
+
+    @Test
+    void testMagicElementAirGetMultiplierReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementAir();
         Player player = new Player("Test", new Elf(), new Thief(), new Point2D());
         double expectedMultiplier = 1.05;
-        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+        assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
     }
 
     @Test
-    void testGetMultiplierReturnsCorrectValueIfPlayerIsDwarfAndElementtypeAir() {
-        Magic magic = new Magic(Spell.TORNADO);
-        Player player = new Player("Test", new Dwarf(), new Thief(), new Point2D());
-        double expectedMultiplier = 1.00;
-        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
-    }
-
-    @Test
-    void testGetMultiplierReturnsCorrectValueIfPlayerIsOrcAndElementtypeAir() {
-        Magic magic = new Magic(Spell.TORNADO);
+    void testMagicElementAirGetMultiplierReturnsCorrectValueIfPlayerIsOrc() {
+        MagicElementType magicElementType = new ElementAir();
         Player player = new Player("Test", new Orc(), new Thief(), new Point2D());
         double expectedMultiplier = 0.95;
-        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+        assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
     }
 
     @Test
-    void testGetMultiplierReturnsCorrectValueIfPlayerIsDwarfAndElementEarth() {
-        Magic magic = new Magic(Spell.POISON);
+    void testMagicElementAirGetMultiplierReturnsCorrectValueIfPlayerIsHuman() {
+        MagicElementType magicElementType = new ElementAir();
+        Player player = new Player("Test", new Human(), new Thief(), new Point2D());
+        double expectedMultiplier = 1.0;
+        assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
+    }
+
+    // Test MagicElementTypeEarth
+
+    @Test
+    void testMagicElementEarthInstanceCreation() {
+        MagicElementType magicElementType = new ElementEarth();
+        assertEquals("Earth", magicElementType.getName());
+    }
+
+    @Test
+    void testMagicElementEarthIsSubclassOfMagicElementType() {
+        MagicElementType magicElementType = new ElementEarth();
+        assertEquals(MagicElementType.class, magicElementType.getClass().getSuperclass());
+    }
+
+    @Test
+    void testMagicElementEarthIsNotSubclassOfMagicElementTypeNeutral() {
+        MagicElementType magicElementType = new ElementEarth();
+        assertNotEquals(ElementNeutral.class, magicElementType.getClass().getSuperclass());
+    }
+
+    @Test
+    void testMagicElementTypeEarthGetMultiplierThrowsExceptionIfPlayerIsNull() {
+        MagicElementType magicElementType = new ElementEarth();
+        assertThrows(IllegalArgumentException.class, () -> magicElementType.getMultiplier(null));
+    }
+
+    @Test
+    void testMagicElementEarthGetNameReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementEarth();
+        assertEquals("Earth", magicElementType.getName());
+    }
+
+    @Test
+    void testMagicElementEarthGetMultiplierReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementEarth();
+        Player player = new Player("Test", new Elf(), new Thief(), new Point2D());
+        double expectedMultiplier = 1.0;
+        assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
+    }
+
+    @Test
+    void testMagicElementEarthGetMultiplierReturnsCorrectValueIfPlayerIsDwarf() {
+        MagicElementType magicElementType = new ElementEarth();
         Player player = new Player("Test", new Dwarf(), new Thief(), new Point2D());
         double expectedMultiplier = 1.05;
-        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+        assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
     }
 
     @Test
-    void testGetMultiplierRetunsCorrectValueIfPlayerIsHumanAndElementEarth() {
-        Magic magic = new Magic(Spell.POISON);
-        Player player = new Player("Test", new Human(), new Thief(), new Point2D());
-        double expectedMultiplier = 1.00;
-        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
-    }
-
-    @Test
-    void testGetMultiplierReturnsCorrectValueIfPlayerIsOrcAndElementEarth() {
-        Magic magic = new Magic(Spell.POISON);
+    void testMagicElementEarthGetMultiplierReturnsCorrectValueIfPlayerIsOrc() {
+        MagicElementType magicElementType = new ElementEarth();
         Player player = new Player("Test", new Orc(), new Thief(), new Point2D());
         double expectedMultiplier = 0.95;
-        assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));
+        assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
     }
+
+    // Test MagicElementTypeFire
+
+    @Test
+    void testMagicElementFireInstanceCreation() {
+        MagicElementType magicElementType = new ElementFire();
+        assertEquals("Fire", magicElementType.getName());
+    }
+
+    @Test
+    void testMagicElementFireIsSubclassOfMagicElementType() {
+        MagicElementType magicElementType = new ElementFire();
+        assertEquals(MagicElementType.class, magicElementType.getClass().getSuperclass());
+    }
+
+    @Test
+    void testMagicElementFireIsNotSubclassOfMagicElementTypeNeutral() {
+        MagicElementType magicElementType = new ElementFire();
+        assertNotEquals(ElementNeutral.class, magicElementType.getClass().getSuperclass());
+    }
+
+    @Test
+    void testMagicElementTypeFireGetMultiplierThrowsExceptionIfPlayerIsNull() {
+        MagicElementType magicElementType = new ElementFire();
+        assertThrows(IllegalArgumentException.class, () -> magicElementType.getMultiplier(null));
+    }
+
+    @Test
+    void testMagicElementFireGetNameReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementFire();
+        assertEquals("Fire", magicElementType.getName());
+    }
+
+    @Test
+    void testMagicElementFireGetMultiplierReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementFire();
+        Player player = new Player("Test", new Elf(), new Thief(), new Point2D());
+        double expectedMultiplier = 1.0;
+        assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
+    }
+
 }

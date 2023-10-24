@@ -6,12 +6,7 @@ public abstract class MagicElementType {
     private final String name;
     protected static final double BASE_MULTIPLIER = 1.0;
 
-    public MagicElementType(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name cannot be null");
-        } else if (name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be blank");
-        }
+    protected MagicElementType(String name) {
         this.name = name;
     }
 
@@ -20,6 +15,9 @@ public abstract class MagicElementType {
     }
 
     double getMultiplier(Player player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null!");
+        }
         return BASE_MULTIPLIER;
     }
 }
