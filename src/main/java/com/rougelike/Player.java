@@ -258,31 +258,35 @@ public class Player extends Entity implements PlayerMock {
         return new Player(name, race, role, position);
     }
 
-    // Metoder som hanterar equippa/unequippa
+    // Equipping/Unequipping
+    // MAX_INVENTORY_CAPACITY will always be larger than 2.
 
     public void setStatsWhenEquippingWeapon(Weapon weapon) {
-        strength += weapon.getStrength() * role.getStrengthMultiplier();
-        dexterity += weapon.getDexterity() * role.getDexterityMultiplier();
-        intelligence += weapon.getIntelligence() * role.getIntelligenceMultiplier();
+        setStatsWhenEquipping(weapon);
+        setTotalWeaponDamage();
     }
 
     public void setStatsWhenEquippingArmor(Armor armor) {
-        strength += armor.getStrength() * role.getStrengthMultiplier();
-        dexterity += armor.getDexterity() * role.getDexterityMultiplier();
-        intelligence += armor.getIntelligence() * role.getIntelligenceMultiplier();
+        setStatsWhenEquipping(armor);
         setHealth(getHealth() + armor.getHealth());
         mana += armor.getMana();
         armorValue += armor.getArmorValue();
     }
 
-    // Vapen
+    private void setStatsWhenEquipping(Equipment equipment) {
+        strength += equipment.getStrength() * role.getStrengthMultiplier();
+        dexterity += equipment.getDexterity() * role.getDexterityMultiplier();
+        intelligence += equipment.getIntelligence() * role.getIntelligenceMultiplier();
+    }
+
+    // Weapon
 
     public void addWeaponToInventory(Weapon weapon) {
         if (weapon == null) {
-            throw new IllegalArgumentException("Vapen kan ej vara null");
+            throw new IllegalArgumentException("Weapon can not be null");
         }
         if (weaponInventory.contains(weapon)) {
-            System.err.println("Kan inte ha dubletter av vapen");
+            System.err.println("Can not have duplicates");
             return;
         }
         if (weaponInventory.size() == MAX_INVENTORY_CAPACITY) {
@@ -293,10 +297,9 @@ public class Player extends Entity implements PlayerMock {
                     break;
                 }
             }
-            if (weaponToRemove != null) {
-                weaponInventory.remove(weaponToRemove);
-                wallet += weaponToRemove.getPrice();
-            }
+            weaponInventory.remove(weaponToRemove);
+            wallet += weaponToRemove.getPrice();
+
         }
         weaponInventory.add(weapon);
     }
@@ -315,15 +318,17 @@ public class Player extends Entity implements PlayerMock {
         } else if (role instanceof Thief && (weapon.getType() == EquipmentType.DAGGER)) {
             setStatsWhenEquippingWeapon(weapon);
             equippedWeapon = weapon;
+        } else {
+            System.err.println("Weapon can not be equipped by " + this.getRole());
         }
     }
 
     public void removeWeaponFromInventory(Weapon weapon) {
         if (weapon == null) {
-            throw new IllegalArgumentException("Armor kan ej vara null");
+            throw new IllegalArgumentException("Weapon can not be null");
         }
         if (weapon == getEquippedWeapon() || weapon == getEquippedOffhand()) {
-            System.err.println("Kan ej ta bort equippat föremål");
+            System.err.println("Can not remove an equipped item");
             return;
         }
         wallet += weapon.getPrice();
@@ -333,11 +338,12 @@ public class Player extends Entity implements PlayerMock {
     public void unequipWeapon() {
         setStatsWhenUnequippingWeapon();
         equippedWeapon = null;
+        totalWeaponDamage = 0;
     }
 
     public void setStatsWhenUnequippingWeapon() {
         strength -= equippedWeapon.getStrength() * role.getStrengthMultiplier();
-        dexterity -= equippedWeapon.getStrength() * role.getDexterityMultiplier();
+        dexterity -= equippedWeapon.getDexterity() * role.getDexterityMultiplier();
         intelligence -= equippedWeapon.getIntelligence() + role.getIntelligenceMultiplier();
     }
 
@@ -345,10 +351,10 @@ public class Player extends Entity implements PlayerMock {
 
     public void addArmorToInventory(Armor armor) {
         if (armor == null) {
-            throw new IllegalArgumentException("Armor kan ej vara null");
+            throw new IllegalArgumentException("Armor can not be null");
         }
         if (armorInventory.contains(armor)) {
-            System.err.println("Kan inte ha dubletter av armor");
+            System.err.println("Can not have duplicates");
             return;
         }
         if (armorInventory.size() == MAX_INVENTORY_CAPACITY) {
@@ -359,20 +365,18 @@ public class Player extends Entity implements PlayerMock {
                     break;
                 }
             }
-            if (armorToRemove != null) {
-                armorInventory.remove(armorToRemove);
-                wallet += armorToRemove.getPrice();
-            }
+            armorInventory.remove(armorToRemove);
+            wallet += armorToRemove.getPrice();
         }
         armorInventory.add(armor);
     }
 
     public void removeArmorFromInventory(Armor armor) {
         if (armor == null) {
-            throw new IllegalArgumentException("Armor kan ej vara null");
+            throw new IllegalArgumentException("Armor can not be null");
         }
         if (armor == getEquippedArmor() || armor == getEquippedOffhand()) {
-            System.err.println("Kan ej ta bort equippat föremål");
+            System.err.println("Can not remove equipped items");
             return;
         }
         wallet += armor.getPrice();
@@ -386,18 +390,23 @@ public class Player extends Entity implements PlayerMock {
         if (role instanceof Knight && (armor.getType() == EquipmentType.HEAVY_ARMOR)) {
             setStatsWhenEquippingArmor(armor);
             equippedArmor = armor;
-        }
-        if (role instanceof Mage && (armor.getType() == EquipmentType.LIGHT_ARMOR)) {
+        } else if (role instanceof Mage && (armor.getType() == EquipmentType.LIGHT_ARMOR)) {
             setStatsWhenEquippingArmor(armor);
             equippedArmor = armor;
-        }
-        if (role instanceof Thief && (armor.getType() == EquipmentType.MEDIUM_ARMOR)) {
+        } else if (role instanceof Thief && (armor.getType() == EquipmentType.MEDIUM_ARMOR)) {
             setStatsWhenEquippingArmor(armor);
             equippedArmor = armor;
+        } else {
+            System.err.println("Armor can not be equipped by " + this.getRole());
         }
     }
 
-    public void setStatswhenUnequippingArmor() {
+    public void unequipArmor() {
+        setStatswhenUnequippingArmor();
+        equippedArmor = null;
+    }
+
+    private void setStatswhenUnequippingArmor() {
         strength -= equippedArmor.getStrength() * role.getStrengthMultiplier();
         dexterity -= equippedArmor.getDexterity() * role.getDexterityMultiplier();
         intelligence -= equippedArmor.getIntelligence() * role.getIntelligenceMultiplier();
@@ -406,14 +415,9 @@ public class Player extends Entity implements PlayerMock {
         armorValue -= equippedArmor.getArmorValue();
     }
 
-    public void unequipArmor() {
-        setStatswhenUnequippingArmor();
-        equippedArmor = null;
-    }
-
     public void equipOffhand(Equipment offhand) {
         if (!getWeaponInventory().contains(offhand) && !getArmorInventory().contains(offhand)) {
-            System.err.println("Måste finnas i weapon inventory eller armor inventory för att kunna equippa");
+            System.err.println("Must be in weapon or armor inventory to be able to equip");
             return;
         }
         if ((role instanceof Knight) && (offhand instanceof Armor) && (offhand.getType() == EquipmentType.SHIELD)) {
@@ -426,6 +430,8 @@ public class Player extends Entity implements PlayerMock {
                 && (offhand.getType() == EquipmentType.DAGGER)) {
             equippedOffhand = offhand;
             setStatsWhenEquippingWeapon((Weapon) offhand);
+        } else {
+            System.err.println("Offhand can not be equipped by " + this.getRole());
         }
     }
 

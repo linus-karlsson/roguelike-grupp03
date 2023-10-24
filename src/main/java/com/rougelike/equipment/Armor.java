@@ -1,6 +1,6 @@
 package com.rougelike.equipment;
 
-public class Armor extends Equipment {
+public abstract class Armor extends Equipment {
 
     private int health;
     private int mana;

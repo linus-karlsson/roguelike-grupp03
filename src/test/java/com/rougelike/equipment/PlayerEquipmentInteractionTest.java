@@ -20,16 +20,20 @@ public class PlayerEquipmentInteractionTest {
         Player player = new Player("Sven", new Point2D());
 
         player.addWeaponToInventory(stick);
+        Weapon expected = stick;
 
-        assertTrue(player.getWeaponInventory().contains(stick));
+        assertEquals(player.getWeaponInventory().get(0), expected);
     }
 
     @Test
     void canAddArmorToInventory() {
         LightArmor lightArmor = new LightArmor();
         Player player = new Player("Sven", new Point2D());
+
         player.addArmorToInventory(lightArmor);
-        assertTrue(player.getArmorInventory().contains(lightArmor));
+        Armor expected = lightArmor;
+
+        assertEquals(player.getArmorInventory().get(0), expected);
     }
 
     // @Test
@@ -53,6 +57,8 @@ public class PlayerEquipmentInteractionTest {
         Sword sword = new Sword();
         Player player = new Player("Sven", new Point2D());
 
+        int expected = 5;
+
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
         player.addWeaponToInventory(fireSword);
@@ -60,7 +66,7 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(wand);
         player.addWeaponToInventory(sword);
 
-        assertTrue(player.getWeaponInventory().size() < 6);
+        assertEquals(expected, player.getWeaponInventory().size());
     }
 
     @Test
@@ -72,17 +78,34 @@ public class PlayerEquipmentInteractionTest {
         HeavyArmor heavyArmor = new HeavyArmor();
         SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
         Player player = new Player("Sven", new Point2D());
+
+        int expected = 5;
+
         player.addArmorToInventory(tome);
         player.addArmorToInventory(shield);
         player.addArmorToInventory(lightArmor);
         player.addArmorToInventory(mediumArmor);
         player.addArmorToInventory(heavyArmor);
         player.addArmorToInventory(superiorHeavyArmor);
-        assertTrue(player.getArmorInventory().size() < 6);
+
+        assertEquals(expected, player.getArmorInventory().size());
     }
 
     @Test
     void canRemoveWeaponFromWeaponInventory() {
+        Stick stick = new Stick();
+        Player player = new Player("Sven", new Point2D());
+
+        player.addWeaponToInventory(stick);
+        player.removeWeaponFromInventory(stick);
+
+        int expected = 0;
+
+        assertEquals(expected, player.getWeaponInventory().size());
+    }
+
+    @Test
+    void removesCorrectWeaponFromWeaponInventory() {
         Stick stick = new Stick();
         Dagger dagger = new Dagger();
         Player player = new Player("Sven", new Point2D());
@@ -91,7 +114,7 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(dagger);
         player.removeWeaponFromInventory(stick);
 
-        assertTrue(player.getWeaponInventory().size() == 1 && player.getWeaponInventory().contains(dagger));
+        assertTrue(player.getWeaponInventory().contains(dagger));
     }
 
     @Test
@@ -99,9 +122,11 @@ public class PlayerEquipmentInteractionTest {
         HeavyArmor heavyArmor = new HeavyArmor();
         Player player = new Player("sven", new Point2D());
 
+        int expected = 160;
+
         player.addArmorToInventory(heavyArmor);
         player.removeArmorFromInventory(heavyArmor);
-        assertEquals(160, player.getWallet());
+        assertEquals(expected, player.getWallet());
     }
 
     @Test
@@ -131,8 +156,7 @@ public class PlayerEquipmentInteractionTest {
         Sword sword = new Sword();
         player.addWeaponToInventory(sword);
 
-        assertTrue(player.getWeaponInventory().contains(sword)
-                && player.getWeaponInventory().size() == player.getMaxInventoryCapacity());
+        assertTrue(player.getWeaponInventory().contains(sword));
 
     }
 
@@ -151,8 +175,7 @@ public class PlayerEquipmentInteractionTest {
         player.addArmorToInventory(mediumArmor);
         player.addArmorToInventory(heavyArmor);
 
-        assertTrue(player.getArmorInventory().contains(heavyArmor)
-                && player.getArmorInventory().size() == player.getMaxInventoryCapacity());
+        assertTrue(player.getArmorInventory().contains(heavyArmor));
 
     }
 
@@ -244,7 +267,6 @@ public class PlayerEquipmentInteractionTest {
 
     @Test
     void weaponInventoryContainsNoDuplicates() {
-
         Stick stick = new Stick();
         Player player = new Player("Sven", new Point2D());
 
@@ -348,8 +370,9 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(wand);
         player.addWeaponToInventory(sword);
 
-        assertTrue(player.getEquippedWeapon() == stick && player.getWeaponInventory().contains(stick)
-                && !(player.getWeaponInventory().contains(dagger)));
+        assertTrue(player.getEquippedWeapon() == stick);
+        assertTrue(player.getWeaponInventory().contains(stick));
+        assertFalse(player.getWeaponInventory().contains(dagger));
     }
 
     @Test
@@ -372,9 +395,12 @@ public class PlayerEquipmentInteractionTest {
         player.addWeaponToInventory(wand);
         player.addWeaponToInventory(sword);
 
-        assertTrue(player.getEquippedWeapon() == waterDagger && player.getEquippedOffhand() == dagger
-                && player.getWeaponInventory().contains(waterDagger) && player.getWeaponInventory().contains(dagger)
-                && !(player.getWeaponInventory().contains(fireSword)) && player.getWeaponInventory().contains(sword));
+        assertTrue(player.getEquippedWeapon() == waterDagger);
+        assertTrue(player.getEquippedOffhand() == dagger);
+        assertTrue(player.getWeaponInventory().contains(waterDagger));
+        assertTrue(player.getWeaponInventory().contains(dagger));
+        assertFalse(player.getWeaponInventory().contains(fireSword));
+        assertTrue(player.getWeaponInventory().contains(sword));
     }
 
     @Test
@@ -395,8 +421,9 @@ public class PlayerEquipmentInteractionTest {
         player.addArmorToInventory(heavyArmor);
         player.addArmorToInventory(superiorHeavyArmor);
 
-        assertTrue(player.getEquippedOffhand() == tome && player.getArmorInventory().contains(tome)
-                && !(player.getArmorInventory().contains(shield)));
+        assertTrue(player.getEquippedOffhand() == tome);
+        assertTrue(player.getArmorInventory().contains(tome));
+        assertFalse(player.getArmorInventory().contains(shield));
     }
 
     @Test
@@ -418,10 +445,12 @@ public class PlayerEquipmentInteractionTest {
         player.addArmorToInventory(heavyArmor);
         player.addArmorToInventory(superiorHeavyArmor);
 
-        assertTrue(player.getEquippedArmor() == lightArmor && player.getEquippedOffhand() == tome
-                && player.getArmorInventory().contains(lightArmor) && player.getArmorInventory().contains(tome)
-                && !(player.getArmorInventory().contains(shield))
-                && player.getArmorInventory().contains(superiorHeavyArmor));
+        assertTrue(player.getEquippedArmor() == lightArmor);
+        assertTrue(player.getEquippedOffhand() == tome);
+        assertTrue(player.getArmorInventory().contains(lightArmor));
+        assertTrue(player.getArmorInventory().contains(tome));
+        assertFalse(player.getArmorInventory().contains(shield));
+        assertTrue(player.getArmorInventory().contains(superiorHeavyArmor));
     }
 
     // Fungerar inte längre då metoden kräver en klass.
@@ -438,10 +467,13 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void doesNotEquipOffhandIfNotInWeaponInventory() {
         Dagger dagger = new Dagger();
-        Player player = new Player("Sven", new Point2D());
+        Player player = new Player("Sven", new Dwarf(), new Thief(), new Point2D());
+
+        Equipment expected = null;
 
         player.equipOffhand(dagger);
-        assertFalse(player.getEquippedOffhand() == dagger);
+
+        assertEquals(expected, player.getEquippedOffhand());
     }
 
     @Test
