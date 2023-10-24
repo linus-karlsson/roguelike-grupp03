@@ -15,7 +15,7 @@ public abstract class Role {
 
     private final Set<EquipmentType> eligibleEquipment = new HashSet<>();
 
-    private final Weapon startingWeapon;
+    private Weapon startingWeapon;
 
     public Role(double healthMultiplier, double manaMultiplier, double strengthMultiplier, double dexterityMultiplier,
             double intelligenceMultiplier, Weapon startingWeapon, EquipmentType... eligibleEquipment) {
@@ -53,7 +53,7 @@ public abstract class Role {
     }
 
     public Set<EquipmentType> getEligibleEquipment() {
-        return eligibleEquipment;
+        return Collections.unmodifiableSet(eligibleEquipment);
     }
 
 }

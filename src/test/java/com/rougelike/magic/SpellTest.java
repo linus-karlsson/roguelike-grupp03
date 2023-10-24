@@ -28,7 +28,7 @@ public class SpellTest {
 
     @Test
     void testSpelInstanceElementShouldBeInstanceOfMagicElementType() {
-        Spell spell = Spell.HEAL;
+        Spell spell = Spell.HARMONYHEAL;
         assertInstanceOf(MagicElementType.class, spell.getElement(), "Spell element should be an instance of MagicElementType");
     }
 

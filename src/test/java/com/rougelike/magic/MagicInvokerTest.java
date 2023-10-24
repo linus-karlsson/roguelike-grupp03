@@ -25,7 +25,7 @@ public class MagicInvokerTest {
         MagicInvoker magicInvoker = magic.getType();
         Player player = new Player("Test", new Human(), new Thief(), new Point2D());
         player.setLevel(2);
-        double expectedValue = 14.4;
+        double expectedValue = 12.0;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
 
@@ -49,7 +49,7 @@ public class MagicInvokerTest {
 
     @Test
     void testIfNeutralElementTypeNotImpactInMagicValue() {
-        Magic magic = new Magic(Spell.HEAL);
+        Magic magic = new Magic(Spell.HARMONYHEAL);
         MagicInvoker magicInvoker = magic.getType();
         Player player = new Player("Test", new Human(), new Thief(), new Point2D());
         double expectedValue = 10.0;

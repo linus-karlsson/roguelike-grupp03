@@ -9,6 +9,9 @@ public abstract class Equipment {
     private int intelligence;
 
     public Equipment(String name, int price, EquipmentType type, int strength, int dexterity, int intelligence) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         this.name = name;
         this.price = price;
         this.type = type;

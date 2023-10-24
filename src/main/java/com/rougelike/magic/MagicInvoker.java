@@ -10,12 +10,37 @@ public abstract class MagicInvoker {
 
     protected final String name;
 
-    protected MagicInvoker(String name) {
+    MagicInvoker(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
+    }
+
+    public double magicValue(Magic magic, Player player) {
+        double playerMultipel = countMultipel(player);
+        double actualStrength = magic.getBaseStrength() * playerMultipel;
+        double roundedValue = Math.round(actualStrength * 100.0) / 100.0;
+        roundedValue = impactFromRace(roundedValue, player, magic.getElement());
+        return impactFromRole(roundedValue, player);
+    }
+
+    private double countMultipel(Player player) {
+        int playerLevel = player.getLevel();
+        double playerMultipel = 1.0;
+        for (int i = 1; i < playerLevel; i++) {
+            playerMultipel *= LEVEL_MULTIPLIER;
+        }
+        return playerMultipel;
+    }
+
+        private double impactFromRace(double value, Player player, MagicElementType elementType) {
+        double valueToReturn = value;
+        if (isElementTypeAir(elementType) && RaceImpactChecker.isPlayerImpact(player.getRace(), elementType)) {
+            valueToReturn = value * elementType.getMultiplier(player);
+        }
+        return valueToReturn;
     }
 
     private double impactFromRole(double value, Player player) {
@@ -35,14 +60,6 @@ public abstract class MagicInvoker {
         }
     }
 
-    private double impactFromRace(double value, Player player, MagicElementType elementType) {
-        double valueToReturn = value;
-        if (isElementTypeAir(elementType) && RaceImpactChecker.isPlayerImpactByAir(player)) {
-            valueToReturn = value * elementType.getMultiplier(player);
-        }
-        return valueToReturn;
-    }
-
     private static boolean isElementTypeAir(MagicElementType elementType) {
         return ("Air".equals(elementType.getName()));
     }
@@ -57,27 +74,6 @@ public abstract class MagicInvoker {
 
     private static double calculateValueForKnight(double actualStrength) {
         return actualStrength * KNIGHT_MAGIC_MULTIPLIER;
-    }
-
-    public double magicValue(Magic magic, Player player) {
-        double playerMultipel = countMultipel(player);
-        double actualStrength = magic.getBaseStrength() * playerMultipel;
-        double roundedValue = Math.round(actualStrength * 100.0) / 100.0;
-        roundedValue = impactFromRace(roundedValue, player, magic.getElement());
-        return impactFromRole(roundedValue, player);
-    }
-
-    private double countMultipel(Player player) {
-        double playerLevel = adjustPlayerLevel(player);
-        double playerMultipel = 1.0;
-        for (int i = 0; i < playerLevel; i++) {
-            playerMultipel *= LEVEL_MULTIPLIER;
-        }
-        return playerMultipel;
-    }
-
-    private static int adjustPlayerLevel(Player player) {
-        return 1 == player.getLevel() ? 0 : player.getLevel();
     }
 
     public abstract double throwMagic(Magic magic, Player player);
