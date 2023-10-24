@@ -14,7 +14,7 @@ public class MagicElementTypeTest {
     @Test
     @DisplayName("Test MagicElementType instance creation")
     void testGetMultiplierReturnsCorrectValueWhenNeutral() {
-        Magic magic = new Magic(Spell.HEAL);
+        Magic magic = new Magic(Spell.HARMONYHEAL);
         Player player = new Player("Test", new Elf(), new Thief(), new Point2D());
         double expectedMultiplier = 1.0;
         assertEquals(expectedMultiplier, magic.getElement().getMultiplier(player));

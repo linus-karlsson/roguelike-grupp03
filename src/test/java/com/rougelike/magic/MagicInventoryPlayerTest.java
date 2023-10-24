@@ -11,7 +11,7 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testMethodAddMagicToInventoryShouldAddMagicToInventory() {
-        Magic magic = new Magic(Spell.HEAL);
+        Magic magic = new Magic(Spell.HARMONYHEAL);
         Player player = new Player("Test", new Point2D());
         player.addMagicToInventory(magic);
         assertTrue(player.hasMagicKnowledge(magic.getName()));
@@ -19,7 +19,7 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testMethodAddMagicToInventoryShouldNotAddMagicToInventory() {
-        Magic magic = new Magic(Spell.HEAL);
+        Magic magic = new Magic(Spell.HARMONYHEAL);
         Player player = new Player("Test", new Point2D());
         player.addMagicToInventory(magic);
         player.addMagicToInventory(magic);
@@ -64,7 +64,7 @@ public class MagicInventoryPlayerTest {
     @Test
     void testUseMagicWithHealthShouldIncresePlayersHelth() {
         Player player = new Player("Test", new Point2D());
-        Magic magic = new Magic(Spell.HEAL);
+        Magic magic = new Magic(Spell.HARMONYHEAL);
         player.addMagicToInventory(magic);
         player.setHealth(50);
         player.useMagic("Heal");

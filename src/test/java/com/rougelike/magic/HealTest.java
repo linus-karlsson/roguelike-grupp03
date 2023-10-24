@@ -9,19 +9,19 @@ public class HealTest {
 
     @Test
     void testSpellHealShouldBeInstanceOfMagicInvoker() {
-        Magic magic = new Magic(Spell.HEAL);
+        Magic magic = new Magic(Spell.HARMONYHEAL);
         assertTrue(magic.getType() instanceof MagicInvoker);
     }
 
     @Test
     void testSpellHealShouldBeInstanceOfHeal() {
-        Magic magic = new Magic(Spell.HEAL);
+        Magic magic = new Magic(Spell.HARMONYHEAL);
         assertTrue(magic.getType() instanceof Heal);
     }
 
     @Test
     void testMethodHealShouldIncreasePlayersHealth() {
-        Magic magic = new Magic(Spell.HEAL);
+        Magic magic = new Magic(Spell.HARMONYHEAL);
         Player player = new Player("Test", new Point2D());
         Heal heal = (Heal) magic.getType();
         player.setHealth(50);
@@ -31,7 +31,7 @@ public class HealTest {
 
     @Test
     void testMethodHealShouldIncreasePlayersHealthToMax() {
-        Magic magic = new Magic(Spell.HEAL);
+        Magic magic = new Magic(Spell.HARMONYHEAL);
         Player player = new Player("Test", new Point2D());
         Heal heal = (Heal) magic.getType();
         player.setHealth(95);
