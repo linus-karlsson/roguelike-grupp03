@@ -13,7 +13,7 @@ public class Knight extends Role {
     private static final double KNIGHT_DEXTERITY_MULTIPLIER = 1.0;
     private static final double KNIGHT_INTELLIGENCE_MULTIPLIER = 1.0;
 
-    private static final Weapon KNIGHT_STARTING_WEAPON = new Sword();
+    private static Weapon KNIGHT_STARTING_WEAPON = new Sword();
 
     public Knight() {
         super(KNIGHT_HEALTH_MULTIPLIER, KNIGHT_MANA_MULTIPLIER, KNIGHT_STRENGTH_MULTIPLIER, KNIGHT_DEXTERITY_MULTIPLIER,

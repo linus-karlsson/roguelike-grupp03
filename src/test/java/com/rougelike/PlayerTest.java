@@ -12,7 +12,6 @@ import com.rougelike.races.Elf;
 import com.rougelike.races.Human;
 import com.rougelike.roles.Knight;
 import com.rougelike.roles.Mage;
-import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
 import org.junit.jupiter.api.*;
 import org.hamcrest.MatcherAssert;
@@ -146,7 +145,7 @@ public class PlayerTest {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         Troll troll = new Troll();
         double expectedTrollHealth = troll.getHealth();
-        thief.invisibility();
+        thief.becomeInvisible();
         player.attackEnemyWithWeapon(troll);
         assertEquals(expectedTrollHealth, troll.getHealth());
     }

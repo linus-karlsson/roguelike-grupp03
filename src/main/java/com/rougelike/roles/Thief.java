@@ -12,7 +12,7 @@ public class Thief extends Role {
     private static final double THIEF_DEXTERITY_MULTIPLIER = 1.8;
     private static final double THIEF_INTELLIGENCE_MULTIPLIER = 1.0;
 
-    private static final Weapon THIEF_STARTING_WEAPON = new Dagger();
+    private static Weapon THIEF_STARTING_WEAPON = new Dagger();
 
     private boolean invisible = false;
 
@@ -22,7 +22,7 @@ public class Thief extends Role {
                 EquipmentType.MEDIUM_ARMOR, EquipmentType.DAGGER);
     }
 
-    public void invisibility() {
+    public void becomeInvisible() {
         invisible = true;
     }
 
