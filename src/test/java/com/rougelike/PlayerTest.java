@@ -5,7 +5,6 @@ import com.rougelike.dungeon.Room;
 import com.rougelike.dungeon.RoomParser;
 import com.rougelike.enemies.Troll;
 import com.rougelike.enemies.Witch;
-import com.rougelike.equipment.EarthHammer;
 import com.rougelike.equipment.ElementType;
 import com.rougelike.equipment.WaterDagger;
 import com.rougelike.races.Dwarf;
@@ -16,7 +15,10 @@ import com.rougelike.roles.Mage;
 import com.rougelike.roles.Role;
 import com.rougelike.roles.Thief;
 import org.junit.jupiter.api.*;
+import org.hamcrest.MatcherAssert;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 public class PlayerTest {
 
@@ -84,8 +86,10 @@ public class PlayerTest {
         Player player = new Player("Gimli", dwarf, knight, new Point2D());
         double expectedHealth = dwarf.getStartingHealth() * knight.getHealthMultiplier();
         double expectedIntelligence = dwarf.getStartingIntelligence() * knight.getIntelligenceMultiplier();
-        assertEquals(expectedHealth, player.getHealth());
-        assertEquals(expectedIntelligence, player.getIntelligence());
+        MatcherAssert.assertThat(player, allOf(
+                hasProperty("health", is(expectedHealth)),
+                hasProperty("intelligence", is(expectedIntelligence))
+        ));
     }
 
     @Test
@@ -100,6 +104,8 @@ public class PlayerTest {
         double expectedDamage = knightWeaponDamage * totalStrength;
         double playerTotalWeaponDamage = player.getTotalWeaponDamage();
         assertEquals(expectedDamage, playerTotalWeaponDamage);
+        MatcherAssert.assertThat(playerTotalWeaponDamage, is(expectedDamage));
+
     }
 
     @Test
@@ -109,7 +115,7 @@ public class PlayerTest {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         player.takeDamage(50);
         double expectedHealthLeft = 50;
-        assertEquals(expectedHealthLeft, player.getHealth());
+        MatcherAssert.assertThat(player.getHealth(), is(expectedHealthLeft));
     }
 
     @Test
@@ -120,7 +126,8 @@ public class PlayerTest {
         player.setHealth(300);
         player = player.reset();
         double expectedHealth = 100;
-        assertEquals(expectedHealth, player.getHealth());
+        MatcherAssert.assertThat(player.getHealth(), is(expectedHealth));
+
     }
 
     @Test
