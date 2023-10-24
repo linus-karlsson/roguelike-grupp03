@@ -119,6 +119,8 @@ public class Player extends Entity implements PlayerMock {
             case DAGGER:
                 totalWeaponDamage = damageMultiplier * dexterity;
                 break;
+            default:
+                break;
         }
     }
 
@@ -133,7 +135,9 @@ public class Player extends Entity implements PlayerMock {
             }
         }
         double damage = totalWeaponDamage;
-        if (weaponIsEffective(enemy.getElement())) {
+        ElementType weaponElement = equippedWeapon.getWeaponElementType();
+        ElementType enemyElement = enemy.getElement();
+        if (ElementType.elementIsEffective(weaponElement, enemyElement)) {
             damage += equippedWeapon.getElementalDamage();
         }
         enemy.takeDamage(damage);
@@ -479,23 +483,20 @@ public class Player extends Entity implements PlayerMock {
     }
 
     public void debuff(Entity enemy) {
-        if (!(role instanceof Mage)) {
-            return;
+        if (role instanceof Mage) {
+            ((Mage) role).debuff(enemy, getLevel());
         }
-        ((Mage) role).debuff(enemy, getLevel());
     }
 
     public void shieldBash(Entity enemy) {
-        if (!(role instanceof Knight)) {
-            return;
+        if (role instanceof Knight) {
+            ((Knight) role).shieldBash(enemy);
         }
-        ((Knight) role).shieldBash(enemy);
     }
 
     public void invisibility() {
-        if (!(role instanceof Thief)) {
-            return;
+        if (role instanceof Thief) {
+            ((Thief) role).becomeInvisible();
         }
-        ((Thief) role).invisibility();
     }
 }

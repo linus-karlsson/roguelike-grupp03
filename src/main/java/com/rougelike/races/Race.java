@@ -9,10 +9,10 @@ public abstract class Race {
 
 
 
-    public Race(double health, double mana, double startingStrength, double dexterity, double intelligence) {
+    public Race(double health, double mana, double strength, double dexterity, double intelligence) {
         this.startingHealth = health;
         this.startingMana = mana;
-        this.startingStrength = startingStrength;
+        this.startingStrength = strength;
         this.startingDexterity = dexterity;
         this.startingIntelligence = intelligence;
 

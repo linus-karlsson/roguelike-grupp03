@@ -5,5 +5,18 @@ public enum ElementType {
     EARTH,
     WATER,
     FIRE,
-    AIR,
+    AIR;
+
+    public static boolean elementIsEffective(ElementType a, ElementType b) {
+        if (a == ElementType.WATER && b == ElementType.FIRE) {
+            return true;
+        }
+        if (a == ElementType.EARTH && b == ElementType.FIRE) {
+            return true;
+        }
+        if (a == ElementType.AIR && b == ElementType.EARTH) {
+            return true;
+        }
+        return false;
+    }
 }
