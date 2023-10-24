@@ -6,5 +6,4 @@ public enum ElementType {
     WATER,
     FIRE,
     AIR,
-
 }

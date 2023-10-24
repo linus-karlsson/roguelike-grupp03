@@ -132,10 +132,11 @@ public class Player extends Entity implements PlayerMock {
                 return;
             }
         }
+        double damage = totalWeaponDamage;
         if (weaponIsEffective(enemy.getElement())) {
-            enemy.takeDamage(equippedWeapon.getElementalDamage());
+            damage += equippedWeapon.getElementalDamage();
         }
-        enemy.takeDamage(totalWeaponDamage);
+        enemy.takeDamage(damage);
     }
 
     public void takeDamage(double damageTaken) {
@@ -238,11 +239,11 @@ public class Player extends Entity implements PlayerMock {
     }
 
     public void equipNextWeapon() {
-
+        // TODO:
     }
 
     public void equipPreviousWeapon() {
-
+        // TODO:
     }
 
     public Player reset() {

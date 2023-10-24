@@ -19,7 +19,6 @@ import org.hamcrest.MatcherAssert;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class PlayerTest {
 
     @Test
@@ -88,8 +87,7 @@ public class PlayerTest {
         double expectedIntelligence = dwarf.getStartingIntelligence() * knight.getIntelligenceMultiplier();
         MatcherAssert.assertThat(player, allOf(
                 hasProperty("health", is(expectedHealth)),
-                hasProperty("intelligence", is(expectedIntelligence))
-        ));
+                hasProperty("intelligence", is(expectedIntelligence))));
     }
 
     @Test
