@@ -22,20 +22,9 @@ public class Mage extends Role {
 
     // Tar ner fiendens skada x mycket beroende på spelarens level
     public void debuff(Entity enemy, int playerLevel) {
-        if (playerLevel < 20) {
-            enemy.setDamage(enemy.getDamage() * 0.9);
-            enemy.setHealth(enemy.getHealth() * 0.9);
-            return;
-        }
-        if (playerLevel < 50) {
-            enemy.setDamage(enemy.getDamage() * 0.8);
-            enemy.setHealth(enemy.getHealth() * 0.8);
-            return;
-        }
-        if (playerLevel >= 50) {
-            enemy.setDamage(enemy.getDamage() * 0.7);
-            enemy.setHealth(enemy.getHealth() * 0.7);
-        }
+        double debuffMultiplier = playerLevel < 20 ? 0.9 : playerLevel < 50 ? 0.8 : 0.7;
+        enemy.setDamage(enemy.getDamage() * debuffMultiplier);
+        enemy.setHealth(enemy.getHealth() * debuffMultiplier);
     }
 
 }

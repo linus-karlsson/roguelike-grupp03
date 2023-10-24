@@ -5,7 +5,6 @@ import com.rougelike.equipment.Weapon;
 
 import java.util.*;
 
-
 public abstract class Role {
 
     private final double healthMultiplier;
@@ -18,8 +17,8 @@ public abstract class Role {
 
     private final Weapon startingWeapon;
 
-
-    public Role(double healthMultiplier, double manaMultiplier, double strengthMultiplier, double dexterityMultiplier, double intelligenceMultiplier, Weapon startingWeapon, EquipmentType... eligibleEquipment) {
+    public Role(double healthMultiplier, double manaMultiplier, double strengthMultiplier, double dexterityMultiplier,
+            double intelligenceMultiplier, Weapon startingWeapon, EquipmentType... eligibleEquipment) {
         this.healthMultiplier = healthMultiplier;
         this.manaMultiplier = manaMultiplier;
         this.strengthMultiplier = strengthMultiplier;
@@ -28,7 +27,6 @@ public abstract class Role {
         this.startingWeapon = startingWeapon;
         this.eligibleEquipment.addAll(Arrays.asList(eligibleEquipment));
     }
-
 
     public double getHealthMultiplier() {
         return healthMultiplier;
@@ -50,16 +48,12 @@ public abstract class Role {
         return intelligenceMultiplier;
     }
 
-    public Weapon getStartingWeapon(){
+    public Weapon getStartingWeapon() {
         return startingWeapon;
     }
 
-    public Set<EquipmentType> getEligibleEquipment(){
+    public Set<EquipmentType> getEligibleEquipment() {
         return eligibleEquipment;
     }
-
-
-
-
 
 }
