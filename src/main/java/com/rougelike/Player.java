@@ -297,9 +297,10 @@ public class Player extends Entity implements PlayerMock {
                     break;
                 }
             }
-            weaponInventory.remove(weaponToRemove);
-            wallet += weaponToRemove.getPrice();
-
+            if (weaponToRemove != null) {
+                weaponInventory.remove(weaponToRemove);
+                wallet += weaponToRemove.getPrice();
+            }
         }
         weaponInventory.add(weapon);
     }
@@ -365,8 +366,10 @@ public class Player extends Entity implements PlayerMock {
                     break;
                 }
             }
-            armorInventory.remove(armorToRemove);
-            wallet += armorToRemove.getPrice();
+            if (armorToRemove != null) {
+                armorInventory.remove(armorToRemove);
+                wallet += armorToRemove.getPrice();
+            }
         }
         armorInventory.add(armor);
     }
