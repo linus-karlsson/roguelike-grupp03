@@ -14,7 +14,7 @@ public class MagicInventoryPlayerTest {
         Magic magic = new Magic(Spell.HARMONYHEAL);
         Player player = new Player("Test", new Point2D());
         player.addMagicToInventory(magic);
-        assertTrue(player.hasMagicKnowledge(magic.getName()));
+        assertEquals(1, player.getMagicInventory().size());
     }
 
     @Test
@@ -30,7 +30,7 @@ public class MagicInventoryPlayerTest {
     void testUseMagicWithNoArgumentShouldThrowException() {
         Player player = new Player("Test", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
-            player.useMagic("");
+            player.useMagic(null);
         });
     }
 
@@ -46,7 +46,7 @@ public class MagicInventoryPlayerTest {
     void testUseMagicWithMagicNotInInventoryShouldThrowException() {
         Player player = new Player("Test", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
-            player.useMagic("Tornado");
+            player.useMagic(Spell.FIREBALL);
         });
     }
 
@@ -56,7 +56,7 @@ public class MagicInventoryPlayerTest {
         Entity enemy = new Troll();
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
-        player.useMagic("Fireball", enemy);
+        player.useMagic(Spell.FIREBALL, enemy);
         double expectedValue = 40.0;
         assertEquals(expectedValue, enemy.getHealth());
     }
@@ -67,7 +67,7 @@ public class MagicInventoryPlayerTest {
         Magic magic = new Magic(Spell.HARMONYHEAL);
         player.addMagicToInventory(magic);
         player.setHealth(50);
-        player.useMagic("Heal");
+        player.useMagic(Spell.HARMONYHEAL);
         double expectedValue = 60.0;
         assertEquals(expectedValue, player.getHealth());
     }
