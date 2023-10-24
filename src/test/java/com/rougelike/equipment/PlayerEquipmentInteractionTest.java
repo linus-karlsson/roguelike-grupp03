@@ -1,6 +1,10 @@
 package com.rougelike.equipment;
 
 import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 import com.rougelike.*;
 import com.rougelike.races.Dwarf;
@@ -9,8 +13,6 @@ import com.rougelike.races.Human;
 import com.rougelike.roles.Knight;
 import com.rougelike.roles.Mage;
 import com.rougelike.roles.Thief;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerEquipmentInteractionTest {
 
@@ -36,16 +38,12 @@ public class PlayerEquipmentInteractionTest {
         assertEquals(player.getArmorInventory().get(0), expected);
     }
 
-    // @Test
-    // void onlyWeaponsCanBeAddedToWeaponInventory() {
-    // HeavyArmor heavyArmor = new HeavyArmor();
-    // Player player = new Player("Sven");
-
-    // player.addWeaponToInventory(heavyArmor);
-
-    // assertFalse(player.getWeaponInventory().contains(heavyArmor));
-
-    // }
+    @Test
+    void inventoryCapacityIsFive() {
+        Player player = new Player("Sven", new Point2D());
+        int expected = 5;
+        assertEquals(expected, player.getMaxInventoryCapacity());
+    }
 
     @Test
     void canNotHaveMoreThanFiveWeaponsInWeaponInventory() {
@@ -140,7 +138,6 @@ public class PlayerEquipmentInteractionTest {
 
     @Test
     void inventoryAtCapacityMinusOne_AddsWeapon() {
-        // Måste skrivas om ifall max inventory capacity ändras
 
         Dagger dagger = new Dagger();
         FireSword fireSword = new FireSword();
@@ -453,17 +450,6 @@ public class PlayerEquipmentInteractionTest {
         assertTrue(player.getArmorInventory().contains(superiorHeavyArmor));
     }
 
-    // Fungerar inte längre då metoden kräver en klass.
-    // @Test
-    // void canEquipInOffhand() {
-    // Dagger dagger = new Dagger();
-    // Player player = new Player("Sven");
-
-    // player.addWeaponToInventory(dagger);
-    // player.equipOffhand(dagger);
-    // assertTrue(player.getEquippedOffhand() == dagger);
-    // }
-
     @Test
     void doesNotEquipOffhandIfNotInWeaponInventory() {
         Dagger dagger = new Dagger();
@@ -501,7 +487,7 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    void equipsOffhandIfCorrectRoleAndInInventory() {
+    void equipsOffhandIfCorrectRoleAndInInventory_Knight() {
         Shield shield = new Shield();
         Dwarf dwarf = new Dwarf();
         Knight knight = new Knight();
@@ -510,6 +496,34 @@ public class PlayerEquipmentInteractionTest {
         Equipment expected = shield;
         player.addArmorToInventory(shield);
         player.equipOffhand(shield);
+
+        assertEquals(expected, player.getEquippedOffhand());
+    }
+
+    @Test
+    void equipsOffhandIfCorrectRoleAndInInventory_Mage() {
+        Tome tome = new Tome();
+        Dwarf dwarf = new Dwarf();
+        Mage mage = new Mage();
+        Player player = new Player("Sven", dwarf, mage, new Point2D());
+
+        Equipment expected = tome;
+        player.addArmorToInventory(tome);
+        player.equipOffhand(tome);
+
+        assertEquals(expected, player.getEquippedOffhand());
+    }
+
+    @Test
+    void equipsOffhandIfCorrectRoleAndInInventory_Thief() {
+        Dagger dagger = new Dagger();
+        Dwarf dwarf = new Dwarf();
+        Thief thief = new Thief();
+        Player player = new Player("Sven", dwarf, thief, new Point2D());
+
+        Equipment expected = dagger;
+        player.addWeaponToInventory(dagger);
+        player.equipOffhand(dagger);
 
         assertEquals(expected, player.getEquippedOffhand());
     }
@@ -739,6 +753,108 @@ public class PlayerEquipmentInteractionTest {
         double[] actual = { player.getStrength(), player.getDexterity(), player.getIntelligence(),
                 player.getHealth(), player.getMana(), player.getArmorValue() };
         assertArrayEquals(expected, actual);
+    }
+
+    // Matcher som undersöker om värden i två olika arrayer är lika.
+    // Utöver förbättrad läsbarhet så kan man se alla värden i arrayen samtidigt
+    // ifall den misslyckas
+    // vilket gör att man kan se ifall det var flera värden som inte stämde överens
+    // under samma testkörning
+    @Test
+    void equippingArmorIncreasesStatsByCorrectAmount_Matcher() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Knight knight = new Knight();
+        Player player = new Player("Sven", new Dwarf(), knight, new Point2D());
+        double[] expected = { player.getStrength() + (heavyArmor.getStrength() * knight.getStrengthMultiplier()),
+                player.getDexterity() + (heavyArmor.getDexterity() * knight.getDexterityMultiplier()),
+                player.getIntelligence() + (heavyArmor.getIntelligence() * knight.getIntelligenceMultiplier()),
+                player.getHealth() + heavyArmor.getHealth(), player.getMana() + heavyArmor.getMana(),
+                player.getArmorValue() + heavyArmor.getArmorValue() };
+        player.addArmorToInventory(heavyArmor);
+        player.equipArmor(heavyArmor);
+        double[] equippedStats = { player.getStrength(), player.getDexterity(), player.getIntelligence(),
+                player.getHealth(), player.getMana(), player.getArmorValue() };
+        assertThat(equippedStats, is(equalTo(expected)));
+    }
+
+    @Test
+    void unequippingArmorDecreasesStatsByCorrectAmount_Matcher() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Knight knight = new Knight();
+        Player player = new Player("Sven", new Dwarf(), knight, new Point2D());
+        player.addArmorToInventory(heavyArmor);
+        player.equipArmor(heavyArmor);
+        double[] expected = { player.getStrength() - (heavyArmor.getStrength() * knight.getStrengthMultiplier()),
+                player.getDexterity() - (heavyArmor.getDexterity() * knight.getDexterityMultiplier()),
+                player.getIntelligence() - (heavyArmor.getIntelligence() * knight.getIntelligenceMultiplier()),
+                player.getHealth() - heavyArmor.getHealth(), player.getMana() - heavyArmor.getMana(),
+                player.getArmorValue() - heavyArmor.getArmorValue() };
+        player.unequipArmor();
+        double[] actual = { player.getStrength(), player.getDexterity(), player.getIntelligence(),
+                player.getHealth(), player.getMana(), player.getArmorValue() };
+        assertThat(actual, is(equalTo(expected)));
+    }
+
+    // Ger ett tydligare felmeddelande.
+    // Expected: a collection with size[x]
+    // but: collection size was [y]
+    // istället för att bara ge siffror
+    @Test
+    void canNotHaveMoreThanFiveWeaponsInWeaponInventory_Matcher() {
+        Stick stick = new Stick();
+        Dagger dagger = new Dagger();
+        FireSword fireSword = new FireSword();
+        Torch torch = new Torch();
+        AirWand wand = new AirWand();
+        Sword sword = new Sword();
+        Player player = new Player("Sven", new Point2D());
+
+        int expected = 5;
+
+        player.addWeaponToInventory(stick);
+        player.addWeaponToInventory(dagger);
+        player.addWeaponToInventory(fireSword);
+        player.addWeaponToInventory(torch);
+        player.addWeaponToInventory(wand);
+        player.addWeaponToInventory(sword);
+
+        assertThat(player.getWeaponInventory(), hasSize(expected));
+    }
+
+    // Kan undersöka om en lista innehåller alla element oavsett ordning.
+    @Test
+    void removesThirdItemWhenTheFirstAndSecondArmorAreUneligibleForRemoval_Matcher() {
+        Tome tome = new Tome();
+        LightArmor lightArmor = new LightArmor();
+        Shield shield = new Shield();
+        MediumArmor mediumArmor = new MediumArmor();
+        HeavyArmor heavyArmor = new HeavyArmor();
+        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
+
+        player.addArmorToInventory(tome);
+        player.equipOffhand(tome);
+        player.addArmorToInventory(lightArmor);
+        player.equipArmor(lightArmor);
+        player.addArmorToInventory(shield);
+        player.addArmorToInventory(mediumArmor);
+        player.addArmorToInventory(heavyArmor);
+        player.addArmorToInventory(superiorHeavyArmor);
+
+        assertThat(player.getArmorInventory(),
+                containsInAnyOrder(tome, lightArmor, superiorHeavyArmor, heavyArmor, mediumArmor));
+    }
+
+    // Något bättre läsbarhet än assertTrue (x>y)
+    @Test
+    void equippingWeaponIncreasesPlayerStats_Matcher() {
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
+        FireSword fireSword = new FireSword();
+        double nothingEquippedStats = player.getStrength();
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
+        double weaponEquippedStats = player.getStrength();
+        assertThat(weaponEquippedStats, greaterThan(nothingEquippedStats));
     }
 
 }

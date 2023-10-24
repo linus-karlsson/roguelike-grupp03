@@ -59,15 +59,25 @@ public class DungeonGenerator {
     }
 
     Room generateRoom(double minWidth, double maxWidth, double minHeight, double maxHeight) {
+        validateArgumentsInGenerateRoom(minWidth, maxWidth, minHeight, maxHeight);
+        Room room = new Room(randomDoubleInBounds(minWidth, maxWidth), randomDoubleInBounds(minHeight, maxHeight));
+        return room;
+    }
+
+    private void validateArgumentsInGenerateRoom(double minWidth, double maxWidth, double minHeight, double maxHeight) {
         if (minWidth < MIN_ROOM_WIDTH_OR_HEIGHT || minHeight < MIN_ROOM_WIDTH_OR_HEIGHT) {
             throw new IllegalArgumentException(
                     String.format("Min width or height of rooms: %f", MIN_ROOM_WIDTH_OR_HEIGHT));
         } else if (maxWidth > MAX_ROOM_WIDTH_OR_HEIGHT || maxHeight > MAX_ROOM_WIDTH_OR_HEIGHT) {
             throw new IllegalArgumentException(
                     String.format("Max width or height of rooms: %f", MAX_ROOM_WIDTH_OR_HEIGHT));
+        } else if (minWidth >= maxWidth) {
+            throw new IllegalArgumentException(
+                    String.format("minWidth(%f) is greater than or equal to maxWidth(%f)", minWidth, maxWidth));
+        } else if (minHeight >= maxHeight) {
+            throw new IllegalArgumentException(
+                    String.format("minHeight(%f) is greater than or equal to maxHeight(%f)", minHeight, maxHeight));
         }
-        Room room = new Room(randomDoubleInBounds(minWidth, maxWidth), randomDoubleInBounds(minHeight, maxHeight));
-        return room;
     }
 
     private double randomDoubleInBounds(double low, double high) {
@@ -89,7 +99,7 @@ public class DungeonGenerator {
 
     List<Room> placeRoomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
             int columnCount, double tileSize) {
-        checkArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
+        validateArgumentsInPlaceRooomsInArea(rooms, numberOfTriesBeforeDiscard, rowCount, columnCount, tileSize);
         grid = setUpGrid(rowCount, columnCount, tileSize);
         List<Room> roomsPlaced = new ArrayList<>();
         RoomParser roomParser = new RoomParser(grid);
@@ -115,7 +125,7 @@ public class DungeonGenerator {
         return roomsPlaced;
     }
 
-    private void checkArgumentsInPlaceRooomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
+    private void validateArgumentsInPlaceRooomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
             int columnCount, double tileSize) {
         if (rooms == null) {
             throw new IllegalArgumentException("rooms can't be null");
