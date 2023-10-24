@@ -37,7 +37,7 @@ public abstract class MagicInvoker {
 
         private double impactFromRace(double value, Player player, MagicElementType elementType) {
         double valueToReturn = value;
-        if (isElementTypeAir(elementType) && RaceImpactChecker.isPlayerImpactByAir(player)) {
+        if (isElementTypeAir(elementType) && RaceImpactChecker.isPlayerImpact(player.getRace(), elementType)) {
             valueToReturn = value * elementType.getMultiplier(player);
         }
         return valueToReturn;
