@@ -134,9 +134,8 @@ public class Player extends Entity implements PlayerMock {
         }
         if (weaponIsEffective(enemy.getElement())) {
             enemy.takeDamage(equippedWeapon.getElementalDamage());
-            return;
         }
-            enemy.takeDamage(totalWeaponDamage);
+        enemy.takeDamage(totalWeaponDamage);
     }
 
     public void takeDamage(double damageTaken) {
