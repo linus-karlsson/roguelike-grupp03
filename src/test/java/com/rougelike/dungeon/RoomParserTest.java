@@ -1,10 +1,12 @@
 package com.rougelike.dungeon;
 
 import org.junit.jupiter.api.*;
-
 import com.rougelike.Point2D;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -128,7 +130,7 @@ public class RoomParserTest {
     void testRoomAreaToList() {
         List<Integer> expected = setUpExpectedIntegerList();
         List<Integer> roomTileList = roomParser.roomAreaToList();
-        assertArrayEquals(expected.toArray(), roomTileList.toArray());
+        assertThat(roomTileList, is(equalTo(expected)));
     }
 
     private List<Integer> setUpExpectedIntegerList() {

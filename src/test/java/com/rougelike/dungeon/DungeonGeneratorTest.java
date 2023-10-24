@@ -3,11 +3,10 @@ package com.rougelike.dungeon;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -127,7 +126,7 @@ public class DungeonGeneratorTest {
 
     @Test
     void testGenerateListOfRoomsSize() {
-        assertThat(getDefaultRooms().size(), is(DEFAULT_ROOM_COUNT));
+        assertThat(getDefaultRooms(), hasSize(DEFAULT_ROOM_COUNT));
     }
 
     @Test
@@ -136,7 +135,6 @@ public class DungeonGeneratorTest {
         for (Room room : rooms) {
             boolean expected = isWithinBounds(room.getWidth(), room.getHeight(), DEFAULT_MIN_WIDTH,
                     DEFAULT_MAX_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_HEIGHT);
-
             assertTrue(expected);
         }
     }
