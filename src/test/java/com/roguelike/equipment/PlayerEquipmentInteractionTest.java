@@ -574,12 +574,12 @@ public class PlayerEquipmentInteractionTest {
 
     @Test
     void doesNotEquipOffhandIfWrongOffhandType_Mage_Weapon() {
-        FireSword fireSword = new FireSword();
+        Dagger dagger = new Dagger();
         Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
 
-        Equipment unexpected = fireSword;
-        player.addWeaponToInventory(fireSword);
-        player.equipOffhand(fireSword);
+        Equipment unexpected = dagger;
+        player.addWeaponToInventory(dagger);
+        player.equipOffhand(dagger);
 
         assertNotEquals(unexpected, player.getEquippedOffhand());
     }
