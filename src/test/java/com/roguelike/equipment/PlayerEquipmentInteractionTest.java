@@ -16,113 +16,83 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 public class PlayerEquipmentInteractionTest {
+    Stick stick = new Stick();
+    Dagger dagger = new Dagger();
+    FireSword fireSword = new FireSword();
+    Torch torch = new Torch();
+    AirWand wand = new AirWand();
+    Sword sword = new Sword();
+    LightArmor lightArmor = new LightArmor();
+    Tome tome = new Tome();
+    Shield shield = new Shield();
+    MediumArmor mediumArmor = new MediumArmor();
+    HeavyArmor heavyArmor = new HeavyArmor();
+    SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
+    Player player = new Player("Sven", new Point2D());
 
     @Test
     void canAddWeaponToInventory() {
-        Stick stick = new Stick();
-        Player player = new Player("Sven", new Point2D());
-
         player.addWeaponToInventory(stick);
         Weapon expected = stick;
-
         assertEquals(player.getWeaponInventory().get(0), expected);
     }
 
     @Test
     void canAddArmorToInventory() {
-        LightArmor lightArmor = new LightArmor();
-        Player player = new Player("Sven", new Point2D());
-
         player.addArmorToInventory(lightArmor);
         Armor expected = lightArmor;
-
         assertEquals(player.getArmorInventory().get(0), expected);
     }
 
     @Test
     void inventoryCapacityIsFive() {
-        Player player = new Player("Sven", new Point2D());
         int expected = 5;
         assertEquals(expected, player.getMaxInventoryCapacity());
     }
 
     @Test
     void canNotHaveMoreThanFiveWeaponsInWeaponInventory() {
-        Stick stick = new Stick();
-        Dagger dagger = new Dagger();
-        FireSword fireSword = new FireSword();
-        Torch torch = new Torch();
-        AirWand wand = new AirWand();
-        Sword sword = new Sword();
-        Player player = new Player("Sven", new Point2D());
-
         int expected = 5;
-
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
         player.addWeaponToInventory(fireSword);
         player.addWeaponToInventory(torch);
         player.addWeaponToInventory(wand);
         player.addWeaponToInventory(sword);
-
         assertEquals(expected, player.getWeaponInventory().size());
     }
 
     @Test
     void canNotHaveMoreThanFiveArmorsInArmorInventory() {
-        Tome tome = new Tome();
-        Shield shield = new Shield();
-        LightArmor lightArmor = new LightArmor();
-        MediumArmor mediumArmor = new MediumArmor();
-        HeavyArmor heavyArmor = new HeavyArmor();
-        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
-        Player player = new Player("Sven", new Point2D());
-
         int expected = 5;
-
         player.addArmorToInventory(tome);
         player.addArmorToInventory(shield);
         player.addArmorToInventory(lightArmor);
         player.addArmorToInventory(mediumArmor);
         player.addArmorToInventory(heavyArmor);
         player.addArmorToInventory(superiorHeavyArmor);
-
         assertEquals(expected, player.getArmorInventory().size());
     }
 
     @Test
     void canRemoveWeaponFromWeaponInventory() {
-        Stick stick = new Stick();
-        Player player = new Player("Sven", new Point2D());
-
         player.addWeaponToInventory(stick);
         player.removeWeaponFromInventory(stick);
-
         int expected = 0;
-
         assertEquals(expected, player.getWeaponInventory().size());
     }
 
     @Test
     void removesCorrectWeaponFromWeaponInventory() {
-        Stick stick = new Stick();
-        Dagger dagger = new Dagger();
-        Player player = new Player("Sven", new Point2D());
-
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
         player.removeWeaponFromInventory(stick);
-
         assertTrue(player.getWeaponInventory().contains(dagger));
     }
 
     @Test
     void removingArmorFromArmorInventoryReturnsCost() {
-        HeavyArmor heavyArmor = new HeavyArmor();
-        Player player = new Player("sven", new Point2D());
-
         int expected = 160;
-
         player.addArmorToInventory(heavyArmor);
         player.removeArmorFromInventory(heavyArmor);
         assertEquals(expected, player.getWallet());
@@ -130,146 +100,81 @@ public class PlayerEquipmentInteractionTest {
 
     @Test
     void correctValueStartingMoney() {
-        Player player = new Player("Sven", new Point2D());
-
         int expected = 100;
-
         assertEquals(expected, player.getWallet());
     }
 
     @Test
     void inventoryAtCapacityMinusOne_AddsWeapon() {
-
-        Dagger dagger = new Dagger();
-        FireSword fireSword = new FireSword();
-        Torch torch = new Torch();
-        AirWand wand = new AirWand();
-        Player player = new Player("Sven", new Point2D());
-
         player.addWeaponToInventory(dagger);
         player.addWeaponToInventory(fireSword);
         player.addWeaponToInventory(torch);
         player.addWeaponToInventory(wand);
-
-        Sword sword = new Sword();
         player.addWeaponToInventory(sword);
-
         assertTrue(player.getWeaponInventory().contains(sword));
 
     }
 
     @Test
     void inventoryAtCapacityMinusOne_AddsArmor() {
-        Tome tome = new Tome();
-        Shield shield = new Shield();
-        LightArmor lightArmor = new LightArmor();
-        MediumArmor mediumArmor = new MediumArmor();
-        HeavyArmor heavyArmor = new HeavyArmor();
-
-        Player player = new Player("Sven", new Point2D());
         player.addArmorToInventory(tome);
         player.addArmorToInventory(shield);
         player.addArmorToInventory(lightArmor);
         player.addArmorToInventory(mediumArmor);
         player.addArmorToInventory(heavyArmor);
-
         assertTrue(player.getArmorInventory().contains(heavyArmor));
 
     }
 
     @Test
     void ifAtMaxCapacity_RemoveEarliestAddedWeapon() {
-
-        Stick stick = new Stick();
-        Dagger dagger = new Dagger();
-        FireSword fireSword = new FireSword();
-        Torch torch = new Torch();
-        AirWand wand = new AirWand();
-        Sword sword = new Sword();
-        Player player = new Player("Sven", new Point2D());
-
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
         player.addWeaponToInventory(fireSword);
         player.addWeaponToInventory(torch);
         player.addWeaponToInventory(wand);
         player.addWeaponToInventory(sword);
-
         assertFalse(player.getWeaponInventory().contains(stick));
     }
 
     @Test
     void ifAtMaxCapacity_RemoveEarliestAddedArmor() {
-        Tome tome = new Tome();
-        Shield shield = new Shield();
-        LightArmor lightArmor = new LightArmor();
-        MediumArmor mediumArmor = new MediumArmor();
-        HeavyArmor heavyArmor = new HeavyArmor();
-        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
-        Player player = new Player("Sven", new Point2D());
-
         player.addArmorToInventory(tome);
         player.addArmorToInventory(shield);
         player.addArmorToInventory(lightArmor);
         player.addArmorToInventory(mediumArmor);
         player.addArmorToInventory(heavyArmor);
         player.addArmorToInventory(superiorHeavyArmor);
-
         assertFalse(player.getArmorInventory().contains(tome));
     }
 
     @Test
     void removingWeaponDueToCapacityReturnsWeaponsCost() {
-
-        Stick stick = new Stick();
-        Dagger dagger = new Dagger();
-        FireSword fireSword = new FireSword();
-        Torch torch = new Torch();
-        AirWand wand = new AirWand();
-        Sword sword = new Sword();
-        Player player = new Player("Sven", new Point2D());
-
         int expected = player.getWallet() + stick.getPrice();
-
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(dagger);
         player.addWeaponToInventory(fireSword);
         player.addWeaponToInventory(torch);
         player.addWeaponToInventory(wand);
         player.addWeaponToInventory(sword);
-
         assertEquals(expected, player.getWallet());
     }
 
     @Test
     void removingArmorDueToCapacityReturnsArmorCost() {
-        Tome tome = new Tome();
-        Shield shield = new Shield();
-        LightArmor lightArmor = new LightArmor();
-        MediumArmor mediumArmor = new MediumArmor();
-        HeavyArmor heavyArmor = new HeavyArmor();
-        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
-        Player player = new Player("Sven", new Point2D());
-
         int expected = player.getWallet() + tome.getPrice();
-
         player.addArmorToInventory(tome);
         player.addArmorToInventory(shield);
         player.addArmorToInventory(lightArmor);
         player.addArmorToInventory(mediumArmor);
         player.addArmorToInventory(heavyArmor);
         player.addArmorToInventory(superiorHeavyArmor);
-
         assertEquals(expected, player.getWallet());
     }
 
     @Test
     void weaponInventoryContainsNoDuplicates() {
-        Stick stick = new Stick();
-        Player player = new Player("Sven", new Point2D());
-
         int expected = 1;
-
         player.addWeaponToInventory(stick);
         player.addWeaponToInventory(stick);
 
@@ -278,8 +183,7 @@ public class PlayerEquipmentInteractionTest {
 
     @Test
     void cantRemoveEquippedArmor() {
-        HeavyArmor heavyArmor = new HeavyArmor();
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
+        player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         player.addArmorToInventory(heavyArmor);
         player.equipArmor(heavyArmor);
         player.removeArmorFromInventory(heavyArmor);
@@ -288,8 +192,7 @@ public class PlayerEquipmentInteractionTest {
 
     @Test
     void cantRemoveEquippedWeapon() {
-        Stick stick = new Stick();
-        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
+        player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
         player.addWeaponToInventory(stick);
         player.equipWeapon(stick);
         player.removeWeaponFromInventory(stick);
