@@ -9,19 +9,51 @@ import static org.junit.jupiter.api.Assertions.*;
 public class HealTest {
 
     @Test
-    void testSpellHealShouldBeInstanceOfMagicInvoker() {
+    void testHealShouldBeInstanceOfMagicInvoker() {
         Magic magic = new Magic(Spell.HARMONYHEAL);
         assertTrue(magic.getType() instanceof MagicInvoker);
     }
 
     @Test
-    void testSpellHealShouldBeInstanceOfHeal() {
+    void testHealShouldBeInstanceOfHeal() {
         Magic magic = new Magic(Spell.HARMONYHEAL);
         assertTrue(magic.getType() instanceof Heal);
     }
 
     @Test
-    void testMethodHealShouldIncreasePlayersHealth() {
+    void testHealShouldHaveCorrectName() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        assertEquals("Heal", magic.getType().getName());
+    }
+
+    @Test
+    void testMethodThrowMagicWhenMagicIsNullShouldThrowIllegalArgumentException() {
+        Magic magic = null;
+        Player player = new Player("Test", new Point2D());
+        Heal heal = new Heal();
+        assertThrows(IllegalArgumentException.class, () -> heal.throwMagic(magic, player));
+    }
+
+    @Test
+    void testMethodThrowMagicWhenPlayerIsNullShouldThrowIllegalArgumentException() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        Player player = null;
+        Heal heal = new Heal();
+        assertThrows(IllegalArgumentException.class, () -> heal.throwMagic(magic, player));
+    }
+
+    @Test
+    void testMethodThrowMagicIfPlayerHealthIsMaxShouldReturnMaxHealth() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        Player player = new Player("Test", new Point2D());
+        Heal heal = (Heal) magic.getType();
+        player.setHealth(100);
+        double expectedValue = 100;
+        assertEquals(expectedValue, heal.throwMagic(magic, player));
+    }
+
+    @Test
+    void testMethodThrowMagicShouldIncreasePlayersHealth() {
         Magic magic = new Magic(Spell.HARMONYHEAL);
         Player player = new Player("Test", new Point2D());
         Heal heal = (Heal) magic.getType();
@@ -31,7 +63,7 @@ public class HealTest {
     }
 
     @Test
-    void testMethodHealShouldIncreasePlayersHealthToMax() {
+    void testMethodThrowMagicShouldIncreasePlayersHealthToMax() {
         Magic magic = new Magic(Spell.HARMONYHEAL);
         Player player = new Player("Test", new Point2D());
         Heal heal = (Heal) magic.getType();
@@ -39,4 +71,5 @@ public class HealTest {
         double expectedValue = 100;
         assertEquals(expectedValue, heal.throwMagic(magic, player));
     }
+
 }
