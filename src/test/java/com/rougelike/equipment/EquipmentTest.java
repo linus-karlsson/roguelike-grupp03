@@ -2,6 +2,8 @@ package com.rougelike.equipment;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class EquipmentTest {
 
@@ -134,6 +136,11 @@ public class EquipmentTest {
         assertEquals(20, heavyArmor.getMana());
         assertEquals(10, heavyArmor.getArmorValue());
         assertEquals(ElementType.EARTH, heavyArmor.getElementType());
+    }
+
+    @Test
+    void isSubclassOfWeapon_Matcher() {
+        assertThat(Weapon.class, typeCompatibleWith(Equipment.class));
     }
 
 }
