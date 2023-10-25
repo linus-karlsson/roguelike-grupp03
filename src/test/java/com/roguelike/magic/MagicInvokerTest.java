@@ -146,6 +146,28 @@ public class MagicInvokerTest {
     // MagicAttackTests
 
     @Test
+    void testMagicAttackShouldBeInstanceOfMagicAttack() {
+        Magic magic = new Magic(Spell.FIREBALL);
+        assertTrue(magic.getType() instanceof MagicAttack);
+    }
+
+    @Test
+    void testMagicAttackMethodThrowMagicShouldTrowIllegalArgumentExceptionWhenMagicIsNull() {
+        Magic magic = null;
+        Player player = new Player("Test", new Point2D());
+        MagicAttack attack = new MagicAttack();
+        assertThrows(IllegalArgumentException.class, () -> attack.throwMagic(magic, player));
+    }
+
+    @Test
+    void testMagicAttackMethodThrowMagicShouldTrowIllegalArgumentExceptionWhenPlayerIsNull() {
+        Magic magic = new Magic(Spell.FIREBALL);
+        Player player = null;
+        MagicAttack attack = new MagicAttack();
+        assertThrows(IllegalArgumentException.class, () -> attack.throwMagic(magic, player));
+    }
+
+    @Test
     void testSpellAttackShouldBeInstanceOfAttack() {
         Magic magic = new Magic(Spell.FIREBALL);
         assertTrue(magic.getType() instanceof MagicAttack);

@@ -29,6 +29,9 @@ public class MagicAttack extends MagicInvoker {
     }
 
     public double throwMagic(Magic magic, Player player) {
+        if (magic == null || player == null) {
+            throw new IllegalArgumentException("Magic or player is null");
+        }
         if (isSpellInvoked(player)) {
             return magicValue(magic, player);
         }
