@@ -122,7 +122,7 @@ public class MagicInventoryPlayerTest {
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
         enemy.setIsDead(true);
-                assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             player.useMagic(Spell.FIREBALL, enemy);
         });
     }

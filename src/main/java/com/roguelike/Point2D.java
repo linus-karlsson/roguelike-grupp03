@@ -39,10 +39,6 @@ public class Point2D {
         y = otherPoint.getY();
     }
 
-    public Vector2D minus(Point2D otherPoint) {
-        return new Vector2D(x - otherPoint.getX(), y - otherPoint.getY());
-    }
-
     public Point2D plus(Vector2D vector) {
         return new Point2D(x + vector.getX(), y + vector.getY());
     }

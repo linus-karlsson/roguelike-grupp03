@@ -10,7 +10,6 @@ import com.roguelike.roles.*;
 
 public class MagicInvokerTest {
 
-
     @Test
     void testSpellValueReturnsCorrectValueWhenPlayerStartLevel() {
         Magic magic = new Magic(Spell.TORNADO);
@@ -46,7 +45,7 @@ public class MagicInvokerTest {
         Player player = new Player("Test", new Human(), new Knight(), new Point2D());
         double expectedValue = 9.0;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
-    }    
+    }
 
     @Test
     void testIfNeutralElementTypeNotImpactInMagicValue() {
@@ -84,7 +83,7 @@ public class MagicInvokerTest {
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
 
-    //HealTests
+    // HealTests
 
     @Test
     void testHealShouldBeInstanceOfHeal() {
@@ -144,7 +143,7 @@ public class MagicInvokerTest {
         assertEquals(expectedValue, heal.throwMagic(magic, player));
     }
 
-    //MagicAttackTests
+    // MagicAttackTests
 
     @Test
     void testSpellAttackShouldBeInstanceOfAttack() {
@@ -181,7 +180,7 @@ public class MagicInvokerTest {
         assertTrue(setupSucceedToInvokeSpell(new Knight(), 93) > 0);
     }
 
-    //MagicDefenseTests
+    // MagicDefenseTests
 
     @Test
     void testSpellDefenseShouldBeInstanceOfDefense() {

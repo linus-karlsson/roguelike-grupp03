@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
-   private Human human = new Human();
+    private Human human = new Human();
     private Dwarf dwarf = new Dwarf();
     private Elf elf = new Elf();
     private Mage mage = new Mage();
