@@ -451,6 +451,8 @@ public class PlayerEquipmentInteractionTest {
         assertTrue(player.getArmorInventory().contains(superiorHeavyArmor));
     }
 
+    // Berör beslutstabellen
+    // Kolumn 1
     @Test
     void doesNotEquipOffhandIfNotInWeaponInventory() {
         Dagger dagger = new Dagger();
@@ -466,33 +468,19 @@ public class PlayerEquipmentInteractionTest {
     @Test
     void doesNotEquipOffhandIfNotInArmorInventory() {
         Shield shield = new Shield();
-        Dwarf dwarf = new Dwarf();
-        Knight knight = new Knight();
-        Player player = new Player("Sven", dwarf, knight, new Point2D());
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
 
         Equipment expected = null;
         player.equipOffhand(shield);
         assertEquals(expected, player.getEquippedOffhand());
     }
 
-    @Test
-    void doesNotEquipOffhandIfWrongRole() {
-        Dagger dagger = new Dagger();
-        Dwarf dwarf = new Dwarf();
-        Knight knight = new Knight();
-        Player player = new Player("Sven", dwarf, knight, new Point2D());
-
-        player.addWeaponToInventory(dagger);
-        player.equipOffhand(dagger);
-        assertFalse(player.getEquippedOffhand() == dagger);
-    }
+    // Knight
 
     @Test
     void equipsOffhandIfCorrectRoleAndInInventory_Knight() {
         Shield shield = new Shield();
-        Dwarf dwarf = new Dwarf();
-        Knight knight = new Knight();
-        Player player = new Player("Sven", dwarf, knight, new Point2D());
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
 
         Equipment expected = shield;
         player.addArmorToInventory(shield);
@@ -502,11 +490,68 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
+    void doesNotEquipOffhandIfWrongOffhandType_Knight_Armor() {
+        Tome tome = new Tome();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
+
+        player.addArmorToInventory(tome);
+        player.equipOffhand(tome);
+        assertFalse(player.getEquippedOffhand() == tome);
+    }
+
+    @Test
+    void doesNotEquipOffhandIfWrongOffhandType_Knight_Weapon() {
+        Dagger dagger = new Dagger();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
+
+        Equipment unexpected = dagger;
+        player.addWeaponToInventory(dagger);
+        player.equipOffhand(dagger);
+        assertNotEquals(unexpected, player.getEquippedOffhand());
+    }
+
+    // Thief
+
+    @Test
+    void equipsOffhandIfCorrectRoleAndInInventory_Thief() {
+        Dagger dagger = new Dagger();
+        Player player = new Player("Sven", new Dwarf(), new Thief(), new Point2D());
+
+        Equipment expected = dagger;
+        player.addWeaponToInventory(dagger);
+        player.equipOffhand(dagger);
+
+        assertEquals(expected, player.getEquippedOffhand());
+    }
+
+    @Test
+    void doesNotEquipOffhandIfWrongOffhandType_Thief_Armor() {
+        Tome tome = new Tome();
+        Player player = new Player("Sven", new Dwarf(), new Thief(), new Point2D());
+
+        Equipment unexpected = tome;
+        player.addArmorToInventory(tome);
+        player.equipOffhand(tome);
+        assertNotEquals(unexpected, player.getEquippedOffhand());
+    }
+
+    @Test
+    void doesNotEquipOffhandIfWrongOffhandType_Thief_Weapon() {
+        Sword sword = new Sword();
+        Player player = new Player("Sven", new Dwarf(), new Thief(), new Point2D());
+
+        Equipment unexpected = sword;
+        player.addWeaponToInventory(sword);
+        player.equipOffhand(sword);
+        assertNotEquals(unexpected, player.getEquippedOffhand());
+    }
+
+    // Mage
+
+    @Test
     void equipsOffhandIfCorrectRoleAndInInventory_Mage() {
         Tome tome = new Tome();
-        Dwarf dwarf = new Dwarf();
-        Mage mage = new Mage();
-        Player player = new Player("Sven", dwarf, mage, new Point2D());
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
 
         Equipment expected = tome;
         player.addArmorToInventory(tome);
@@ -516,18 +561,30 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    void equipsOffhandIfCorrectRoleAndInInventory_Thief() {
-        Dagger dagger = new Dagger();
-        Dwarf dwarf = new Dwarf();
-        Thief thief = new Thief();
-        Player player = new Player("Sven", dwarf, thief, new Point2D());
+    void doesNotEquipOffhandIfWrongOffhandType_Mage_Armor() {
+        Shield shield = new Shield();
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
 
-        Equipment expected = dagger;
-        player.addWeaponToInventory(dagger);
-        player.equipOffhand(dagger);
+        Equipment unexpected = shield;
+        player.addArmorToInventory(shield);
+        player.equipOffhand(shield);
 
-        assertEquals(expected, player.getEquippedOffhand());
+        assertNotEquals(unexpected, player.getEquippedOffhand());
     }
+
+    @Test
+    void doesNotEquipOffhandIfWrongOffhandType_Mage_Weapon() {
+        FireSword fireSword = new FireSword();
+        Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
+
+        Equipment unexpected = fireSword;
+        player.addWeaponToInventory(fireSword);
+        player.equipOffhand(fireSword);
+
+        assertNotEquals(unexpected, player.getEquippedOffhand());
+    }
+
+    // -------------
 
     @Test
     void equipsSwordIfCorrectRoleAndInInventory() {
