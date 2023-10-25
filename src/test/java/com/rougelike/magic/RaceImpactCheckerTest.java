@@ -1,8 +1,6 @@
 package com.rougelike.magic;
 
-import com.rougelike.*;
 import com.rougelike.races.*;
-import com.rougelike.roles.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,43 +9,42 @@ import org.junit.jupiter.api.Test;
 public class RaceImpactCheckerTest {
 
     @Test
-    void testIfPlayerElfIsImpactByElementAir() {
-        Player player = new Player("Test", new Elf(), new Thief(), new Point2D());
+    void testIfElfIsImpactByElementAir() {
         assertTrue(RaceImpactChecker.isPlayerImpact(new Elf(), new ElementAir()));
     }
 
     @Test
-    void testIfPlayerHumanNotImpactByAir() {
+    void testIfHumanNotImpactByAir() {
         assertFalse(RaceImpactChecker.isPlayerImpact(new Human(), new ElementAir()));
     }
 
     @Test
-    void testIfPlayerOrcIsImpactByElementFire() {
+    void testIfOrcIsImpactByElementFire() {
         assertTrue(RaceImpactChecker.isPlayerImpact(new Orc(), new ElementFire()));
     }
 
     @Test
-    void testIfPlayerDwarfNotImpactByElementFire() {
+    void testIfDwarfNotImpactByElementFire() {
         assertFalse(RaceImpactChecker.isPlayerImpact(new Dwarf(), new ElementFire()));
     }
 
     @Test
-    void testIfPlayerDwarfIsImpactByElementEarth() {
+    void testIfDwarfIsImpactByElementEarth() {
         assertTrue(RaceImpactChecker.isPlayerImpact(new Dwarf(), new ElementEarth()));
     }
 
     @Test
-    void testIfPlayerElfNotImpactByElementEarth() {
+    void testIfElfNotImpactByElementEarth() {
         assertFalse(RaceImpactChecker.isPlayerImpact(new Elf(), new ElementEarth()));
     }
 
     @Test
-    void testIfPlayerOrcIsImpactByElementWater() {
+    void testIfOrcIsImpactByElementWater() {
         assertTrue(RaceImpactChecker.isPlayerImpact(new Orc(), new ElementWater()));
     }
 
     @Test
-    void testIfPlayerHumanNotImpactByElementWater() {
+    void testIfHumanNotImpactByElementWater() {
         assertFalse(RaceImpactChecker.isPlayerImpact(new Human(), new ElementWater()));
     }
 

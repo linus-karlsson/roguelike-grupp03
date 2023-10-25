@@ -2,8 +2,6 @@ package com.rougelike.magic;
 
 import com.rougelike.*;
 import com.rougelike.enemies.*;
-import com.rougelike.equipment.*;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

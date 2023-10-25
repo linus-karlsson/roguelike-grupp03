@@ -4,9 +4,6 @@ import com.rougelike.Player;
 import com.rougelike.races.Elf;
 import com.rougelike.races.Orc;
 
-//Alv starkare, orch svagare
-// Vind är starka mot jord (dvärg) och vatten (starkare vid kombination med eld)
-// Vind påverkar jord(dvärg) svagare
 public class ElementAir extends MagicElementType {
 
     private static final double AIR_MULTIPLIER_ELF = 1.05;
@@ -18,6 +15,9 @@ public class ElementAir extends MagicElementType {
         }
         @Override
         public double getMultiplier(Player player) {
+            if (player == null) {
+                throw new IllegalArgumentException("Player cannot be null!");
+            }
             double multiplierToRetrun = BASE_MULTIPLIER;
             if (player.getRace() instanceof Elf) {
                multiplierToRetrun = AIR_MULTIPLIER_ELF;
