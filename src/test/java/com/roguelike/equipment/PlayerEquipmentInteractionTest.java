@@ -60,12 +60,28 @@ public class PlayerEquipmentInteractionTest {
         assertEquals(expected, player.getWeaponInventory().size());
     }
 
+    private void addFiveWeapons() {
+        player.addWeaponToInventory(dagger);
+        player.addWeaponToInventory(fireSword);
+        player.addWeaponToInventory(torch);
+        player.addWeaponToInventory(wand);
+        player.addWeaponToInventory(sword);
+    }
+
     @Test
     void canNotHaveMoreThanFiveArmorsInArmorInventory() {
         int expected = 5;
         player.addArmorToInventory(tome);
         addFiveArmors();
         assertEquals(expected, player.getArmorInventory().size());
+    }
+
+    private void addFiveArmors() {
+        player.addArmorToInventory(shield);
+        player.addArmorToInventory(lightArmor);
+        player.addArmorToInventory(mediumArmor);
+        player.addArmorToInventory(heavyArmor);
+        player.addArmorToInventory(superiorHeavyArmor);
     }
 
     @Test
@@ -100,22 +116,6 @@ public class PlayerEquipmentInteractionTest {
         int expected = 100;
 
         assertEquals(expected, player.getWallet());
-    }
-
-    private void addFiveWeapons() {
-        player.addWeaponToInventory(dagger);
-        player.addWeaponToInventory(fireSword);
-        player.addWeaponToInventory(torch);
-        player.addWeaponToInventory(wand);
-        player.addWeaponToInventory(sword);
-    }
-
-    private void addFiveArmors() {
-        player.addArmorToInventory(shield);
-        player.addArmorToInventory(lightArmor);
-        player.addArmorToInventory(mediumArmor);
-        player.addArmorToInventory(heavyArmor);
-        player.addArmorToInventory(superiorHeavyArmor);
     }
 
     @Test
