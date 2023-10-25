@@ -51,7 +51,7 @@ public class MagicInventoryPlayerTest {
     }
 
     @Test
-    void testUseMagic() {
+    void testUseMagicreturnRightHealth() {
         Player player = new Player("Test", new Point2D());
         Entity enemy = new Troll();
         Magic magic = new Magic(Spell.FIREBALL);
@@ -70,5 +70,61 @@ public class MagicInventoryPlayerTest {
         player.useMagic(Spell.HARMONYHEAL);
         double expectedValue = 60.0;
         assertEquals(expectedValue, player.getHealth());
+    }
+
+    @Test
+    void testUseMagicWithTwoArgumentsThowsExceptionIfFirstArgumentIsNull() {
+        Player player = new Player("Test", new Point2D());
+        Entity enemy = new Troll();
+        Magic magic = new Magic(Spell.FIREBALL);
+        player.addMagicToInventory(magic);
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.useMagic(null, enemy);
+        });
+    }
+
+    @Test
+    void testUseMagicWithTwoArgumentsThowsExceptionIfSecondArgumentIsNull() {
+        Player player = new Player("Test", new Point2D());
+        Entity enemy = new Troll();
+        Magic magic = new Magic(Spell.FIREBALL);
+        player.addMagicToInventory(magic);
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.useMagic(Spell.FIREBALL, null);
+        });
+    }
+
+    @Test
+    void testUseMagicWithTwoArgumentsThowsExceptionIfSpellArgumentIsNotInInventory() {
+        Player player = new Player("Test", new Point2D());
+        Entity enemy = new Troll();
+        Magic magic = new Magic(Spell.FIREBALL);
+        player.addMagicToInventory(magic);
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.useMagic(Spell.HARMONYHEAL, enemy);
+        });
+    }
+
+    @Test
+    void testUseMagicWithTwoArgumentsThrowExceptionIfSpellNotAttack() {
+        Player player = new Player("Test", new Point2D());
+        Entity enemy = new Troll();
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        player.addMagicToInventory(magic);
+        assertThrows(IllegalArgumentException.class, () -> {
+            player.useMagic(Spell.HARMONYHEAL, enemy);
+        });
+    }
+
+    @Test
+    void testUseMagicWithTwoArgumentsThrowExceptionIfEnemyIsDead() {
+        Player player = new Player("Test", new Point2D());
+        Entity enemy = new Troll();
+        Magic magic = new Magic(Spell.FIREBALL);
+        player.addMagicToInventory(magic);
+        enemy.setIsDead(true);
+                assertThrows(IllegalArgumentException.class, () -> {
+            player.useMagic(Spell.FIREBALL, enemy);
+        });
     }
 }

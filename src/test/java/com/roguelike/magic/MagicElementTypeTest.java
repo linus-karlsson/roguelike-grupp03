@@ -201,4 +201,44 @@ public class MagicElementTypeTest {
         assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
     }
 
+    // Test MagicElementTypeWater
+
+    @Test
+    void testMagicElementWaterInstanceCreation() {
+        MagicElementType magicElementType = new ElementWater();
+        assertEquals("Water", magicElementType.getName());
+    }
+
+    @Test
+    void testMagicElementWaterIsSubclassOfMagicElementType() {
+        MagicElementType magicElementType = new ElementWater();
+        assertEquals(MagicElementType.class, magicElementType.getClass().getSuperclass());
+    }
+
+    @Test
+    void testMagicElementWaterIsNotSubclassOfMagicElementTypeNeutral() {
+        MagicElementType magicElementType = new ElementWater();
+        assertNotEquals(ElementNeutral.class, magicElementType.getClass().getSuperclass());
+    }
+
+    @Test
+    void testMagicElementTypeWaterGetMultiplierThrowsExceptionIfPlayerIsNull() {
+        MagicElementType magicElementType = new ElementWater();
+        assertThrows(IllegalArgumentException.class, () -> magicElementType.getMultiplier(null));
+    }
+
+    @Test
+    void testMagicElementWaterGetNameReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementWater();
+        assertEquals("Water", magicElementType.getName());
+    }
+
+    @Test
+    void testMagicElementWaterGetMultiplierReturnsCorrectValue() {
+        MagicElementType magicElementType = new ElementWater();
+        Player player = new Player("Test", new Elf(), new Thief(), new Point2D());
+        double expectedMultiplier = 1.0;
+        assertEquals(expectedMultiplier, magicElementType.getMultiplier(player));
+    }
+
 }
