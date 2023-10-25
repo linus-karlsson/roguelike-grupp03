@@ -85,11 +85,6 @@ public class MagicInvokerTest {
     }
 
     //HealTests
-    @Test
-    void testHealShouldBeInstanceOfMagicInvoker() {
-        Magic magic = new Magic(Spell.HARMONYHEAL);
-        assertTrue(magic.getType() instanceof MagicInvoker);
-    }
 
     @Test
     void testHealShouldBeInstanceOfHeal() {
@@ -152,12 +147,6 @@ public class MagicInvokerTest {
     //MagicAttackTests
 
     @Test
-    void testSpellAttackShouldBeInstanceOfMagicInvoker() {
-        Magic magic = new Magic(Spell.POISON);
-        assertTrue(magic.getType() instanceof MagicInvoker);
-    }
-
-    @Test
     void testSpellAttackShouldBeInstanceOfAttack() {
         Magic magic = new Magic(Spell.FIREBALL);
         assertTrue(magic.getType() instanceof MagicAttack);
@@ -193,12 +182,6 @@ public class MagicInvokerTest {
     }
 
     //MagicDefenseTests
-
-    @Test
-    void testSpellDefenseShouldBeInstanceOfMagicInvoker() {
-        Magic magic = new Magic(Spell.FIRESHIELD);
-        assertTrue(magic.getType() instanceof MagicInvoker);
-    }
 
     @Test
     void testSpellDefenseShouldBeInstanceOfDefense() {

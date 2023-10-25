@@ -50,9 +50,13 @@ public class Point2D {
     public boolean equals(Object obj) {
         if (obj instanceof Point2D) {
             Point2D other = (Point2D) obj;
-            return x == other.getX() && y == other.getY();
+            return doubleEquals(x, other.getX()) && doubleEquals(y, other.getY());
         }
         return false;
     }
 
+    private boolean doubleEquals(double first, double second) {
+        double epsilon = 0.000001;
+        return Math.abs(first - second) < epsilon;
+    }
 }

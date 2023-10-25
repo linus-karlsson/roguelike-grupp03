@@ -17,7 +17,7 @@ import com.roguelike.roles.Thief;
 
 import java.util.List;
 
-public class Player extends Entity implements PlayerMock {
+public class Player extends Entity {
 
     private PlayerStartingValues startingValues;
 

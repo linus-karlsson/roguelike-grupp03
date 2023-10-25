@@ -1,7 +1,6 @@
 package com.roguelike.magic;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,59 +14,54 @@ public class MagicTest {
 
     @Test
     void testMagicToStringContainsName() {
-        Spell spell = Spell.POISON;
+       Magic magic  = new Magic(Spell.POISON);
         String magicString = "Poison";
-        assertTrue(magicString.contains(spell.getName()));
+        assertTrue(magicString.contains(magic.getName()));
     }
 
     @Test
     void testMagicMethodGetName() {
-        Spell spell = Spell.POISON;
+        Magic magic  = new Magic(Spell.POISON);
         String magicString = "Poison";
-        assertTrue(magicString.contains(spell.getName()));
+        assertEquals(magicString, magic.getName());
+
     }
 
     @Test
     void testMagicMethodGetBaseStrength() {
-        Spell spell = Spell.POISON;
+        Magic magic  = new Magic(Spell.POISON);
         double magicString = 10.0;
-        assertTrue(magicString == spell.getBaseStrength());
-    }
-
-    @Test
-    void testMagicMethodGetType() {
-        Spell spell = Spell.POISON;
-        String magicString = "Attack";
-        assertTrue(magicString.contains(spell.getType().getName()));
+        assertEquals(magicString, magic.getBaseStrength());
     }
 
     @Test
     void testMagicMethodGetElement() {
-        Spell spell = Spell.POISON;
+        Magic magic  = new Magic(Spell.POISON);
         String magicString = "Earth";
-        assertTrue(magicString.contains(spell.getElement().getName()));
+        assertEquals(magicString, magic.getElement().getName());
     }
 
     @Test
     void testMagicToStringContainsBaseStrength() {
-        Spell spell = Spell.POISON;
-        double magicString = 10.0;
-        assertTrue(magicString == spell.getBaseStrength());
+        Magic magic  = new Magic(Spell.POISON);
+        double expectedValue = 10.0;
+        assertEquals(expectedValue, magic.getBaseStrength());
+
     }
 
     @Test
     void testMagicToStringContainsType() {
-        Spell spell = Spell.POISON;
+        Magic magic  = new Magic(Spell.POISON);
         String magicString = "Attack";
-        assertTrue(magicString.contains(spell.getType().getName()));
+        assertTrue(magicString.contains(magic.getType().getName()));
 
     }
 
     @Test
     void testMagicToStringContainsElement() {
-        Spell spell = Spell.POISON;
+        Magic magic  = new Magic(Spell.POISON);
         String magicString = "Earth";
-        assertTrue(magicString.contains(spell.getElement().getName()));
+        assertTrue(magicString.contains(magic.getElement().getName()));
     }
 
 }
