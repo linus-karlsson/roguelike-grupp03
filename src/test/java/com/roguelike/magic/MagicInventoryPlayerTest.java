@@ -9,10 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MagicInventoryPlayerTest {
 
+    private final Player player = new Player("Test", new Point2D());
+
     @Test
     void testMethodAddMagicToInventoryShouldAddMagicToInventory() {
         Magic magic = new Magic(Spell.HARMONYHEAL);
-        Player player = new Player("Test", new Point2D());
         player.addMagicToInventory(magic);
         assertEquals(1, player.getMagicInventory().size());
     }
@@ -20,7 +21,6 @@ public class MagicInventoryPlayerTest {
     @Test
     void testMethodAddMagicToInventoryShouldNotAddMagicToInventory() {
         Magic magic = new Magic(Spell.HARMONYHEAL);
-        Player player = new Player("Test", new Point2D());
         player.addMagicToInventory(magic);
         player.addMagicToInventory(magic);
         assertEquals(1, player.getMagicInventory().size());
@@ -28,7 +28,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithNoArgumentShouldThrowException() {
-        Player player = new Player("Test", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.useMagic(null);
         });
@@ -36,7 +35,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithNullArgumentShouldThrowException() {
-        Player player = new Player("Test", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.useMagic(null);
         });
@@ -44,7 +42,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithMagicNotInInventoryShouldThrowException() {
-        Player player = new Player("Test", new Point2D());
         assertThrows(IllegalArgumentException.class, () -> {
             player.useMagic(Spell.FIREBALL);
         });
@@ -52,7 +49,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicreturnRightHealth() {
-        Player player = new Player("Test", new Point2D());
         Entity enemy = new Troll();
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
@@ -63,7 +59,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithHealthShouldIncresePlayersHelth() {
-        Player player = new Player("Test", new Point2D());
         Magic magic = new Magic(Spell.HARMONYHEAL);
         player.addMagicToInventory(magic);
         player.setHealth(50);
@@ -74,7 +69,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithTwoArgumentsThowsExceptionIfFirstArgumentIsNull() {
-        Player player = new Player("Test", new Point2D());
         Entity enemy = new Troll();
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
@@ -85,7 +79,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithTwoArgumentsThowsExceptionIfSecondArgumentIsNull() {
-        Player player = new Player("Test", new Point2D());
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
         assertThrows(IllegalArgumentException.class, () -> {
@@ -95,7 +88,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithTwoArgumentsThowsExceptionIfSpellArgumentIsNotInInventory() {
-        Player player = new Player("Test", new Point2D());
         Entity enemy = new Troll();
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
@@ -106,7 +98,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithTwoArgumentsThrowExceptionIfSpellNotAttack() {
-        Player player = new Player("Test", new Point2D());
         Entity enemy = new Troll();
         Magic magic = new Magic(Spell.HARMONYHEAL);
         player.addMagicToInventory(magic);
@@ -117,7 +108,6 @@ public class MagicInventoryPlayerTest {
 
     @Test
     void testUseMagicWithTwoArgumentsThrowExceptionIfEnemyIsDead() {
-        Player player = new Player("Test", new Point2D());
         Entity enemy = new Troll();
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
