@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class RoleTest {
 
     @Test
-    public void TestRoleInstanceCreation() {
+    public void testRoleInstanceCreation() {
         Knight knight = new Knight();
         assertEquals(1.5, knight.getStrengthMultiplier());
     }

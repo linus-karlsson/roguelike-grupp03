@@ -3,8 +3,6 @@ package com.roguelike.dungeon;
 import org.junit.jupiter.api.*;
 
 import com.roguelike.Point2D;
-import com.roguelike.dungeon.Grid;
-import com.roguelike.dungeon.GridIndex;
 
 import static org.junit.jupiter.api.Assertions.*;
 

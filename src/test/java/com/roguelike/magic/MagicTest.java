@@ -18,7 +18,34 @@ public class MagicTest {
         Spell spell = Spell.POISON;
         String magicString = "Poison";
         assertTrue(magicString.contains(spell.getName()));
+    }
 
+    @Test
+    void testMagicMethodGetName() {
+        Spell spell = Spell.POISON;
+        String magicString = "Poison";
+        assertTrue(magicString.contains(spell.getName()));
+    }
+
+    @Test
+    void testMagicMethodGetBaseStrength() {
+        Spell spell = Spell.POISON;
+        double magicString = 10.0;
+        assertTrue(magicString == spell.getBaseStrength());
+    }
+
+    @Test
+    void testMagicMethodGetType() {
+        Spell spell = Spell.POISON;
+        String magicString = "Attack";
+        assertTrue(magicString.contains(spell.getType().getName()));
+    }
+
+    @Test
+    void testMagicMethodGetElement() {
+        Spell spell = Spell.POISON;
+        String magicString = "Earth";
+        assertTrue(magicString.contains(spell.getElement().getName()));
     }
 
     @Test

@@ -30,7 +30,7 @@ public class MagicAttack extends MagicInvoker {
 
     public double throwMagic(Magic magic, Player player) {
         if (isSpellInvoked(player)) {
-            return 0.0 > magicValue(magic, player) ? 0.0 : magicValue(magic, player);
+            return magicValue(magic, player);
         }
         return 0.0;
     }

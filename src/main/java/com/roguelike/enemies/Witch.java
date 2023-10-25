@@ -9,8 +9,14 @@ public class Witch extends Entity {
     private static final double WITCH_DAMAGE = 15;
     private static final ElementType WITCH_ELEMENT = ElementType.FIRE;
 
+    private static final double WITCH_XP = 80;
+
     public Witch() {
         super(WITCH_HEALTH, WITCH_DAMAGE, WITCH_ELEMENT);
     }
 
+
+    public double getWitchXp(){
+        return WITCH_XP;
+    }
 }

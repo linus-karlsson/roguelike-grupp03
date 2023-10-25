@@ -11,6 +11,9 @@ public class MagicDefence extends MagicInvoker {
     }
 
     public double throwMagic(Magic magic, Player player) {
+        if (magic == null || player == null) {
+            throw new IllegalArgumentException("Magic or player is null");
+        }
         return magicValue(magic, player) / 2;
         // för utveckling
     }
