@@ -98,6 +98,16 @@ public class EquipmentTest {
     }
 
     @Test
+    void noNameInConstructorThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> new DummyEquipment(null, 0, null, 0, 0, 0));
+    }
+
+    @Test
+    void noTypeInConstructorThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> new DummyEquipment("Name", 0, null, 0, 0, 0));
+    }
+
+    @Test
     void waterDagger_AllValuesAreCorrect() {
         WaterDagger waterDagger = new WaterDagger();
         assertEquals("Water Dagger", waterDagger.getName());

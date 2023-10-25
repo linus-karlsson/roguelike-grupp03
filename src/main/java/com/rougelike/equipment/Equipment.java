@@ -12,6 +12,9 @@ public abstract class Equipment {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException();
         }
+        if (type == null) {
+            throw new IllegalArgumentException();
+        }
         this.name = name;
         this.price = price;
         this.type = type;
