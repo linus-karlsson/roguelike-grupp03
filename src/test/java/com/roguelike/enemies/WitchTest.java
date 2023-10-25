@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.*;
 public class WitchTest {
 
     @Test
-    public void TestWitchAttacksPlayer() {
+    public void testWitchAttacksPlayer() {
         Witch witch = new Witch();
         Elf elf = new Elf();
         Thief thief = new Thief();
