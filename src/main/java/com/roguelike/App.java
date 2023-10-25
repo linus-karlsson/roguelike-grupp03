@@ -1,11 +1,10 @@
 package com.roguelike;
 
-import java.util.List;
-import java.util.Random;
-
 import com.roguelike.dungeon.DungeonGenerator;
 
 /* 
+import java.util.List;
+import java.util.Random;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
