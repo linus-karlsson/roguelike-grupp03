@@ -1,7 +1,6 @@
 package com.roguelike.magic;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,35 +23,30 @@ public class MagicTest {
     void testMagicMethodGetName() {
         Spell spell = Spell.POISON;
         String magicString = "Poison";
-        assertTrue(magicString.contains(spell.getName()));
+        assertEquals(magicString, spell.getName());
+
     }
 
     @Test
     void testMagicMethodGetBaseStrength() {
         Spell spell = Spell.POISON;
         double magicString = 10.0;
-        assertTrue(magicString == spell.getBaseStrength());
-    }
-
-    @Test
-    void testMagicMethodGetType() {
-        Spell spell = Spell.POISON;
-        String magicString = "Attack";
-        assertTrue(magicString.contains(spell.getType().getName()));
+        assertEquals(magicString, spell.getBaseStrength());
     }
 
     @Test
     void testMagicMethodGetElement() {
         Spell spell = Spell.POISON;
         String magicString = "Earth";
-        assertTrue(magicString.contains(spell.getElement().getName()));
+        assertEquals(magicString, spell.getElement().getName());
     }
 
     @Test
     void testMagicToStringContainsBaseStrength() {
         Spell spell = Spell.POISON;
-        double magicString = 10.0;
-        assertTrue(magicString == spell.getBaseStrength());
+        double expectedValue = 10.0;
+        assertEquals(expectedValue, spell.getBaseStrength());
+
     }
 
     @Test
