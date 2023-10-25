@@ -104,7 +104,7 @@ public class MagicInvokerTest {
     }
 
     @Test
-    void testMethodThrowMagicWhenMagicIsNullShouldThrowIllegalArgumentException() {
+    void testHealMethodThrowMagicWhenMagicIsNullShouldThrowIllegalArgumentException() {
         Magic magic = null;
         Player player = new Player("Test", new Point2D());
         Heal heal = new Heal();
@@ -194,6 +194,41 @@ public class MagicInvokerTest {
 
     //MagicDefenseTests
 
-    
+    @Test
+    void testSpellDefenseShouldBeInstanceOfMagicInvoker() {
+        Magic magic = new Magic(Spell.FIRESHIELD);
+        assertTrue(magic.getType() instanceof MagicInvoker);
+    }
+
+    @Test
+    void testSpellDefenseShouldBeInstanceOfDefense() {
+        Magic magic = new Magic(Spell.FIRESHIELD);
+        assertTrue(magic.getType() instanceof MagicDefence);
+    }
+
+    @Test
+    void testDefenceMethodThrowMagicWhenMagicIsNullShouldThrowIllegalArgumentException() {
+        Magic magic = null;
+        Player player = new Player("Test", new Point2D());
+        MagicDefence defence = new MagicDefence();
+        assertThrows(IllegalArgumentException.class, () -> defence.throwMagic(magic, player));
+    }
+
+    @Test
+    void testDefenceMethodThrowMagicWhenPlayerIsNullShouldThrowIllegalArgumentException() {
+        Magic magic = new Magic(Spell.FIRESHIELD);
+        Player player = null;
+        MagicDefence defence = new MagicDefence();
+        assertThrows(IllegalArgumentException.class, () -> defence.throwMagic(magic, player));
+    }
+
+    @Test
+    void testDefenceMethodThrowMagicShouldReturnHalfValue() {
+        Magic magic = new Magic(Spell.FIRESHIELD);
+        Player player = new Player("Test", new Point2D());
+        MagicDefence defence = new MagicDefence();
+        double expectedValue = 5;
+        assertEquals(expectedValue, defence.throwMagic(magic, player));
+    }
 
 }
