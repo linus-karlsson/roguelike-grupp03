@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import com.roguelike.*;
 import com.roguelike.enemies.*;
-import com.roguelike.magic.Magic;
-import com.roguelike.magic.Spell;
 
 import static org.junit.jupiter.api.Assertions.*;
 

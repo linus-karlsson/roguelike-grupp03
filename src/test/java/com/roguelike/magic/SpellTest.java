@@ -4,12 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.roguelike.magic.ElementWater;
-import com.roguelike.magic.MagicAttack;
-import com.roguelike.magic.MagicElementType;
-import com.roguelike.magic.MagicInvoker;
-import com.roguelike.magic.Spell;
-
 public class SpellTest {
 
     @Test

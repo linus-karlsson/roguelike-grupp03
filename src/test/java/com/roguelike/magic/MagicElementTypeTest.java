@@ -5,11 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import com.roguelike.*;
-import com.roguelike.magic.ElementAir;
-import com.roguelike.magic.ElementEarth;
-import com.roguelike.magic.ElementFire;
-import com.roguelike.magic.ElementNeutral;
-import com.roguelike.magic.MagicElementType;
 import com.roguelike.races.*;
 import com.roguelike.roles.*;
 

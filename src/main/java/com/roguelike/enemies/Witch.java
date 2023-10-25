@@ -2,8 +2,6 @@ package com.roguelike.enemies;
 
 import com.roguelike.Entity;
 import com.roguelike.equipment.ElementType;
-import com.roguelike.magic.Magic;
-import com.roguelike.magic.Spell;
 
 public class Witch extends Entity {
 

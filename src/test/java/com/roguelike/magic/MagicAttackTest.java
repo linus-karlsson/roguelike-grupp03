@@ -3,10 +3,6 @@ package com.roguelike.magic;
 import org.junit.jupiter.api.Test;
 
 import com.roguelike.*;
-import com.roguelike.magic.Magic;
-import com.roguelike.magic.MagicAttack;
-import com.roguelike.magic.MagicInvoker;
-import com.roguelike.magic.Spell;
 import com.roguelike.races.*;
 import com.roguelike.roles.*;
 

@@ -4,11 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.roguelike.magic.ElementAir;
-import com.roguelike.magic.ElementEarth;
-import com.roguelike.magic.ElementFire;
-import com.roguelike.magic.ElementWater;
-import com.roguelike.magic.RaceImpactChecker;
 import com.roguelike.races.*;
 
 public class RaceImpactCheckerTest {

@@ -5,9 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import com.roguelike.magic.Magic;
-import com.roguelike.magic.Spell;
-
 public class MagicTest {
 
     @Test

@@ -4,13 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.roguelike.dungeon.DungeonGenerator;
-import com.roguelike.dungeon.Grid;
-import com.roguelike.dungeon.GridIndex;
-import com.roguelike.dungeon.Room;
-import com.roguelike.magic.Magic;
-import com.roguelike.magic.Spell;
-import com.roguelike.races.Elf;
-import com.roguelike.roles.Mage;
 
 /* 
 import javafx.application.Application;
