@@ -1,5 +1,6 @@
 package com.roguelike;
 
+import com.roguelike.enemies.Bandit;
 import org.junit.jupiter.api.*;
 
 import com.roguelike.dungeon.Grid;
@@ -21,6 +22,16 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
+   private Human human = new Human();
+    private Dwarf dwarf = new Dwarf();
+    private Elf elf = new Elf();
+    private Mage mage = new Mage();
+    private Knight knight = new Knight();
+    private Thief thief = new Thief();
+    private Troll troll = new Troll();
+    private Witch witch = new Witch();
+
+    private Bandit bandit = new Bandit();
 
     @Test
     public void testPlayerConstructor() {
@@ -80,9 +91,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void TestPlayerInstanceCreationDwarfKnight() {
-        Dwarf dwarf = new Dwarf();
-        Knight knight = new Knight();
+    public void testPlayerInstanceCreationDwarfKnight() {
         Player player = new Player("Gimli", dwarf, knight, new Point2D());
         double expectedHealth = dwarf.getStartingHealth() * knight.getHealthMultiplier();
         double expectedIntelligence = dwarf.getStartingIntelligence() * knight.getIntelligenceMultiplier();
@@ -92,9 +101,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void TestGetTotalWeaponDamage() {
-        Dwarf dwarf = new Dwarf();
-        Knight knight = new Knight();
+    public void testGetTotalWeaponDamage() {
         Player player = new Player("Gimli", dwarf, knight, new Point2D());
         double knightWeaponDamage = knight.getStartingWeapon().getDamage();
         double dwarfStrength = dwarf.getStartingStrength();
@@ -102,15 +109,12 @@ public class PlayerTest {
         double totalStrength = knightStrengthMultiplier * dwarfStrength;
         double expectedDamage = knightWeaponDamage * totalStrength;
         double playerTotalWeaponDamage = player.getTotalWeaponDamage();
-        assertEquals(expectedDamage, playerTotalWeaponDamage);
         MatcherAssert.assertThat(playerTotalWeaponDamage, is(expectedDamage));
 
     }
 
     @Test
-    public void TestTakeDamage() {
-        Elf elf = new Elf();
-        Thief thief = new Thief();
+    public void testTakeDamage() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         player.takeDamage(50);
         double expectedHealthLeft = 50;
@@ -118,86 +122,99 @@ public class PlayerTest {
     }
 
     @Test
-    void TestPlayerResetResetsHealth() {
-        Elf elf = new Elf();
-        Thief thief = new Thief();
+    void testPlayerResetResetsHealth() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         player.setHealth(300);
         player = player.reset();
         double expectedHealth = 100;
         MatcherAssert.assertThat(player.getHealth(), is(expectedHealth));
-
     }
 
     @Test
-    void TestPlayerResetResetsLevel() {
-        Elf elf = new Elf();
-        Thief thief = new Thief();
+    void testPlayerResetResetsLevel() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         player.setLevel(20);
         player = player.reset();
-        double expectedLevel = 1;
-        assertEquals(expectedLevel, player.getLevel());
+        int expectedLevel = 1;
+        MatcherAssert.assertThat(expectedLevel, is(player.getLevel()));
+
     }
 
     @Test
-    public void TestPlayerThiefCantAttackWhenInvisible() {
-        Elf elf = new Elf();
-        Thief thief = new Thief();
+    public void testPlayerThiefCantAttackWhenInvisible() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
-        Troll troll = new Troll();
         double expectedTrollHealth = troll.getHealth();
         thief.becomeInvisible();
         player.attackEnemyWithWeapon(troll);
-        assertEquals(expectedTrollHealth, troll.getHealth());
+        MatcherAssert.assertThat(troll.getHealth(), is(expectedTrollHealth));
     }
 
     @Test
-    public void TestPlayerThiefAvoidsDamageWhenInvisible() {
-        Elf elf = new Elf();
-        Thief thief = new Thief();
+    public void testPlayerThiefAvoidsDamageWhenInvisible() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
-        Troll troll = new Troll();
         double expectedPlayerHealth = player.getHealth();
         player.invisibility();
         troll.attack(player);
-        assertEquals(expectedPlayerHealth, player.getHealth());
+        MatcherAssert.assertThat(player.getHealth(), is(expectedPlayerHealth));
+
     }
 
     @Test
-    public void TestPlayerKnightShieldBashStunsEnemy() {
-        Human human = new Human();
-        Knight knight = new Knight();
+    public void testPlayerKnightShieldBashStunsEnemy() {
         Player player = new Player("Aragorn", human, knight, new Point2D());
-        Witch witch = new Witch();
         double expectedPlayerHealth = player.getHealth();
         player.shieldBash(witch);
         witch.attack(player);
-        assertEquals(expectedPlayerHealth, player.getHealth());
+        MatcherAssert.assertThat(player.getHealth(), is(expectedPlayerHealth));
     }
 
     @Test
-    public void TestPlayerMageDebuffEnemy() {
-        Human human = new Human();
-        Mage mage = new Mage();
+    public void testPlayerMageDebuffEnemy() {
         Player player = new Player("Gandalf", human, mage, new Point2D());
         player.setLevel(49);
-        Troll troll = new Troll();
         double expectedTrollHealth = troll.getHealth() * 0.8;
         player.debuff(troll);
-        assertEquals(expectedTrollHealth, troll.getHealth());
+        MatcherAssert.assertThat(troll.getHealth(), is(expectedTrollHealth));
+
     }
 
     @Test
-    public void TestPlayerWeaponIsEffective() {
-        Elf elf = new Elf();
-        Thief thief = new Thief();
+    public void testPlayerWeaponIsEffective() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         WaterDagger waterDagger = new WaterDagger();
         player.addWeaponToInventory(waterDagger);
         player.equipWeapon(waterDagger);
         boolean result = player.weaponIsEffective(ElementType.FIRE);
-        assertTrue(result);
+        MatcherAssert.assertThat(result, is(true));
     }
 
+    @Test
+    public void testPlayerGainXPFromTroll() {
+        Player player = new Player("Aragorn", human, knight, new Point2D());
+        double trollXp = troll.getTrollXp();
+        double expectedPlayerXp = player.getXp() + trollXp;
+        player.increaseXp(trollXp);
+        double currentPlayerXp = player.getXp();
+        MatcherAssert.assertThat(currentPlayerXp, is(expectedPlayerXp));
+    }
+
+    @Test
+    public void testPlayerGainXPFromBandit() {
+        Player player = new Player("Aragorn", human, knight, new Point2D());
+        double banditXp = bandit.getBanditXp();
+        double expectedPlayerXp = player.getXp() + banditXp;
+        player.increaseXp(banditXp);
+        double currentPlayerXp = player.getXp();
+        MatcherAssert.assertThat(currentPlayerXp, is(expectedPlayerXp));
+    }
+
+    @Test
+    public void testPlayerGainXPFromWitch() {
+        Player player = new Player("Aragorn", human, knight, new Point2D());
+        double witchXp = witch.getWitchXp();
+        double expectedPlayerXp = player.getXp() + witchXp;
+        player.increaseXp(witchXp);
+        double currentPlayerXp = player.getXp();
+        MatcherAssert.assertThat(currentPlayerXp, is(expectedPlayerXp));
+    }
 }

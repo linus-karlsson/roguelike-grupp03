@@ -8,7 +8,7 @@ public class RaceTest {
     private static final double DWARF_STARTING_HEALTH = 100.0;
 
     @Test
-    public void TestDwarfInstanceCreation() {
+    public void testDwarfInstanceCreation() {
         Dwarf dwarf = new Dwarf();
         assertEquals(DWARF_STARTING_HEALTH, dwarf.getStartingHealth());
     }
