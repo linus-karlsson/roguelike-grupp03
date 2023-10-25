@@ -11,12 +11,10 @@ import org.hamcrest.MatcherAssert;
 
 import static org.hamcrest.Matchers.*;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class TrollTest {
 
     @Test
-    public void TestTrollAttacksPlayerUntilDead() {
+    public void testTrollAttacksPlayerUntilDead() {
         Troll troll = new Troll();
         Elf elf = new Elf();
         Thief thief = new Thief();

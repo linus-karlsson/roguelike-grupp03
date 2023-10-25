@@ -136,6 +136,7 @@ public class RoomParserTest {
     private List<Integer> setUpExpectedIntegerList() {
         int roomId = 3;
         room.setId(roomId);
+        roomParser.setRoom(room);
         roomParser.placeRoomInGridd();
         List<Integer> expected = new ArrayList<>(roomParser.getRoomTileCountInY() * roomParser.getRoomTileCountInX());
         for (int row = 0; row < roomParser.getRoomTileCountInY(); row++) {

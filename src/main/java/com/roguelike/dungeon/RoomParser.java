@@ -37,7 +37,7 @@ public class RoomParser {
         startIndex = grid.getGriddIndexBasedOnPosition(room.getPosition());
         endIndex = grid.getGriddIndexBasedOnPosition(lastPosition);
         resetRoom();
-        currentRoom = room;
+        currentRoom = new Room(room);
     }
 
     public void resetRoom() {

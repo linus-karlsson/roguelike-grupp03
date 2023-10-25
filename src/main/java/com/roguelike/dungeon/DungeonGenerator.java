@@ -116,6 +116,7 @@ public class DungeonGenerator {
 
                 if (checkIfRoomCanBePlaced(roomParser, currentRoom)) {
                     currentRoom.setId(roomsPlaced.size());
+                    roomParser.setRoom(currentRoom);
                     placeRoomInGridd(roomParser);
                     roomsPlaced.add(new Room(currentRoom));
                     break;
