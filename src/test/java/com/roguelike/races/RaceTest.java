@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.roguelike.races.Dwarf;
-
 public class RaceTest {
     private static final double DWARF_STARTING_HEALTH = 100.0;
 

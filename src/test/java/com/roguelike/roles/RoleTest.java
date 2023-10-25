@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.roguelike.races.Elf;
-import com.roguelike.roles.Knight;
-
 public class RoleTest {
 
     @Test

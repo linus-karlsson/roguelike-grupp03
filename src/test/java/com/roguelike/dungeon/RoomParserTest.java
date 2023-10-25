@@ -3,15 +3,10 @@ package com.roguelike.dungeon;
 import org.junit.jupiter.api.*;
 
 import com.roguelike.Point2D;
-import com.roguelike.dungeon.Grid;
-import com.roguelike.dungeon.GridIndex;
-import com.roguelike.dungeon.Room;
-import com.roguelike.dungeon.RoomParser;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;

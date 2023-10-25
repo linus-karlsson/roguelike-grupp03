@@ -2,9 +2,6 @@ package com.roguelike;
 
 import org.junit.jupiter.api.*;
 
-import com.roguelike.Player;
-import com.roguelike.Point2D;
-import com.roguelike.Vector2D;
 import com.roguelike.dungeon.Grid;
 import com.roguelike.dungeon.Room;
 import com.roguelike.dungeon.RoomParser;

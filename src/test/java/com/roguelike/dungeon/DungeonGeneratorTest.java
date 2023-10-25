@@ -7,7 +7,7 @@ import static com.roguelike.OnlyOneElementMatcher.containsOnly;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,11 +22,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import com.roguelike.Point2D;
 import com.roguelike.RandomInternal;
-import com.roguelike.dungeon.DungeonGenerator;
-import com.roguelike.dungeon.Grid;
-import com.roguelike.dungeon.GridIndex;
-import com.roguelike.dungeon.Room;
-import com.roguelike.dungeon.RoomParser;
 
 public class DungeonGeneratorTest {
 

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import com.roguelike.Player;
 import com.roguelike.Point2D;
-import com.roguelike.enemies.Witch;
 import com.roguelike.races.Elf;
 import com.roguelike.roles.Thief;
 

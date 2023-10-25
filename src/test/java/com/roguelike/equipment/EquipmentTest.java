@@ -2,20 +2,6 @@ package com.roguelike.equipment;
 
 import org.junit.jupiter.api.*;
 
-import com.roguelike.equipment.AirWand;
-import com.roguelike.equipment.Dagger;
-import com.roguelike.equipment.DummyEquipment;
-import com.roguelike.equipment.EarthHammer;
-import com.roguelike.equipment.ElementType;
-import com.roguelike.equipment.Equipment;
-import com.roguelike.equipment.EquipmentType;
-import com.roguelike.equipment.FireSword;
-import com.roguelike.equipment.HeavyArmor;
-import com.roguelike.equipment.Stick;
-import com.roguelike.equipment.Torch;
-import com.roguelike.equipment.WaterDagger;
-import com.roguelike.equipment.Weapon;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;

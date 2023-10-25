@@ -3,7 +3,6 @@ package com.roguelike.roles;
 import org.junit.jupiter.api.Test;
 
 import com.roguelike.enemies.Troll;
-import com.roguelike.roles.Mage;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
