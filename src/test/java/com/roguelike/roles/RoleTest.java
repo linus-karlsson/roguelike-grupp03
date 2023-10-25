@@ -1,0 +1,18 @@
+package com.roguelike.roles;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+import com.roguelike.races.Elf;
+import com.roguelike.roles.Knight;
+
+public class RoleTest {
+
+    @Test
+    public void TestRoleInstanceCreation() {
+        Knight knight = new Knight();
+        assertEquals(1.5, knight.getStrengthMultiplier());
+    }
+
+}
