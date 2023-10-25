@@ -16,21 +16,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 public class PlayerEquipmentInteractionTest {
-    Stick stick = new Stick();
-    Dagger dagger = new Dagger();
-    FireSword fireSword = new FireSword();
-    Torch torch = new Torch();
-    AirWand wand = new AirWand();
-    Sword sword = new Sword();
-    LightArmor lightArmor = new LightArmor();
-    Tome tome = new Tome();
-    Shield shield = new Shield();
-    MediumArmor mediumArmor = new MediumArmor();
-    HeavyArmor heavyArmor = new HeavyArmor();
-    SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
-    WaterDagger waterDagger = new WaterDagger();
-    SuperiorAirWand superiorAirWand = new SuperiorAirWand();
-    Player player = new Player("Sven", new Point2D());
+    private Stick stick = new Stick();
+    private Dagger dagger = new Dagger();
+    private FireSword fireSword = new FireSword();
+    private Torch torch = new Torch();
+    private AirWand wand = new AirWand();
+    private Sword sword = new Sword();
+    private LightArmor lightArmor = new LightArmor();
+    private Tome tome = new Tome();
+    private Shield shield = new Shield();
+    private MediumArmor mediumArmor = new MediumArmor();
+    private HeavyArmor heavyArmor = new HeavyArmor();
+    private SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
+    private WaterDagger waterDagger = new WaterDagger();
+    private SuperiorAirWand superiorAirWand = new SuperiorAirWand();
+    private Player player = new Player("Sven", new Point2D());
 
     @Test
     void canAddWeaponToInventory() {
