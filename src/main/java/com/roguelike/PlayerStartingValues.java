@@ -14,7 +14,7 @@ public class PlayerStartingValues {
         this.name = name;
         this.race = race;
         this.role = role;
-        this.position = position;
+        this.position = new Point2D(position);
 
     }
 

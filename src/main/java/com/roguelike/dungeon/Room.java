@@ -75,9 +75,16 @@ public class Room {
     public boolean equals(Object obj) {
         if (obj instanceof Room) {
             Room other = (Room) obj;
-            return id == other.id && position.equals(other.position) && width == other.width && height == other.height
+            return id == other.id && position.equals(other.position)
+                    && doubleEquals(width, other.width)
+                    && doubleEquals(height, other.height)
                     && connected == other.connected;
         }
         return false;
+    }
+
+    private boolean doubleEquals(double first, double second) {
+        double epsilon = 0.000001;
+        return Math.abs(first - second) < epsilon;
     }
 }
