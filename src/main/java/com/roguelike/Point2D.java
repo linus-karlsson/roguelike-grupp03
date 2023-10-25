@@ -39,14 +39,14 @@ public class Point2D {
         y = otherPoint.getY();
     }
 
-    public Point2D plus(Vector2D vector) {
+    public Point2D add(Vector2D vector) {
         return new Point2D(x + vector.getX(), y + vector.getY());
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof Point2D) {
             Point2D other = (Point2D) obj;
-            return doubleEquals(x, other.getX()) && doubleEquals(y, other.getY());
+            return doubleEquals(x, other.x) && doubleEquals(y, other.y);
         }
         return false;
     }
