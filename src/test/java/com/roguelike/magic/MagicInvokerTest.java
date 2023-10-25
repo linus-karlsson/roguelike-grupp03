@@ -10,6 +10,7 @@ import com.roguelike.roles.*;
 
 public class MagicInvokerTest {
 
+
     @Test
     void testSpellValueReturnsCorrectValueWhenPlayerStartLevel() {
         Magic magic = new Magic(Spell.TORNADO);
@@ -82,5 +83,117 @@ public class MagicInvokerTest {
         double expectedValue = 10.0;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
     }
+
+    //HealTests
+    @Test
+    void testHealShouldBeInstanceOfMagicInvoker() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        assertTrue(magic.getType() instanceof MagicInvoker);
+    }
+
+    @Test
+    void testHealShouldBeInstanceOfHeal() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        assertTrue(magic.getType() instanceof Heal);
+    }
+
+    @Test
+    void testHealShouldHaveCorrectName() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        assertEquals("Heal", magic.getType().getName());
+    }
+
+    @Test
+    void testMethodThrowMagicWhenMagicIsNullShouldThrowIllegalArgumentException() {
+        Magic magic = null;
+        Player player = new Player("Test", new Point2D());
+        Heal heal = new Heal();
+        assertThrows(IllegalArgumentException.class, () -> heal.throwMagic(magic, player));
+    }
+
+    @Test
+    void testMethodThrowMagicWhenPlayerIsNullShouldThrowIllegalArgumentException() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        Player player = null;
+        Heal heal = new Heal();
+        assertThrows(IllegalArgumentException.class, () -> heal.throwMagic(magic, player));
+    }
+
+    @Test
+    void testMethodThrowMagicIfPlayerHealthIsMaxShouldReturnMaxHealth() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        Player player = new Player("Test", new Point2D());
+        Heal heal = (Heal) magic.getType();
+        player.setHealth(100);
+        double expectedValue = 100;
+        assertEquals(expectedValue, heal.throwMagic(magic, player));
+    }
+
+    @Test
+    void testMethodThrowMagicShouldIncreasePlayersHealth() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        Player player = new Player("Test", new Point2D());
+        Heal heal = (Heal) magic.getType();
+        player.setHealth(50);
+        double expectedValue = 60;
+        assertEquals(expectedValue, heal.throwMagic(magic, player));
+    }
+
+    @Test
+    void testMethodThrowMagicShouldIncreasePlayersHealthToMax() {
+        Magic magic = new Magic(Spell.HARMONYHEAL);
+        Player player = new Player("Test", new Point2D());
+        Heal heal = (Heal) magic.getType();
+        player.setHealth(95);
+        double expectedValue = 100;
+        assertEquals(expectedValue, heal.throwMagic(magic, player));
+    }
+
+    //MagicAttackTests
+
+    @Test
+    void testSpellAttackShouldBeInstanceOfMagicInvoker() {
+        Magic magic = new Magic(Spell.POISON);
+        assertTrue(magic.getType() instanceof MagicInvoker);
+    }
+
+    @Test
+    void testSpellAttackShouldBeInstanceOfAttack() {
+        Magic magic = new Magic(Spell.FIREBALL);
+        assertTrue(magic.getType() instanceof MagicAttack);
+    }
+
+    private double setupSucceedToInvokeSpell(Role role, int randomValue) {
+        Player player = new Player("Test", new Elf(), role, new Point2D());
+        MagicAttack attack = new MagicAttack(new RandomInternal(randomValue));
+        Magic magic = new Magic(Spell.FIREBALL);
+        return attack.throwMagic(magic, player);
+    }
+
+    @Test
+    void testSucceedToInvokeSpellMageFail() {
+        int expected = 0;
+        assertEquals(expected, setupSucceedToInvokeSpell(new Mage(), 97));
+    }
+
+    @Test
+    void testSucceedToInvokeSpellMage() {
+        assertTrue(setupSucceedToInvokeSpell(new Mage(), 96) > 0);
+    }
+
+    @Test
+    void testSucceedToInvokeSpellAllElseFail() {
+        int expected = 0;
+        assertEquals(expected, setupSucceedToInvokeSpell(new Knight(), 94));
+    }
+
+    @Test
+    void testSucceedToInvokeAllElseMage() {
+        assertTrue(setupSucceedToInvokeSpell(new Knight(), 93) > 0);
+    }
+
+    //MagicDefenseTests
+
+    
 
 }
