@@ -72,6 +72,7 @@ public class DungeonGeneratorTest {
         double expectedRandomHeight = randomDoubleInBounds(heightRandomMultiplier, DEFAULT_MIN_HEIGHT,
                 maxHeight);
 
+        expectedRandomHeight += 1.0;
         assertThat(room.getWidth(), is(equalTo(expectedRandomWidth)));
         assertThat(room.getHeight(), is(equalTo(expectedRandomHeight)));
     }

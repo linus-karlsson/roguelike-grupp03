@@ -31,6 +31,6 @@ public class PlayerStartingValues {
     }
 
     public Point2D getPosition() {
-        return position;
+        return new Point2D(position);
     }
 }
