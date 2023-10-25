@@ -262,12 +262,12 @@ public class Player extends Entity implements PlayerMock {
     // Equipping/Unequipping
     // MAX_INVENTORY_CAPACITY will always be larger than 2.
 
-    public void setStatsWhenEquippingWeapon(Weapon weapon) {
+    private void setStatsWhenEquippingWeapon(Weapon weapon) {
         setStatsWhenEquipping(weapon);
         setTotalWeaponDamage();
     }
 
-    public void setStatsWhenEquippingArmor(Armor armor) {
+    private void setStatsWhenEquippingArmor(Armor armor) {
         setStatsWhenEquipping(armor);
         setHealth(getHealth() + armor.getHealth());
         mana += armor.getMana();
