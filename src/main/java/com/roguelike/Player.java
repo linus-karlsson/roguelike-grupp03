@@ -99,7 +99,7 @@ public class Player extends Entity {
     }
 
     public void updateMovement(Grid gridd, double deltaTime) {
-        Point2D newPostion = position.plus(velocity.scalarMulti(deltaTime));
+        Point2D newPostion = position.add(velocity.scalarMulti(deltaTime));
         GridIndex index = gridd.getGriddIndexBasedOnPosition(newPostion);
         if (gridd.getTile(index) >= 0) {
             position = newPostion;
