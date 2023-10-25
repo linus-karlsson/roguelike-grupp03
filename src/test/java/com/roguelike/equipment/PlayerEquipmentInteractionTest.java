@@ -287,6 +287,16 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
+    void cantRemoveEquippedArmor_InOffhand() {
+        Shield shield = new Shield();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
+        player.addArmorToInventory(shield);
+        player.equipOffhand(shield);
+        player.removeArmorFromInventory(shield);
+        assertTrue(player.getArmorInventory().contains(shield));
+    }
+
+    @Test
     void cantRemoveEquippedWeapon() {
         Stick stick = new Stick();
         Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
@@ -617,9 +627,29 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    void doesNotEquipWeaponIfWrongRole() {
+    void doesNotEquipWeaponIfWrongRole_Knight() {
+        Dagger dagger = new Dagger();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
+        Weapon expected = player.getEquippedWeapon();
+        player.addWeaponToInventory(dagger);
+        player.equipWeapon(dagger);
+        assertEquals(expected, player.getEquippedWeapon());
+    }
+
+    @Test
+    void doesNotEquipWeaponIfWrongRole_Mage() {
         FireSword fireSword = new FireSword();
         Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
+        Weapon expected = player.getEquippedWeapon();
+        player.addWeaponToInventory(fireSword);
+        player.equipWeapon(fireSword);
+        assertEquals(expected, player.getEquippedWeapon());
+    }
+
+    @Test
+    void doesNotEquipWeaponIfWrongRole_Thief() {
+        FireSword fireSword = new FireSword();
+        Player player = new Player("Sven", new Dwarf(), new Thief(), new Point2D());
         Weapon expected = player.getEquippedWeapon();
         player.addWeaponToInventory(fireSword);
         player.equipWeapon(fireSword);
@@ -760,12 +790,30 @@ public class PlayerEquipmentInteractionTest {
     }
 
     @Test
-    void canNotEquipArmorIfWrongRole() {
+    void canNotEquipArmorIfWrongRole_Mage() {
         HeavyArmor heavyArmor = new HeavyArmor();
         Player player = new Player("Sven", new Dwarf(), new Mage(), new Point2D());
         player.addArmorToInventory(heavyArmor);
         player.equipArmor(heavyArmor);
         assertFalse(player.getEquippedArmor() == heavyArmor);
+    }
+
+    @Test
+    void canNotEquipArmorIfWrongRole_Thief() {
+        HeavyArmor heavyArmor = new HeavyArmor();
+        Player player = new Player("Sven", new Dwarf(), new Thief(), new Point2D());
+        player.addArmorToInventory(heavyArmor);
+        player.equipArmor(heavyArmor);
+        assertFalse(player.getEquippedArmor() == heavyArmor);
+    }
+
+    @Test
+    void canNotEquipArmorIfWrongRole_Knight() {
+        LightArmor lightArmor = new LightArmor();
+        Player player = new Player("Sven", new Dwarf(), new Knight(), new Point2D());
+        player.addArmorToInventory(lightArmor);
+        player.equipArmor(lightArmor);
+        assertFalse(player.getEquippedArmor() == lightArmor);
     }
 
     @Test
