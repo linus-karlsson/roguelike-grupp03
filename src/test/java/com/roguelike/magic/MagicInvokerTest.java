@@ -3,6 +3,9 @@ package com.roguelike.magic;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.Matchers.equalTo;
 
 import com.roguelike.*;
 import com.roguelike.races.*;
@@ -17,6 +20,15 @@ public class MagicInvokerTest {
         Player player = new Player("Test", new Human(), new Thief(), new Point2D());
         double expectedValue = 10.0;
         assertEquals(expectedValue, magicInvoker.magicValue(magic, player));
+    }
+
+    @Test
+    void testSpellReturnsCorrectValueWhenPlayerStartLevel() {
+        Magic magic = new Magic(Spell.FREEZE);
+        MagicInvoker magicInvoker = magic.getType();
+        Player player = new Player("Test", new Human(), new Thief(), new Point2D());
+        double expectedValue = 10.0;
+        assertThat(expectedValue,  equalTo(magicInvoker.magicValue(magic, player)));
     }
 
     @Test
@@ -87,8 +99,8 @@ public class MagicInvokerTest {
 
     @Test
     void testHealShouldBeInstanceOfHeal() {
-        Magic magic = new Magic(Spell.HARMONYHEAL);
-        assertTrue(magic.getType() instanceof Heal);
+        Heal heal = (Heal)new Magic(Spell.HARMONYHEAL).getType();
+        assertThat(heal, instanceOf(Heal.class));
     }
 
     @Test
@@ -112,6 +124,8 @@ public class MagicInvokerTest {
         Heal heal = new Heal();
         assertThrows(IllegalArgumentException.class, () -> heal.throwMagic(magic, player));
     }
+
+
 
     @Test
     void testMethodThrowMagicIfPlayerHealthIsMaxShouldReturnMaxHealth() {

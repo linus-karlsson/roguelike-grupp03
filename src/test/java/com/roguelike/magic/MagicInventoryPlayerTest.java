@@ -6,10 +6,45 @@ import com.roguelike.*;
 import com.roguelike.enemies.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anEmptyMap;
+import static org.hamcrest.Matchers.aMapWithSize;
 
 public class MagicInventoryPlayerTest {
 
     private final Player player = new Player("Test", new Point2D());
+
+    @Test
+    void testMethodGetMagicInventoryShouldReturnEmptyMap() {
+        assertThat(player.getMagicInventory(), anEmptyMap());
+    }
+
+    @Test
+    void testMethodGetMagicInventoryShouldReturnMapSizeOne() {
+        Magic magic = new Magic(Spell.FIREBALL);
+        player.addMagicToInventory(magic);
+        assertThat(player.getMagicInventory(), aMapWithSize(1));
+    }
+
+    @Test
+    void testMethodGetMagicInventorySameSpellTwiceShouldReturnSizeOne() {
+        Magic magic = new Magic(Spell.FIREBALL);
+        player.addMagicToInventory(magic);
+        player.addMagicToInventory(magic);
+        assertThat(player.getMagicInventory(), aMapWithSize(1));
+    }
+
+    @Test
+    void testMethodGetMagicInventoryTwoSpellsShouldReturnMapSizeTwo() {
+        Magic magic = new Magic(Spell.FIREBALL);
+        Magic magic2 = new Magic(Spell.FREEZE);
+        player.addMagicToInventory(magic);
+        player.addMagicToInventory(magic2);
+        player.addMagicToInventory(magic2);
+        assertThat(player.getMagicInventory(), aMapWithSize(2));
+    }
+
 
     @Test
     void testMethodAddMagicToInventoryShouldAddMagicToInventory() {
