@@ -86,7 +86,6 @@ public class MagicInventoryPlayerTest {
     @Test
     void testUseMagicWithTwoArgumentsThowsExceptionIfSecondArgumentIsNull() {
         Player player = new Player("Test", new Point2D());
-        Entity enemy = new Troll();
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
         assertThrows(IllegalArgumentException.class, () -> {
