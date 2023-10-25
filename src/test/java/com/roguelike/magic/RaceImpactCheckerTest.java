@@ -9,6 +9,12 @@ import com.roguelike.races.*;
 public class RaceImpactCheckerTest {
 
     @Test
+    void testCreationOfInstanceOfRaceImpactChecker() {
+        RaceImpactChecker raceImpactChecker = new RaceImpactChecker();
+        assertNotNull(raceImpactChecker);
+    }
+
+    @Test
     void testIfElfIsImpactByElementAir() {
         assertTrue(RaceImpactChecker.isPlayerImpact(new Elf(), new ElementAir()));
     }
