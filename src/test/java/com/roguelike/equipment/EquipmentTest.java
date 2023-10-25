@@ -111,6 +111,36 @@ public class EquipmentTest {
     }
 
     @Test
+    void lightArmorHasCorrectType() {
+        LightArmor lightArmor = new LightArmor();
+        assertTrue(lightArmor.getType() == EquipmentType.LIGHT_ARMOR);
+    }
+
+    @Test
+    void lightArmorHasCorrectElementType() {
+        LightArmor lightArmor = new LightArmor();
+        assertTrue(lightArmor.getElementType() == ElementType.WATER);
+    }
+
+    @Test
+    void mediumArmorHasCorrectArmorValue() {
+        MediumArmor mediumArmor = new MediumArmor();
+        assertEquals(6, mediumArmor.getArmorValue());
+    }
+
+    @Test
+    void shieldHasCorrectStrength() {
+        Shield shield = new Shield();
+        assertEquals(3, shield.getStrength());
+    }
+
+    @Test
+    void superiorHeavyArmorHasCorrectElement() {
+        SuperiorHeavyArmor superiorHeavyArmor = new SuperiorHeavyArmor();
+        assertTrue(superiorHeavyArmor.getElementType() == ElementType.EARTH);
+    }
+
+    @Test
     void waterDagger_AllValuesAreCorrect() {
         WaterDagger waterDagger = new WaterDagger();
         assertEquals("Water Dagger", waterDagger.getName());

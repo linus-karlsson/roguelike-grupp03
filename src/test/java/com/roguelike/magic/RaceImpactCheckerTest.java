@@ -20,23 +20,13 @@ public class RaceImpactCheckerTest {
     }
 
     @Test
-    void testIfHumanNotImpactByAir() {
-        assertFalse(RaceImpactChecker.isPlayerImpact(new Human(), new ElementAir()));
+    void testIfElfIsImpactByElementFire() {
+        assertTrue(RaceImpactChecker.isPlayerImpact(new Elf(), new ElementFire()));
     }
 
     @Test
-    void testIfOrcIsImpactByElementFire() {
-        assertTrue(RaceImpactChecker.isPlayerImpact(new Orc(), new ElementFire()));
-    }
-
-    @Test
-    void testIfDwarfNotImpactByElementFire() {
-        assertFalse(RaceImpactChecker.isPlayerImpact(new Dwarf(), new ElementFire()));
-    }
-
-    @Test
-    void testIfDwarfIsImpactByElementEarth() {
-        assertTrue(RaceImpactChecker.isPlayerImpact(new Dwarf(), new ElementEarth()));
+    void testIfElfNotImpactByElementWater() {
+        assertFalse(RaceImpactChecker.isPlayerImpact(new Elf(), new ElementWater()));
     }
 
     @Test
@@ -45,13 +35,63 @@ public class RaceImpactCheckerTest {
     }
 
     @Test
+    void testIfOrcIsImpactByElementAir() {
+        assertTrue(RaceImpactChecker.isPlayerImpact(new Orc(), new ElementAir()));
+    }
+
+    @Test
+    void testIfOrcIsImpactByElementFire() {
+        assertTrue(RaceImpactChecker.isPlayerImpact(new Orc(), new ElementFire()));
+    }
+
+    @Test
+    void testIfOrcIsImpactByElementEarth() {
+        assertTrue(RaceImpactChecker.isPlayerImpact(new Orc(), new ElementEarth()));
+    }
+
+    @Test
     void testIfOrcIsImpactByElementWater() {
         assertTrue(RaceImpactChecker.isPlayerImpact(new Orc(), new ElementWater()));
     }
 
     @Test
+    void testIfDwarfNotImpactByElementAir() {
+        assertFalse(RaceImpactChecker.isPlayerImpact(new Dwarf(), new ElementAir()));
+    }
+
+    @Test
+    void testIfDwarfNotImpactByElementFire() {
+        assertFalse(RaceImpactChecker.isPlayerImpact(new Dwarf(), new ElementFire()));
+    }
+
+    @Test
+    void testIfDwarfIsImpactByElementWater() {
+        assertTrue(RaceImpactChecker.isPlayerImpact(new Dwarf(), new ElementWater()));
+    }
+
+    @Test
+    void testIfDwarfIsImpactByElementEarth() {
+        assertTrue(RaceImpactChecker.isPlayerImpact(new Dwarf(), new ElementEarth()));
+    }
+
+        @Test
+    void testIfHumanNotImpactByAir() {
+        assertFalse(RaceImpactChecker.isPlayerImpact(new Human(), new ElementAir()));
+    }
+
+    @Test
+    void testIfHumanNotImpactByFire() {
+        assertFalse(RaceImpactChecker.isPlayerImpact(new Human(), new ElementFire()));
+    }
+
+     @Test
     void testIfHumanNotImpactByElementWater() {
         assertFalse(RaceImpactChecker.isPlayerImpact(new Human(), new ElementWater()));
+    }
+
+        @Test
+    void testIfHumanNotImpactByEarth() {
+        assertFalse(RaceImpactChecker.isPlayerImpact(new Human(), new ElementEarth()));     
     }
 
 }
