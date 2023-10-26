@@ -3,5 +3,6 @@
 .classpath
 .vscode
 .idea
+.VSCodeCounter
 target
 tags
