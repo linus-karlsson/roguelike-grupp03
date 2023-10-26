@@ -101,8 +101,8 @@ public class PlayerTest {
         MatcherAssert.assertThat(player, allOf(
                 hasProperty("health", is(expectedHealth)),
                 hasProperty("intelligence", is(expectedIntelligence))));
-                hasProperty("expectedMana", is(expectedMana));
-                hasProperty("dexterity", is(expectedDexterity));
+        hasProperty("expectedMana", is(expectedMana));
+        hasProperty("dexterity", is(expectedDexterity));
     }
 
     @Test
@@ -201,10 +201,30 @@ public class PlayerTest {
     }
 
     @Test
-    public void testPlayerMageDebuffEnemy() {
+    public void testPlayerMageDebuffEnemyLevel19() {
+        Player player = new Player("Gandalf", human, mage, new Point2D());
+        player.setLevel(19);
+        double expectedTrollHealth = troll.getHealth() * 0.9;
+        player.debuff(troll);
+        MatcherAssert.assertThat(troll.getHealth(), is(expectedTrollHealth));
+
+    }
+
+    @Test
+    public void testPlayerMageDebuffEnemyLevel49() {
         Player player = new Player("Gandalf", human, mage, new Point2D());
         player.setLevel(49);
         double expectedTrollHealth = troll.getHealth() * 0.8;
+        player.debuff(troll);
+        MatcherAssert.assertThat(troll.getHealth(), is(expectedTrollHealth));
+
+    }
+
+    @Test
+    public void testPlayerMageDebuffEnemyLevel50() {
+        Player player = new Player("Gandalf", human, mage, new Point2D());
+        player.setLevel(50);
+        double expectedTrollHealth = troll.getHealth() * 0.7;
         player.debuff(troll);
         MatcherAssert.assertThat(troll.getHealth(), is(expectedTrollHealth));
 
