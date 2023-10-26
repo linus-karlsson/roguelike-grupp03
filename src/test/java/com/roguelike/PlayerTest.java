@@ -20,6 +20,7 @@ import com.roguelike.roles.Thief;
 import org.hamcrest.MatcherAssert;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PlayerTest {
     private Human human = new Human();
@@ -49,6 +50,17 @@ public class PlayerTest {
         player.increaseXp(xpToIncrease);
         assertEquals(xpToNextLevel * player.getLevelMultiplier(), player.getXpToNextLevel());
         assertEquals(level + 1, player.getLevel());
+    }
+
+    @Test
+    public void testIncreaseXpOnMaxLevel() {
+        Player player = new Player("Test", new Point2D());
+        player.setLevel(player.getMaxLevel());
+        double xpToNextLevel = player.getXpToNextLevel();
+        double xpToIncrease = xpToNextLevel;
+        int level = player.getLevel();
+        player.increaseXp(xpToIncrease);
+        assertThat(player.getLevel(), is(equalTo(level)));
     }
 
     private void setUpMovementTest(Vector2D velocity, Point2D roomPosition, Point2D playerPosition) {
@@ -163,7 +175,6 @@ public class PlayerTest {
         MatcherAssert.assertThat(troll.isDead(), is(Boolean.TRUE));
     }
 
-
     @Test
     void testPlayerResetResetsHealth() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
@@ -251,7 +262,6 @@ public class PlayerTest {
 
     }
 
-
     @Test
     public void testPlayerWaterWeaponIsEffective() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
@@ -302,5 +312,3 @@ public class PlayerTest {
         MatcherAssert.assertThat(currentPlayerXp, is(expectedPlayerXp));
     }
 }
-
-

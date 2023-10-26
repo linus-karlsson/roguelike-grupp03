@@ -76,7 +76,7 @@ public abstract class Entity {
         return level;
     }
 
-    public int setLevel(int level) {
-        return this.level = level;
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

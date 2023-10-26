@@ -85,13 +85,21 @@ public class Player extends Entity {
         double xpOverspill = (xp + gainedXp) - xpToNextLevel;
         if (xpOverspill >= 0) {
             setLevel(getLevel() + 1);
-            nextLevel();
         }
         xp += gainedXp;
     }
 
     public int getMaxLevel() {
         return MAX_LEVEL;
+    }
+
+    public void setLevel(int level) {
+        if (getLevel() + level <= MAX_LEVEL) {
+            super.setLevel(level);
+            for (int i = 0; i < level; i++) {
+                nextLevel();
+            }
+        }
     }
 
     public Point2D getPosition() {
