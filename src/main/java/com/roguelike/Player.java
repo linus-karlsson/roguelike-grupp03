@@ -445,11 +445,6 @@ public class Player extends Entity {
             throw new IllegalArgumentException("Player does not have knowledge of that magic");
         }
         switch (spell.getType().getName()) {
-            case "Attack":
-                break;
-            case "Defence":
-                // to be implemented
-                break;
             case "Heal":
                 setHealth(spell.getType().throwMagic(magicInventory.get(spell.getName()), this));
                 break;

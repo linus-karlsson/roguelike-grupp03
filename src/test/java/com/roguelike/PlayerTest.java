@@ -126,6 +126,7 @@ public class PlayerTest {
         double expectedDamage = knightWeaponDamage * totalStrength;
         double playerTotalWeaponDamage = player.getTotalWeaponDamage();
         MatcherAssert.assertThat(playerTotalWeaponDamage, is(expectedDamage));
+
     }
 
     @Test
@@ -248,6 +249,7 @@ public class PlayerTest {
         double expectedTrollHealth = troll.getHealth() * 0.8;
         player.debuff(troll);
         MatcherAssert.assertThat(troll.getHealth(), is(expectedTrollHealth));
+
     }
 
     @Test
