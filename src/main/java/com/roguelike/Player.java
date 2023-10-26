@@ -90,6 +90,10 @@ public class Player extends Entity {
         xp += gainedXp;
     }
 
+    public int getMaxLevel() {
+        return MAX_LEVEL;
+    }
+
     public Point2D getPosition() {
         return new Point2D(position);
     }
