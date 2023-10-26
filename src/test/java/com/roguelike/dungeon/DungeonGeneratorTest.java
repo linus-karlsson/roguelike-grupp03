@@ -242,8 +242,9 @@ public class DungeonGeneratorTest {
         // Rooms kommer vara 10 X 10
         // De tar alltså upp 3 X 3 tiles
         // 1 extra rad och column för border
-        // Det får då plats 10 X 10 rum i utrymmet som har 32 X 32 tiles med storlek
+        // Det får då plats 10 X 10 rum i utrymmet som har 31 X 31 tiles med storlek
         // 10.0(Map.TILE_SIZE)
+        // Testet fyller ut hela grid:en med rum
         int extraForBorder = 2;
         int roomsInX = rowCount / ((int) (DEFAULT_MIN_WIDTH / DungeonGenerator.MIN_TILE_SIZE) + extraForBorder);
         int roomsInY = columnCount / ((int) (DEFAULT_MIN_HEIGHT / DungeonGenerator.MIN_TILE_SIZE) + extraForBorder);

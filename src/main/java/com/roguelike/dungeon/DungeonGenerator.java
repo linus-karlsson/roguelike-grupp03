@@ -111,19 +111,27 @@ public class DungeonGenerator {
                     grid.getHeight() - tileSize - (currentRoom.getHeight() + 1.0));
 
             for (int i = 0; i < numberOfTriesBeforeDiscard; i++) {
-                currentRoom.setPosition(randomDoubleInBounds(minRoomPosition.getX(), maxRoomPosition.getX()),
-                        randomDoubleInBounds(minRoomPosition.getY(), maxRoomPosition.getY()));
-
-                if (checkIfRoomCanBePlaced(roomParser, currentRoom)) {
-                    currentRoom.setId(roomsPlaced.size());
-                    roomParser.setRoom(currentRoom);
-                    placeRoomInGridd(roomParser);
-                    roomsPlaced.add(new Room(currentRoom));
+                if (tryToPlaceRoom(currentRoom, minRoomPosition, maxRoomPosition, roomParser, roomsPlaced)) {
                     break;
                 }
             }
         }
         return roomsPlaced;
+    }
+
+    private boolean tryToPlaceRoom(Room room, Point2D minRoomPosition, Point2D maxRoomPosition, RoomParser roomParser,
+            List<Room> roomsPlaced) {
+        room.setPosition(randomDoubleInBounds(minRoomPosition.getX(), maxRoomPosition.getX()),
+                randomDoubleInBounds(minRoomPosition.getY(), maxRoomPosition.getY()));
+
+        if (checkIfRoomCanBePlaced(roomParser, room)) {
+            room.setId(roomsPlaced.size());
+            roomParser.setRoom(room);
+            placeRoomInGridd(roomParser);
+            roomsPlaced.add(new Room(room));
+            return true;
+        }
+        return false;
     }
 
     private void validateArgumentsInPlaceRooomsInArea(List<Room> rooms, int numberOfTriesBeforeDiscard, int rowCount,
@@ -178,26 +186,29 @@ public class DungeonGenerator {
                 return corridorCount;
             }
             endRoomIndex = endRoom.getId();
+            iterateRowsAndColumns(rooms, grid.getGriddIndexBasedOnPosition(startRoom.getPosition()),
+                    grid.getGriddIndexBasedOnPosition(endRoom.getPosition()));
 
-            GridIndex startRoomGriddIndex = grid.getGriddIndexBasedOnPosition(startRoom.getPosition());
-            GridIndex endRoomGriddIndex = grid.getGriddIndexBasedOnPosition(endRoom.getPosition());
-
-            GridIndex indexForRowTraversal = startRoomGriddIndex.row <= endRoomGriddIndex.row
-                    ? startRoomGriddIndex
-                    : endRoomGriddIndex;
-            GridIndex indexForColumnTraversal = startRoomGriddIndex.column <= endRoomGriddIndex.column
-                    ? startRoomGriddIndex
-                    : endRoomGriddIndex;
-
-            int rowDifference = Math.abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
-            int columnDifference = Math.abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
-            iterateRowTilesToNextRoom(rowDifference, indexForRowTraversal, rooms);
-            iterateColumnTilesToNextRoom(columnDifference, indexForColumnTraversal, rooms);
             startRoom.setConnected(true);
             endRoom.setConnected(true);
             corridorCount++;
         }
         return corridorCount;
+    }
+
+    private void iterateRowsAndColumns(List<Room> rooms, GridIndex startRoomGriddIndex, GridIndex endRoomGriddIndex) {
+        GridIndex indexForRowTraversal = startRoomGriddIndex.row <= endRoomGriddIndex.row
+                ? startRoomGriddIndex
+                : endRoomGriddIndex;
+        GridIndex indexForColumnTraversal = startRoomGriddIndex.column <= endRoomGriddIndex.column
+                ? startRoomGriddIndex
+                : endRoomGriddIndex;
+
+        int rowDifference = Math.abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
+        int columnDifference = Math.abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
+        iterateRowTilesToNextRoom(rowDifference, indexForRowTraversal, rooms);
+        iterateColumnTilesToNextRoom(columnDifference, indexForColumnTraversal, rooms);
+
     }
 
     private Room getNextNonConnectedRoom(List<Room> rooms, int index) {
