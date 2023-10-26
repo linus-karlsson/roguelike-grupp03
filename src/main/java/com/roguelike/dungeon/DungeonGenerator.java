@@ -189,8 +189,8 @@ public class DungeonGenerator {
                     ? startRoomGriddIndex
                     : endRoomGriddIndex;
 
-            int rowDifference = abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
-            int columnDifference = abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
+            int rowDifference = Math.abs(startRoomGriddIndex.row - endRoomGriddIndex.row);
+            int columnDifference = Math.abs(startRoomGriddIndex.column - endRoomGriddIndex.column);
             iterateRowTilesToNextRoom(rowDifference, indexForRowTraversal, rooms);
             iterateColumnTilesToNextRoom(columnDifference, indexForColumnTraversal, rooms);
             startRoom.setConnected(true);
@@ -207,10 +207,6 @@ public class DungeonGenerator {
             room = rooms.get(index++ % rooms.size());
         } while (room.isConnected() && ++count < rooms.size());
         return count != rooms.size() ? room : null;
-    }
-
-    private int abs(int value) {
-        return value < 0 ? value * -1 : value;
     }
 
     private void iterateRowTilesToNextRoom(int rowDifference, GridIndex indexForRowTraversal, List<Room> rooms) {
