@@ -109,6 +109,12 @@ public class EquipmentTest {
     void noTypeInConstructorThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> new DummyEquipment("Name", 0, null, 0, 0, 0));
     }
+    
+    @Test
+    void dummyEquipmentHasCorrectName() {
+    	DummyEquipment dummyEquipment = new DummyEquipment("Dummy", 0, EquipmentType.LIGHT_ARMOR, 0, 0, 0);
+    	assertEquals("Dummy", dummyEquipment.getName());
+    }
 
     @Test
     void lightArmorHasCorrectType() {
