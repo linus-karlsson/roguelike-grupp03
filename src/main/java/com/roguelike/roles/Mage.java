@@ -12,11 +12,11 @@ public class Mage extends Role {
     private static final double MAGE_DEXTERITY_MULTIPLIER = 1.0;
     private static final double MAGE_INTELLIGENCE_MULTIPLIER = 2.0;
 
-    private static Weapon MAGE_STARTING_WEAPON = new AirWand();
+
 
     public Mage() {
         super(MAGE_HEALTH_MULTIPLIER, MAGE_MANA_MULTIPLIER, MAGE_STRENGTH_MULTIPLIER, MAGE_DEXTERITY_MULTIPLIER,
-                MAGE_INTELLIGENCE_MULTIPLIER, MAGE_STARTING_WEAPON, EquipmentType.LIGHT_ARMOR, EquipmentType.WAND);
+                MAGE_INTELLIGENCE_MULTIPLIER, new AirWand(), EquipmentType.LIGHT_ARMOR, EquipmentType.WAND);
 
     }
 
