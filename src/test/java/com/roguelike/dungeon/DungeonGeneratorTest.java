@@ -1,11 +1,11 @@
 
 package com.roguelike.dungeon;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 import static com.roguelike.OnlyOneElementMatcher.containsOnly;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -215,7 +215,7 @@ public class DungeonGeneratorTest {
     @Test
     void testPlaceRoomsInAreaThrowsRoomsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-        	List<Room> rooms = null;
+            List<Room> rooms = null;
             dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
                     DEFAULT_ROOM_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
         });
@@ -243,7 +243,7 @@ public class DungeonGeneratorTest {
         // De tar alltså upp 3 X 3 tiles
         // 1 extra rad och column för border
         // Det får då plats 10 X 10 rum i utrymmet som har 31 X 31 tiles med storlek
-        // 10.0(Map.TILE_SIZE)
+        // 10.0(DungeonGenerator.MIN_TILE_SIZE)
         // Testet fyller ut hela grid:en med rum
         int extraForBorder = 2;
         int roomsInX = rowCount / ((int) (DEFAULT_MIN_WIDTH / DungeonGenerator.MIN_TILE_SIZE) + extraForBorder);
