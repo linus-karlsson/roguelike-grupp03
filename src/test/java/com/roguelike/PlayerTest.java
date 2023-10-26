@@ -126,7 +126,6 @@ public class PlayerTest {
         double expectedDamage = knightWeaponDamage * totalStrength;
         double playerTotalWeaponDamage = player.getTotalWeaponDamage();
         MatcherAssert.assertThat(playerTotalWeaponDamage, is(expectedDamage));
-
     }
 
     @Test
@@ -249,7 +248,6 @@ public class PlayerTest {
         double expectedTrollHealth = troll.getHealth() * 0.8;
         player.debuff(troll);
         MatcherAssert.assertThat(troll.getHealth(), is(expectedTrollHealth));
-
     }
 
     @Test
@@ -260,26 +258,6 @@ public class PlayerTest {
         player.debuff(troll);
         MatcherAssert.assertThat(troll.getHealth(), is(expectedTrollHealth));
 
-    }
-
-    @Test
-    public void testPlayerWaterWeaponIsEffective() {
-        Player player = new Player("Legolas", elf, thief, new Point2D());
-        WaterDagger waterDagger = new WaterDagger();
-        player.addWeaponToInventory(waterDagger);
-        player.equipWeapon(waterDagger);
-        boolean result = player.weaponIsEffective(ElementType.FIRE);
-        MatcherAssert.assertThat(result, is(true));
-    }
-
-    @Test
-    public void testPlayerFireWeaponIsEffective() {
-        Player player = new Player("Aragorn", human, knight, new Point2D());
-        EarthHammer earthHammer = new EarthHammer();
-        player.addWeaponToInventory(earthHammer);
-        player.equipWeapon(earthHammer);
-        boolean result = player.weaponIsEffective(ElementType.FIRE);
-        MatcherAssert.assertThat(result, is(true));
     }
 
     @Test

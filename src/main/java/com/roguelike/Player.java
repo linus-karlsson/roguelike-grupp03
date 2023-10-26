@@ -165,20 +165,6 @@ public class Player extends Entity {
         super.takeDamage(damageTaken);
     }
 
-    public boolean weaponIsEffective(ElementType enemyElement) {
-        ElementType weaponElement = equippedWeapon.getWeaponElementType();
-        if (weaponElement == ElementType.WATER && enemyElement == ElementType.FIRE) {
-            return true;
-        }
-        if (weaponElement == ElementType.EARTH && enemyElement == ElementType.FIRE) {
-            return true;
-        }
-        if (weaponElement == ElementType.AIR && enemyElement == ElementType.EARTH) {
-            return true;
-        }
-        return false;
-    }
-
     public String getName() {
         return name;
     }
