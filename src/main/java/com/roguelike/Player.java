@@ -199,10 +199,6 @@ public class Player extends Entity {
         return equippedOffhand;
     }
 
-    public int getMaxLevel() {
-        return MAX_LEVEL;
-    }
-
     public double getLevelMultiplier() {
         return LEVEL_MULTIPLIER;
     }
@@ -241,14 +237,6 @@ public class Player extends Entity {
 
     public Armor getEquippedArmor() {
         return equippedArmor;
-    }
-
-    public void equipNextWeapon() {
-        // TODO:
-    }
-
-    public void equipPreviousWeapon() {
-        // TODO:
     }
 
     public Player reset() {
