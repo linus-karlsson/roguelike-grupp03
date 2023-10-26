@@ -498,9 +498,15 @@ public class Player extends Entity {
         }
     }
 
-    public void invisibility() {
+    public void becomeInvisible() {
         if (role instanceof Thief) {
             ((Thief) role).becomeInvisible();
+        }
+    }
+
+    public void reEmerge() {
+        if (role instanceof Thief) {
+            ((Thief) role).reEmerge();
         }
     }
 }
