@@ -18,7 +18,7 @@ public class Knight extends Role {
     public Knight() {
         super(KNIGHT_HEALTH_MULTIPLIER, KNIGHT_MANA_MULTIPLIER, KNIGHT_STRENGTH_MULTIPLIER, KNIGHT_DEXTERITY_MULTIPLIER,
                 KNIGHT_INTELLIGENCE_MULTIPLIER, KNIGHT_STARTING_WEAPON, EquipmentType.SWORD, EquipmentType.CLUB,
-                EquipmentType.SHIELD, EquipmentType.HEAVY_ARMOR, EquipmentType.LIGHT_ARMOR);
+                EquipmentType.SHIELD, EquipmentType.HEAVY_ARMOR, EquipmentType.MEDIUM_ARMOR, EquipmentType.LIGHT_ARMOR);
 
     }
 

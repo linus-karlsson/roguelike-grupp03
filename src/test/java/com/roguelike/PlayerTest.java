@@ -1,6 +1,7 @@
 package com.roguelike;
 
 import com.roguelike.enemies.Bandit;
+import com.roguelike.races.Orc;
 import org.junit.jupiter.api.*;
 
 import com.roguelike.dungeon.Grid;
@@ -24,13 +25,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PlayerTest {
     private Human human = new Human();
     private Dwarf dwarf = new Dwarf();
+    Orc orc = new Orc();
     private Elf elf = new Elf();
     private Mage mage = new Mage();
     private Knight knight = new Knight();
     private Thief thief = new Thief();
     private Troll troll = new Troll();
     private Witch witch = new Witch();
-
     private Bandit bandit = new Bandit();
 
     @Test
@@ -95,9 +96,13 @@ public class PlayerTest {
         Player player = new Player("Gimli", dwarf, knight, new Point2D());
         double expectedHealth = dwarf.getStartingHealth() * knight.getHealthMultiplier();
         double expectedIntelligence = dwarf.getStartingIntelligence() * knight.getIntelligenceMultiplier();
+        double expectedMana = dwarf.getStartingMana() * knight.getManaMultiplier();
+        double expectedDexterity = dwarf.getStartingDexterity() * knight.getDexterityMultiplier();
         MatcherAssert.assertThat(player, allOf(
                 hasProperty("health", is(expectedHealth)),
                 hasProperty("intelligence", is(expectedIntelligence))));
+                hasProperty("expectedMana", is(expectedMana));
+                hasProperty("dexterity", is(expectedDexterity));
     }
 
     @Test
@@ -122,6 +127,23 @@ public class PlayerTest {
     }
 
     @Test
+    public void testWitchAttacksPlayer() {
+        Player player = new Player("Legolas", elf, thief, new Point2D());
+        witch.attack(player);
+        double expectedPlayerHealthLeft = 85;
+        MatcherAssert.assertThat(player.getHealth(), is(expectedPlayerHealthLeft));
+    }
+
+    @Test
+    public void testTrollAttacksPlayerUntilDead() {
+        Player player = new Player("Legolas", elf, thief, new Point2D());
+        while (player.getHealth() > 1) {
+            troll.attack(player);
+        }
+        MatcherAssert.assertThat(player.isDead(), is(Boolean.TRUE));
+    }
+
+    @Test
     void testPlayerResetResetsHealth() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         player.setHealth(300);
@@ -142,7 +164,7 @@ public class PlayerTest {
 
     @Test
     public void testPlayerThiefCantAttackWhenInvisible() {
-        Player player = new Player("Legolas", elf, thief, new Point2D());
+        Player player = new Player("Greger", orc, thief, new Point2D());
         double expectedTrollHealth = troll.getHealth();
         thief.becomeInvisible();
         player.attackEnemyWithWeapon(troll);
@@ -153,9 +175,19 @@ public class PlayerTest {
     public void testPlayerThiefAvoidsDamageWhenInvisible() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         double expectedPlayerHealth = player.getHealth();
-        player.invisibility();
+        player.becomeInvisible();
         troll.attack(player);
         MatcherAssert.assertThat(player.getHealth(), is(expectedPlayerHealth));
+
+    }
+
+    @Test
+    public void testPlayerThiefBecomeInvisibleAndEmerge() {
+        Player player = new Player("Legolas", elf, thief, new Point2D());
+        player.becomeInvisible();
+        player.reEmerge();
+        boolean result = thief.isInvisible();
+        MatcherAssert.assertThat(result, is(false));
 
     }
 

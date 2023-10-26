@@ -2,24 +2,17 @@ package com.roguelike.enemies;
 
 import org.junit.jupiter.api.Test;
 
-import com.roguelike.Player;
-import com.roguelike.Point2D;
-import com.roguelike.races.Elf;
-import com.roguelike.roles.Thief;
-
-import org.hamcrest.MatcherAssert;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 public class WitchTest {
 
+    private static final double WITCH_XP = 80;
+
     @Test
-    public void testWitchAttacksPlayer() {
+    public void testWitchGetXp() {
         Witch witch = new Witch();
-        Elf elf = new Elf();
-        Thief thief = new Thief();
-        Player player = new Player("Legolas", elf, thief, new Point2D());
-        witch.attack(player);
-        double expectedPlayerHealthLeft = 85;
-        MatcherAssert.assertThat(player.getHealth(), is(expectedPlayerHealthLeft));
+        double result = witch.getWitchXp();
+        assertThat(result, is(WITCH_XP));
     }
 }
