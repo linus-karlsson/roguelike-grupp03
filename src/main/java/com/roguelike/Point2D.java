@@ -52,7 +52,7 @@ public class Point2D {
     }
 
     private boolean doubleEquals(double first, double second) {
-        double epsilon = 0.000001;
+        double epsilon = 0.000001d;
         return Math.abs(first - second) < epsilon;
     }
 }
