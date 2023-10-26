@@ -41,9 +41,23 @@ public class GridIndexTest {
     }
 
     @Test
-    void testNotEquals() {
+    void testNotEqualsRow() {
         GridIndex index = new GridIndex(DEFAULT_ROW, DEFAULT_COLUMN);
-        GridIndex index2 = new GridIndex(DEFAULT_ROW + 1, DEFAULT_COLUMN + 1);
+        GridIndex index2 = new GridIndex(DEFAULT_ROW + 1, DEFAULT_COLUMN);
+        assertFalse(index.equals(index2));
+    }
+
+    @Test
+    void testNotEqualsColumn() {
+        GridIndex index = new GridIndex(DEFAULT_ROW, DEFAULT_COLUMN);
+        GridIndex index2 = new GridIndex(DEFAULT_ROW, DEFAULT_COLUMN + 1);
+        assertFalse(index.equals(index2));
+    }
+
+    @Test
+    void testNotEqualsWrongInstance() {
+        GridIndex index = new GridIndex(DEFAULT_ROW, DEFAULT_COLUMN);
+        int index2 = 2;
         assertFalse(index.equals(index2));
     }
 

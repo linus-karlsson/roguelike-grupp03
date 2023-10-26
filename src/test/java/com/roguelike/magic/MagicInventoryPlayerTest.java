@@ -45,7 +45,6 @@ public class MagicInventoryPlayerTest {
         assertThat(player.getMagicInventory(), aMapWithSize(2));
     }
 
-
     @Test
     void testMethodAddMagicToInventoryShouldAddMagicToInventory() {
         Magic magic = new Magic(Spell.HARMONYHEAL);
@@ -88,7 +87,7 @@ public class MagicInventoryPlayerTest {
         Magic magic = new Magic(Spell.FIREBALL);
         player.addMagicToInventory(magic);
         player.useMagic(Spell.FIREBALL, enemy);
-        double expectedValue = 40.0;
+        double expectedValue = 690.0;
         assertEquals(expectedValue, enemy.getHealth());
     }
 

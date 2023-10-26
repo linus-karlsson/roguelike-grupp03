@@ -5,7 +5,7 @@ import com.roguelike.equipment.ElementType;
 
 public class Witch extends Entity {
 
-    private static final double WITCH_HEALTH = 30;
+    private static final double WITCH_HEALTH = 400;
     private static final double WITCH_DAMAGE = 15;
     private static final ElementType WITCH_ELEMENT = ElementType.FIRE;
 
@@ -15,8 +15,7 @@ public class Witch extends Entity {
         super(WITCH_HEALTH, WITCH_DAMAGE, WITCH_ELEMENT);
     }
 
-
-    public double getWitchXp(){
+    public double getWitchXp() {
         return WITCH_XP;
     }
 }

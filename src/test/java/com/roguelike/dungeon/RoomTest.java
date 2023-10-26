@@ -132,9 +132,23 @@ public class RoomTest {
     }
 
     @Test
-    void testNotEquals() {
+    void testNotEqualsNotSameInstanceof() {
         Room room = new Room(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        Room room2 = new Room(DEFAULT_WIDTH + 1, DEFAULT_HEIGHT + 1);
+        int test = 2;
+        assertFalse(room.equals(test));
+    }
+
+    @Test
+    void testNotEqualsWidth() {
+        Room room = new Room(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        Room room2 = new Room(DEFAULT_WIDTH + 1, DEFAULT_HEIGHT);
+        assertFalse(room.equals(room2));
+    }
+
+    @Test
+    void testNotEqualsHeight() {
+        Room room = new Room(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        Room room2 = new Room(DEFAULT_WIDTH, DEFAULT_HEIGHT + 1);
         assertFalse(room.equals(room2));
     }
 }

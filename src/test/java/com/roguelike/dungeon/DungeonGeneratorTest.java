@@ -215,7 +215,8 @@ public class DungeonGeneratorTest {
     @Test
     void testPlaceRoomsInAreaThrowsRoomsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            dungeonGenerator.placeRoomsInArea(null, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
+        	List<Room> rooms = null;
+            dungeonGenerator.placeRoomsInArea(rooms, DEFAULT_NUMBER_OF_TRIES_BEFORE_DISCARD,
                     DEFAULT_ROOM_COUNT, DEFAULT_COLUMN_COUNT, DungeonGenerator.MIN_TILE_SIZE);
         });
     }

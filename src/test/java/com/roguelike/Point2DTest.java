@@ -60,8 +60,20 @@ public class Point2DTest {
     }
 
     @Test
-    void testNotEquals() {
-        Point2D pointToCompare = new Point2D(EXPECTED_X, EXPECTED_Y);
+    void testNotEqualsX() {
+        Point2D pointToCompare = new Point2D(EXPECTED_X, 0.0);
         assertFalse(point.equals(pointToCompare));
+    }
+
+    @Test
+    void testNotEqualsY() {
+        Point2D pointToCompare = new Point2D(0.0, EXPECTED_Y);
+        assertFalse(point.equals(pointToCompare));
+    }
+
+    @Test
+    void testNotEqualsInstanceOf() {
+        int test = 3;
+        assertFalse(point.equals(test));
     }
 }
