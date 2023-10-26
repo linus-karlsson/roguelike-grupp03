@@ -284,10 +284,10 @@ public class Player extends Entity {
 
     public void addWeaponToInventory(Weapon weapon) {
         if (weapon == null) {
-            throw new IllegalArgumentException("Weapon can not be null");
+            throw new IllegalArgumentException();
         }
         if (weaponInventory.contains(weapon)) {
-            System.err.println("Can not have duplicates");
+            System.err.println();
             return;
         }
         if (weaponInventory.size() == MAX_INVENTORY_CAPACITY) {
@@ -321,16 +321,15 @@ public class Player extends Entity {
             setStatsWhenEquippingWeapon(weapon);
             equippedWeapon = weapon;
         } else {
-            System.err.println("Weapon can not be equipped by " + this.getRole());
+            return;
         }
     }
 
     public void removeWeaponFromInventory(Weapon weapon) {
         if (weapon == null) {
-            throw new IllegalArgumentException("Weapon can not be null");
+            throw new IllegalArgumentException();
         }
         if (weapon == getEquippedWeapon() || weapon == getEquippedOffhand()) {
-            System.err.println("Can not remove an equipped item");
             return;
         }
         wallet += weapon.getPrice();
@@ -353,10 +352,9 @@ public class Player extends Entity {
 
     public void addArmorToInventory(Armor armor) {
         if (armor == null) {
-            throw new IllegalArgumentException("Armor can not be null");
+            throw new IllegalArgumentException();
         }
         if (armorInventory.contains(armor)) {
-            System.err.println("Can not have duplicates");
             return;
         }
         if (armorInventory.size() == MAX_INVENTORY_CAPACITY) {
@@ -377,10 +375,9 @@ public class Player extends Entity {
 
     public void removeArmorFromInventory(Armor armor) {
         if (armor == null) {
-            throw new IllegalArgumentException("Armor can not be null");
+            throw new IllegalArgumentException();
         }
         if (armor == getEquippedArmor() || armor == getEquippedOffhand()) {
-            System.err.println("Can not remove equipped items");
             return;
         }
         wallet += armor.getPrice();
@@ -401,7 +398,7 @@ public class Player extends Entity {
             setStatsWhenEquippingArmor(armor);
             equippedArmor = armor;
         } else {
-            System.err.println("Armor can not be equipped by " + this.getRole());
+            return;
         }
     }
 
@@ -421,7 +418,6 @@ public class Player extends Entity {
 
     public void equipOffhand(Equipment offhand) {
         if (!getWeaponInventory().contains(offhand) && !getArmorInventory().contains(offhand)) {
-            System.err.println("Must be in weapon or armor inventory to be able to equip");
             return;
         }
         if ((role instanceof Knight) && (offhand instanceof Armor) && (offhand.getType() == EquipmentType.SHIELD)) {
@@ -435,7 +431,7 @@ public class Player extends Entity {
             equippedOffhand = offhand;
             setStatsWhenEquippingWeapon((Weapon) offhand);
         } else {
-            System.err.println("Offhand can not be equipped by " + this.getRole());
+            return;
         }
     }
 
