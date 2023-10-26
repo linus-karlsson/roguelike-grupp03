@@ -1,6 +1,7 @@
 package com.roguelike;
 
 import com.roguelike.enemies.Bandit;
+import com.roguelike.equipment.*;
 import com.roguelike.races.Orc;
 import org.junit.jupiter.api.*;
 
@@ -9,8 +10,6 @@ import com.roguelike.dungeon.Room;
 import com.roguelike.dungeon.RoomParser;
 import com.roguelike.enemies.Troll;
 import com.roguelike.enemies.Witch;
-import com.roguelike.equipment.ElementType;
-import com.roguelike.equipment.WaterDagger;
 import com.roguelike.races.Dwarf;
 import com.roguelike.races.Elf;
 import com.roguelike.races.Human;
@@ -144,6 +143,28 @@ public class PlayerTest {
     }
 
     @Test
+    public void testPlayerAttacksTrollUntilDead() {
+        Player player = new Player("Aragorn", human, knight, new Point2D());
+        while (troll.getHealth() > 1) {
+            player.attackEnemyWithWeapon(troll);
+        }
+        MatcherAssert.assertThat(troll.isDead(), is(Boolean.TRUE));
+    }
+
+    @Test
+    public void testPlayerAttacksTrollWithEffectiveWeaponUntilDead() {
+        Player player = new Player("Gandalf", human, mage, new Point2D());
+        AirWand airWand = new AirWand();
+        player.addWeaponToInventory(airWand);
+        player.equipWeapon(airWand);
+        while (troll.getHealth() > 1) {
+            player.attackEnemyWithWeapon(troll);
+        }
+        MatcherAssert.assertThat(troll.isDead(), is(Boolean.TRUE));
+    }
+
+
+    @Test
     void testPlayerResetResetsHealth() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         player.setHealth(300);
@@ -230,12 +251,23 @@ public class PlayerTest {
 
     }
 
+
     @Test
-    public void testPlayerWeaponIsEffective() {
+    public void testPlayerWaterWeaponIsEffective() {
         Player player = new Player("Legolas", elf, thief, new Point2D());
         WaterDagger waterDagger = new WaterDagger();
         player.addWeaponToInventory(waterDagger);
         player.equipWeapon(waterDagger);
+        boolean result = player.weaponIsEffective(ElementType.FIRE);
+        MatcherAssert.assertThat(result, is(true));
+    }
+
+    @Test
+    public void testPlayerFireWeaponIsEffective() {
+        Player player = new Player("Aragorn", human, knight, new Point2D());
+        EarthHammer earthHammer = new EarthHammer();
+        player.addWeaponToInventory(earthHammer);
+        player.equipWeapon(earthHammer);
         boolean result = player.weaponIsEffective(ElementType.FIRE);
         MatcherAssert.assertThat(result, is(true));
     }
@@ -270,3 +302,5 @@ public class PlayerTest {
         MatcherAssert.assertThat(currentPlayerXp, is(expectedPlayerXp));
     }
 }
+
+

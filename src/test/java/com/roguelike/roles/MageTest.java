@@ -16,4 +16,5 @@ public class MageTest {
         mage.debuff(troll, 1);
         assertNotEquals(trollStartingDamage, troll.getDamage());
     }
+
 }

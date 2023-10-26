@@ -239,6 +239,10 @@ public class Player extends Entity {
         return equippedArmor;
     }
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     public Player reset() {
         String name = startingValues.getName();
         Race race = startingValues.getRace();
