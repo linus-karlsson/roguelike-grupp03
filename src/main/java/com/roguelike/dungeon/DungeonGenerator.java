@@ -71,10 +71,10 @@ public class DungeonGenerator {
         } else if (maxWidth > MAX_ROOM_WIDTH_OR_HEIGHT || maxHeight > MAX_ROOM_WIDTH_OR_HEIGHT) {
             throw new IllegalArgumentException(
                     String.format("Max width or height of rooms: %f", MAX_ROOM_WIDTH_OR_HEIGHT));
-        } else if (minWidth >= maxWidth) {
+        } else if (minWidth > maxWidth) {
             throw new IllegalArgumentException(
                     String.format("minWidth(%f) is greater than or equal to maxWidth(%f)", minWidth, maxWidth));
-        } else if (minHeight >= maxHeight) {
+        } else if (minHeight > maxHeight) {
             throw new IllegalArgumentException(
                     String.format("minHeight(%f) is greater than or equal to maxHeight(%f)", minHeight, maxHeight));
         }

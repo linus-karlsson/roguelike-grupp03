@@ -114,18 +114,18 @@ public class DungeonGeneratorTest {
     }
 
     @Test
-    void testGenerateRoomThrowsOnMinWidthSameAsMaxWidth() {
-        double minWidth = MAX_WIDTH;
+    void testGenerateRoomThrowsOnMinWidthBiggerThanMaxWidth() {
+        double minWidth = MIN_WIDTH + 1;
         assertThrows(IllegalArgumentException.class, () -> {
-            dungeonGenerator.generateRoom(minWidth, MAX_WIDTH, MIN_HEIGHT, MAX_HEIGHT);
+            dungeonGenerator.generateRoom(minWidth, MIN_WIDTH, MIN_HEIGHT, MAX_HEIGHT);
         });
     }
 
     @Test
     void testGenerateRoomThrowsOnMinHeightSameAsMaxHeight() {
-        double minHeight = MAX_HEIGHT;
+        double minHeight = MIN_HEIGHT + 1;
         assertThrows(IllegalArgumentException.class, () -> {
-            dungeonGenerator.generateRoom(MIN_WIDTH, MAX_WIDTH, minHeight, MAX_HEIGHT);
+            dungeonGenerator.generateRoom(MIN_WIDTH, MAX_WIDTH, minHeight, MIN_HEIGHT);
         });
     }
 
